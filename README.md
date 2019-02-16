@@ -1,7 +1,7 @@
-# managed-inputs
+# Managed Inputs
 Single source managed inputs for React.
 
-To add managed-inputs to a React project:
+To add Managed Inputs to a React project:
 ```
 npm install --save managed-inputs
 ```
@@ -10,28 +10,28 @@ and then
 import { ManagedText } from 'managed-inputs'
 import { ManagedSelect } from 'managed-inputs'
 
-<ManagedText manager={/*manager_function*/} />
-<ManagedSelect manager={/*manager_function*/} />
+<ManagedText manager={/*manager function*/} />
+<ManagedSelect manager={/*manager function*/} />
 ```
 
-To construct a manager for a managed input:
+To construct a manager for a Managed Input:
 ```
 /*text*/
 import { textManagerFactory } from 'managed-inputs'
 
-function /*manager_name*/(aspect, value) {
-  return textManagerFactory(action, value, aspectsObject)
+function /*manager name*/(aspect, value) {
+  return textManagerFactory(aspect, value, aspects)
 }
 
 /*select*/
 import { selectManagerFactory } from 'managed-inputs'
 
-function /*manager_name*/(aspect, value) {
-  return selectManagerFactory(action, value, aspectsObject)
+function /*manager name*/(aspect, value) {
+  return selectManagerFactory(aspect, value, aspects)
 }
 ```
 
-The `aspectsObject` for a managed input accept the following:
+The `aspects` parameter for a Managed Input accepts the following:
 ```
 /*text*/
 {
@@ -69,34 +69,34 @@ The `aspectsObject` for a managed input accept the following:
 }
 ```
 
-The styles object for a managed input accept the following:
+The styles property for a Managed Input accepts the following:
 ```
 /*text*/
 {
-  active: /*css class as string*/,
-  disabled: /*css class as string*/,
-  inputWithoutValue: /*css class as string*/,
-  inputWithoutValueMouseOver: /*css class as string*/,
-  inputWithoutValueFocus: /*css class as string*/,
-  inputWithValue: /*css class as string*/,
-  labelWithoutValue: /*css class as string*/,
-  labelWithvalue: /*css class as string*/,
-  error: /*css class as string*/,
+  active: /*css class*/,
+  disabled: /*css class*/,
+  inputWithoutValue: /*css class*/,
+  inputWithoutValueMouseOver: /*css class*/,
+  inputWithoutValueFocus: /*css class*/,
+  inputWithValue: /*css class*/,
+  labelWithoutValue: /*css class*/,
+  labelWithvalue: /*css class*/,
+  error: /*css class*/,
 }
 
 /*select*/
 {
-  active: /*css class as string*/,
-  disabled: /*css class as string*/,
-  proxyUnselected: /*css class as string*/,
-  proxyUnselectedMouseOver: /*css class as string*/,
-  proxyUnselectedFocus: /*css class as string*/,
-  proxySelected: /*css class as string*/,
-  labelUnselected: /*css class as string*/,
-  labelSelected: /*css class as string*/,
-  options: /*css class as string*/,
-  option: /*css class as string*/,
-  mark: /*css class as string*/,
-  error: /*css class as string*/,
+  active: /*css class*/,
+  disabled: /*css class*/,
+  proxyUnselected: /*css class*/,
+  proxyUnselectedMouseOver: /*css class*/,
+  proxyUnselectedFocus: /*css class*/,
+  proxySelected: /*css class*/,
+  labelUnselected: /*css class*/,
+  labelSelected: /*css class*/,
+  options: /*css class*/,
+  option: /*css class*/,
+  mark: /*css class*/,
+  error: /*css class*/,
 }
 ```

@@ -497,7 +497,6 @@ var ManagedSelect = function (_React$Component) {
     _this.state = {
       disabled: _this.props.manager('disabled'),
       focused: false,
-
       value: _this.props.manager('value'),
       label: _this.props.manager('label'),
       options: _this.props.manager('options'),
