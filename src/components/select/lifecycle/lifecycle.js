@@ -19,6 +19,9 @@ export function componentDidMount() {
   this.proxyUnselectedElement = document.getElementById(this.proxyId)
   this.labelElement = document.getElementById(this.labelId)
   this.options = document.getElementById(this.optionsId)
+  this.selectElement.addEventListener('blur', () => {
+    this.onBlurHandler()
+  });
 }
 
 export function getDerivedStateFromProps(nextProps, prevState){

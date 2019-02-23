@@ -35,8 +35,8 @@ export default function selectManagerFactory() {
     }
   }
 
-  function emptyFunction() {
-    return () => {
-      null;
-    }
+function emptyFunction() {
+  return () => {
+    null;
   }
+}
