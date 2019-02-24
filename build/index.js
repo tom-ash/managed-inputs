@@ -115,7 +115,7 @@ var _select = __webpack_require__(6);
 
 var _select2 = _interopRequireDefault(_select);
 
-var _managerFactory3 = __webpack_require__(11);
+var _managerFactory3 = __webpack_require__(9);
 
 var _managerFactory4 = _interopRequireDefault(_managerFactory3);
 
@@ -233,7 +233,7 @@ var ManagedText = function (_React$Component) {
               return _this2.onMouseOverHandler();
             },
             onClick: function onClick() {
-              return _this2.handler('onFocus');
+              return _this2.onFocusHandler();
             } },
           this.state.label
         ),
@@ -459,8 +459,6 @@ var _handlers = __webpack_require__(8);
 
 var handlers = _interopRequireWildcard(_handlers);
 
-__webpack_require__(9);
-
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -489,21 +487,22 @@ var ManagedSelect = function (_React$Component) {
     _this.shouldComponentUpdate = lifecycle.shouldComponentUpdate;
     _this.onMouseOverHandler = handlers.onMouseOverHandler.bind(_this);
     _this.onClickHandler = handlers.onClickHandler.bind(_this);
+    _this.onKeyDownHandler = handlers.onKeyDownHandler.bind(_this);
     _this.onFocusHandler = handlers.onFocusHandler.bind(_this);
     _this.onSelectHandler = handlers.onSelectHandler.bind(_this);
-    _this.onKeyDownHandler = handlers.onKeyDownHandler.bind(_this);
     _this.onMouseLeaveHandler = handlers.onMouseLeaveHandler.bind(_this);
-    _this.onUnfocusHandler = handlers.onUnfocusHandler.bind(_this);
+    _this.onBlurHandler = handlers.onBlurHandler.bind(_this);
     _this.state = {
       disabled: _this.props.manager('disabled'),
       focused: false,
       value: _this.props.manager('value'),
       label: _this.props.manager('label'),
       options: _this.props.manager('options'),
+      optionsHovered: false,
       flag: _this.props.manager('flag'),
       error: _this.props.manager('error'),
       proxyClass: _this.styles.proxyUnselected,
-      labelClass: _this.styles.labelUnselected + ' ' + 'animation-none',
+      labelClass: _this.styles.labelUnselected,
       optionsClass: 'display-none'
     };
     return _this;
@@ -521,7 +520,13 @@ var ManagedSelect = function (_React$Component) {
           className: this.state.disabled ? this.styles.disabled : this.styles.active },
         this.state.focused && _react2.default.createElement(
           'div',
-          null,
+          {
+            onMouseOver: function onMouseOver() {
+              return _this2.setState({ optionsHovered: true });
+            },
+            onMouseLeave: function onMouseLeave() {
+              return _this2.setState({ optionsHovered: false });
+            } },
           _react2.default.createElement(
             'div',
             {
@@ -544,12 +549,7 @@ var ManagedSelect = function (_React$Component) {
                 _this2.props.manager('optionDecorate', option)
               );
             })
-          ),
-          _react2.default.createElement('div', {
-            onClick: function onClick() {
-              return _this2.onUnfocusHandler();
-            },
-            className: 'detached-select-js-options-background' })
+          )
         ),
         _react2.default.createElement(
           'div',
@@ -587,22 +587,22 @@ var ManagedSelect = function (_React$Component) {
               return _this2.onMouseLeaveHandler();
             },
             onClick: function onClick() {
-              return _this2.onFocusHandler();
+              return _this2.onClickHandler();
             } },
           this.props.manager('optionDecorate', this.state.value)
         ),
         _react2.default.createElement(
           'select',
           {
-            style: { position: 'absolute', top: 0, right: 0, bottom: 0, left: 0, opacity: 0, zIndex: -1 },
-            className: 'detached-select-js-select',
-            onKeyDown: function onKeyDown(e) {
-              return _this2.onKeyDownHandler(e);
-            },
+            style: { border: 'none', height: 0, width: 0, zIndex: -999, outline: 'none', appearance: 'none' },
             disabled: this.state.disabled,
             onFocus: function onFocus() {
               return _this2.onFocusHandler();
             },
+            onKeyDown: function onKeyDown(e) {
+              return _this2.onKeyDownHandler(e);
+            },
+            onBlur: this.onBlurHandler,
             defaultValue: null,
             id: this.id },
           _react2.default.createElement('option', {
@@ -620,8 +620,7 @@ var ManagedSelect = function (_React$Component) {
         ),
         _react2.default.createElement(
           'div',
-          {
-            className: this.styles.error },
+          { className: this.styles.error },
           this.state.error
         )
       );
@@ -656,10 +655,15 @@ var STATE_KEYS_TO_DERIVE = ['disabled', 'value', 'label', 'options', 'flag', 'er
 var STATE_KEYS_TO_UPDATE = STATE_KEYS_TO_DERIVE.concat(['focused', 'proxyClass', 'labelClass', 'optionsClass']);
 
 function componentDidMount() {
+  var _this = this;
+
   this.selectElement = document.getElementById(this.id);
   this.proxyUnselectedElement = document.getElementById(this.proxyId);
   this.labelElement = document.getElementById(this.labelId);
   this.options = document.getElementById(this.optionsId);
+  this.selectElement.addEventListener('blur', function () {
+    _this.onBlurHandler();
+  });
 }
 
 function getDerivedStateFromProps(nextProps, prevState) {
@@ -673,11 +677,11 @@ function getDerivedStateFromProps(nextProps, prevState) {
 }
 
 function shouldComponentUpdate(nextProps, nextState) {
-  var _this = this;
+  var _this2 = this;
 
   var someValue = false;
   STATE_KEYS_TO_UPDATE.map(function (element) {
-    if (_this.state[element] !== nextState[element]) {
+    if (_this2.state[element] !== nextState[element]) {
       someValue = true;
     }
   });
@@ -696,11 +700,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.onMouseOverHandler = onMouseOverHandler;
 exports.onClickHandler = onClickHandler;
-exports.onFocusHandler = onFocusHandler;
 exports.onSelectHandler = onSelectHandler;
-exports.onKeyDownHandler = onKeyDownHandler;
 exports.onMouseLeaveHandler = onMouseLeaveHandler;
-exports.onUnfocusHandler = onUnfocusHandler;
+exports.onKeyDownHandler = onKeyDownHandler;
+exports.onBlurHandler = onBlurHandler;
+exports.onFocusHandler = onFocusHandler;
 function onMouseOverHandler() {
   var proxyClass = void 0;
   if (!this.state.focused) {
@@ -716,18 +720,13 @@ function onMouseOverHandler() {
 
 function onClickHandler() {
   isMobile() ? handleFocus.call(this) : this.selectElement.focus();
-}
-
-function onFocusHandler() {
-  handleFocus.call(this);
+  this.onFocusHandler();
 }
 
 function onSelectHandler(option) {
   var proxyClass = void 0;
   var labelClass = void 0;
-  var optionsClass = void 0;
   proxyClass = this.styles.proxyUnselected;
-  optionsClass = this.styles.options;
   if (option === null) {
     labelClass = this.styles.labelUnselected;
   } else {
@@ -739,14 +738,9 @@ function onSelectHandler(option) {
   this.setState({
     focused: false,
     proxyClass: proxyClass,
-    labelClass: labelClass
+    labelClass: labelClass,
+    optionsHovered: false
   });
-}
-
-function onKeyDownHandler(e) {
-  if (e.keyCode === 9) {
-    this.handler('unfocusSelect');
-  }
 }
 
 function onMouseLeaveHandler() {
@@ -760,24 +754,34 @@ function onMouseLeaveHandler() {
   }
 }
 
-function onUnfocusHandler() {
-  var proxyClass = void 0;
-  var labelClass = void 0;
-  proxyClass = this.styles.proxyUnselected;
-  if (this.state.value === null) {
-    labelClass = this.styles.labelUnselected;
-  } else {
-    proxyClass += ' ' + this.styles.proxySelected;
-    labelClass = this.styles.labelSelected;
+function onKeyDownHandler(e) {
+  if (e.keyCode === 38 || e.keyCode === 40) {
+    e.preventDefault();
   }
-  this.setState({
-    labelClass: labelClass,
-    proxyClass: proxyClass,
-    focused: false
-  });
+  if (e.keyCode === 9) {
+    this.onBlurHandler(e, true);
+  }
 }
 
-function handleFocus() {
+function onBlurHandler(e, tabDown) {
+  if (this.state.optionsHovered === false || tabDown === true) {
+    var proxyClass = void 0;
+    var labelClass = void 0;
+    proxyClass = this.styles.proxyUnselected;
+    labelClass = this.styles.labelUnselected;
+    if (this.state.value !== null) {
+      proxyClass += ' ' + this.styles.proxySelected;
+      labelClass = this.styles.labelSelected;
+    }
+    this.setState({
+      labelClass: labelClass,
+      proxyClass: proxyClass,
+      focused: false
+    });
+  }
+}
+
+function onFocusHandler() {
   var proxyClass = void 0;
   var labelClass = void 0;
   var optionsClass = void 0;
@@ -799,102 +803,6 @@ function isMobile() {
 
 /***/ }),
 /* 9 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(10)(false);
-// imports
-
-
-// module
-exports.push([module.i, "  .detached-select-js-options-background {\r\n    position: fixed;\r\n    top: 0;\r\n    right: 0;\r\n    bottom: 0;\r\n    left: 0;\r\n    z-index: 998;\r\n    cursor: default;\r\n  }\r\n\r\n  .animation-none {\r\n    animation-name: none !important;\r\n  }", ""]);
-
-// exports
-
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports) {
-
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-// css base code, injected by the css-loader
-module.exports = function(useSourceMap) {
-	var list = [];
-
-	// return the list of modules as css string
-	list.toString = function toString() {
-		return this.map(function (item) {
-			var content = cssWithMappingToString(item, useSourceMap);
-			if(item[2]) {
-				return "@media " + item[2] + "{" + content + "}";
-			} else {
-				return content;
-			}
-		}).join("");
-	};
-
-	// import a list of modules into the list
-	list.i = function(modules, mediaQuery) {
-		if(typeof modules === "string")
-			modules = [[null, modules, ""]];
-		var alreadyImportedModules = {};
-		for(var i = 0; i < this.length; i++) {
-			var id = this[i][0];
-			if(typeof id === "number")
-				alreadyImportedModules[id] = true;
-		}
-		for(i = 0; i < modules.length; i++) {
-			var item = modules[i];
-			// skip already imported module
-			// this implementation is not 100% perfect for weird media query combinations
-			//  when a module is imported multiple times with different media queries.
-			//  I hope this will never occur (Hey this way we have smaller bundles)
-			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-				if(mediaQuery && !item[2]) {
-					item[2] = mediaQuery;
-				} else if(mediaQuery) {
-					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
-				}
-				list.push(item);
-			}
-		}
-	};
-	return list;
-};
-
-function cssWithMappingToString(item, useSourceMap) {
-	var content = item[1] || '';
-	var cssMapping = item[3];
-	if (!cssMapping) {
-		return content;
-	}
-
-	if (useSourceMap && typeof btoa === 'function') {
-		var sourceMapping = toComment(cssMapping);
-		var sourceURLs = cssMapping.sources.map(function (source) {
-			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
-		});
-
-		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
-	}
-
-	return [content].join('\n');
-}
-
-// Adapted from convert-source-map (MIT)
-function toComment(sourceMap) {
-	// eslint-disable-next-line no-undef
-	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
-	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
-
-	return '/*# ' + data + ' */';
-}
-
-
-/***/ }),
-/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

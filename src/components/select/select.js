@@ -1,7 +1,6 @@
 import React from 'react'
 import * as lifecycle from './lifecycle/lifecycle'
 import * as handlers from './handlers/handlers'
-import './styles/styles.css'
 
 export default class ManagedSelect extends React.Component {
   constructor(props) {
@@ -16,21 +15,22 @@ export default class ManagedSelect extends React.Component {
     this.shouldComponentUpdate = lifecycle.shouldComponentUpdate
     this.onMouseOverHandler = handlers.onMouseOverHandler.bind(this)
     this.onClickHandler = handlers.onClickHandler.bind(this)
+    this.onKeyDownHandler = handlers.onKeyDownHandler.bind(this)
     this.onFocusHandler = handlers.onFocusHandler.bind(this)
     this.onSelectHandler = handlers.onSelectHandler.bind(this)
-    this.onKeyDownHandler = handlers.onKeyDownHandler.bind(this)
     this.onMouseLeaveHandler = handlers.onMouseLeaveHandler.bind(this)
-    this.onUnfocusHandler = handlers.onUnfocusHandler.bind(this)
+    this.onBlurHandler = handlers.onBlurHandler.bind(this)
     this.state = {
       disabled: this.props.manager('disabled'),
       focused: false,
       value: this.props.manager('value'),
       label: this.props.manager('label'),
       options:  this.props.manager('options'),
+      optionsHovered: false,
       flag: this.props.manager('flag'),
       error: this.props.manager('error'),
       proxyClass: this.styles.proxyUnselected,
-      labelClass: this.styles.labelUnselected + ' ' + 'animation-none',
+      labelClass: this.styles.labelUnselected,
       optionsClass: 'display-none'
     }
   }
@@ -44,8 +44,11 @@ export default class ManagedSelect extends React.Component {
       <div
       id={ this.containerId }
       className={ this.state.disabled ?  this.styles.disabled : this.styles.active}>
-        {this.state.focused &&
-        <div>
+        {
+        this.state.focused &&
+        <div
+        onMouseOver={() => this.setState({optionsHovered: true})}
+        onMouseLeave={() => this.setState({optionsHovered: false})}>
           <div
           id={this.optionsId}
           className={this.state.optionsClass}>
@@ -58,38 +61,38 @@ export default class ManagedSelect extends React.Component {
             onClick={() => this.onSelectHandler(option)}
             className={this.styles.option}>
               {this.props.manager('optionDecorate', option)}
-            </div>))}
+            </div>)
+            )
+          }
           </div>
-          <div
-          onClick={() => this.onUnfocusHandler()}
-          className='detached-select-js-options-background'/>
-        </div>}
+        </div>
+        }
         <div
         id={this.labelId}
         className={this.state.labelClass}
         onMouseOver={() => this.onMouseOverHandler()}
         onMouseLeave={() => this.onMouseLeaveHandler()}
-        onClick={() => this.onClickHandler()}>
+        onClick={() => this.onClickHandler()} >
           {this.state.label}
         </div>
         <div
         className={this.styles.mark}
         onMouseLeave={() => this.onMouseLeaveHandler()}
-        onClick={() => this.onClickHandler()}/>
+        onClick={() => this.onClickHandler()} />
         <div
         id={this.proxyId}
         className={this.state.proxyClass}
         onMouseOver={() => this.onMouseOverHandler()}
         onMouseLeave={() => this.onMouseLeaveHandler()}
-        onClick={() => this.onFocusHandler()}>
+        onClick={() => this.onClickHandler()} >
           {this.props.manager('optionDecorate', this.state.value)}
         </div>
         <select 
-        style={{ position: 'absolute', top: 0, right: 0, bottom: 0, left: 0, opacity: 0, zIndex: -1 }}
-        className='detached-select-js-select'
-        onKeyDown={(e) => this.onKeyDownHandler(e)}
+        style={{ border: 'none', height: 0, width: 0, zIndex: -999, outline: 'none', appearance: 'none' }}
         disabled={this.state.disabled}
         onFocus={() => this.onFocusHandler()}
+        onKeyDown={(e) => this.onKeyDownHandler(e)}
+        onBlur={this.onBlurHandler}
         defaultValue={null}
         id={this.id}>
           <option
@@ -102,8 +105,7 @@ export default class ManagedSelect extends React.Component {
             {this.props.manager('optionDecorate', option)}
           </option>))}
         </select>
-        <div
-        className={this.styles.error}>
+        <div className={this.styles.error}>
           {this.state.error}
         </div>
       </div>

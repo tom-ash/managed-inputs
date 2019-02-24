@@ -52,7 +52,7 @@ export default class ManagedText extends React.Component {
         id={this.labelId}
         className={this.state.labelClass}
         onMouseOver={() => this.onMouseOverHandler()}
-        onClick={() => this.handler('onFocus')}>
+        onClick={() => this.onFocusHandler()}>
           {this.state.label}
         </div>
         <div

@@ -40,7 +40,7 @@ export default function textManagerFactory() {
 }
 
 function emptyFunction() {
-    return () => {
-      null;
-    }
+  return () => {
+    null;
   }
+}
