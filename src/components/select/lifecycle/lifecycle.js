@@ -1,17 +1,18 @@
 const STATE_KEYS_TO_DERIVE = [
- 'disabled',
- 'value',
- 'label',
- 'options',
- 'flag',
- 'error'
+  'display',
+  'disabled',
+  'value',
+  'label',
+  'options',
+  'flag',
+  'error'
 ]
 
 const STATE_KEYS_TO_UPDATE = STATE_KEYS_TO_DERIVE.concat([
- 'focused',
- 'proxyClass',
- 'labelClass',
- 'optionsClass'
+  'focused',
+  'proxyClass',
+  'labelClass',
+  'optionsClass'
 ])
 
 export function componentDidMount() {
@@ -21,7 +22,7 @@ export function componentDidMount() {
   this.options = document.getElementById(this.optionsId)
   this.selectElement.addEventListener('blur', () => {
     this.onBlurHandler()
-  });
+  })
 }
 
 export function getDerivedStateFromProps(nextProps, prevState){

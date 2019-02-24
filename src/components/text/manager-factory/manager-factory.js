@@ -1,46 +1,49 @@
 export default function textManagerFactory() {
-  return (aspect, value, inputFieldData) => {
+  return (aspect, aspects) => {
     switch(aspect) {
       case 'id':
-        return inputFieldData.id
+        return aspects.id
+      case 'display':
+        return aspects.display === undefined ? 'block' : aspects.display
       case 'styles':
-        return inputFieldData.styles === undefined ? {} : inputFieldData.styles
+        return aspects.styles === undefined ? {} : aspects.styles
       case 'value':
-        return ((inputFieldData.value === undefined) || (inputFieldData.value === null)) ? '' : inputFieldData.value
+        return ((aspects.value === undefined) || (aspects.value === null)) ? '' : aspects.value
       case 'label':
-        return inputFieldData.label
+        return aspects.label
       case 'type':
-        return inputFieldData.type === undefined ? 'text' : inputFieldData.type
+        return aspects.type === undefined ? 'text' : aspects.type
       case 'disabled':
-        return inputFieldData.disabled === undefined ? false : inputFieldData.disabled
+        return aspects.disabled === undefined ? false : aspects.disabled
       case 'detached':
-        return inputFieldData.detached
+        return aspects.detached
       case 'autoComplete':
-        return inputFieldData.autoComplete === undefined ? '' : inputFieldData.autoComplete
+        return aspects.autoComplete === undefined ? '' : aspects.autoComplete
       case 'onChange':
-        inputFieldData.onChange()
-        break;
+        aspects.onChange()
+        break
       case 'setValue':
-        inputFieldData.setValue === undefined ? emptyFunction() : inputFieldData.setValue()
-        break;
+        aspects.setValue === undefined ? emptyFunction() : aspects.setValue()
+        break
       case 'onBlur':
-        inputFieldData.onBlur === undefined ? null : inputFieldData.onBlur()
-        break;
+        aspects.onBlur === undefined ? null : aspects.onBlur()
+        break
       case 'validate':
-        return inputFieldData.validate === undefined ? null : inputFieldData.validate()
+        return aspects.validate === undefined ? null : aspects.validate()
       case 'error':
-        return inputFieldData.error === undefined ? '' : inputFieldData.error
+        return aspects.error === undefined ? '' : aspects.error
       case 'flag':
-        inputFieldData.flag === undefined ? null : inputFieldData.flag
-        break;
+        aspects.flag === undefined ? null : aspects.flag
+        break
       default:
-        break;
+        break
     }
   }
 }
 
 function emptyFunction() {
   return () => {
-    null;
+    null
   }
 }
+

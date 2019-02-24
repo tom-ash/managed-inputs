@@ -99,9 +99,9 @@ module.exports = require("react");
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+         value: true
 });
-exports.selectManagerFactory = exports.ManagedSelect = exports.textManagerFactory = exports.ManagedText = undefined;
+exports.buttonManagerFactory = exports.ManagedButton = exports.selectManagerFactory = exports.ManagedSelect = exports.textManagerFactory = exports.ManagedText = undefined;
 
 var _text = __webpack_require__(2);
 
@@ -119,12 +119,22 @@ var _managerFactory3 = __webpack_require__(9);
 
 var _managerFactory4 = _interopRequireDefault(_managerFactory3);
 
+var _button = __webpack_require__(10);
+
+var _button2 = _interopRequireDefault(_button);
+
+var _managerFactory5 = __webpack_require__(13);
+
+var _managerFactory6 = _interopRequireDefault(_managerFactory5);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.ManagedText = _text2.default;
 exports.textManagerFactory = _managerFactory2.default;
 exports.ManagedSelect = _select2.default;
 exports.selectManagerFactory = _managerFactory4.default;
+exports.ManagedButton = _button2.default;
+exports.buttonManagerFactory = _managerFactory6.default;
 
 /***/ }),
 /* 2 */
@@ -181,6 +191,7 @@ var ManagedText = function (_React$Component) {
     _this.onBlurHandler = handlers.onBlurHandler.bind(_this);
     _this.styles = _this.props.manager('styles');
     _this.state = {
+      display: _this.props.manager('display'),
       disabled: _this.props.manager('disabled'),
       focused: false,
       value: _this.props.manager('value'),
@@ -201,6 +212,7 @@ var ManagedText = function (_React$Component) {
       return _react2.default.createElement(
         'div',
         {
+          style: { display: this.state.display },
           className: this.state.disabled ? this.styles.disabled : this.styles.active },
         _react2.default.createElement('input', {
           id: this.id,
@@ -345,7 +357,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.componentDidMount = componentDidMount;
 exports.getDerivedStateFromProps = getDerivedStateFromProps;
 exports.shouldComponentUpdate = shouldComponentUpdate;
-var STATE_KEYS_TO_DERIVE = ['value', 'label', 'disabled', 'error', 'flag'];
+var STATE_KEYS_TO_DERIVE = ['display', 'value', 'label', 'disabled', 'error', 'flag'];
 
 var STATE_KEYS_TO_UPDATE = STATE_KEYS_TO_DERIVE.concat(['inputClass', 'labelClass']);
 
@@ -388,39 +400,41 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = textManagerFactory;
 function textManagerFactory() {
-  return function (aspect, value, inputFieldData) {
+  return function (aspect, aspects) {
     switch (aspect) {
       case 'id':
-        return inputFieldData.id;
+        return aspects.id;
+      case 'display':
+        return aspects.display === undefined ? 'block' : aspects.display;
       case 'styles':
-        return inputFieldData.styles === undefined ? {} : inputFieldData.styles;
+        return aspects.styles === undefined ? {} : aspects.styles;
       case 'value':
-        return inputFieldData.value === undefined || inputFieldData.value === null ? '' : inputFieldData.value;
+        return aspects.value === undefined || aspects.value === null ? '' : aspects.value;
       case 'label':
-        return inputFieldData.label;
+        return aspects.label;
       case 'type':
-        return inputFieldData.type === undefined ? 'text' : inputFieldData.type;
+        return aspects.type === undefined ? 'text' : aspects.type;
       case 'disabled':
-        return inputFieldData.disabled === undefined ? false : inputFieldData.disabled;
+        return aspects.disabled === undefined ? false : aspects.disabled;
       case 'detached':
-        return inputFieldData.detached;
+        return aspects.detached;
       case 'autoComplete':
-        return inputFieldData.autoComplete === undefined ? '' : inputFieldData.autoComplete;
+        return aspects.autoComplete === undefined ? '' : aspects.autoComplete;
       case 'onChange':
-        inputFieldData.onChange();
+        aspects.onChange();
         break;
       case 'setValue':
-        inputFieldData.setValue === undefined ? emptyFunction() : inputFieldData.setValue();
+        aspects.setValue === undefined ? emptyFunction() : aspects.setValue();
         break;
       case 'onBlur':
-        inputFieldData.onBlur === undefined ? null : inputFieldData.onBlur();
+        aspects.onBlur === undefined ? null : aspects.onBlur();
         break;
       case 'validate':
-        return inputFieldData.validate === undefined ? null : inputFieldData.validate();
+        return aspects.validate === undefined ? null : aspects.validate();
       case 'error':
-        return inputFieldData.error === undefined ? '' : inputFieldData.error;
+        return aspects.error === undefined ? '' : aspects.error;
       case 'flag':
-        inputFieldData.flag === undefined ? null : inputFieldData.flag;
+        aspects.flag === undefined ? null : aspects.flag;
         break;
       default:
         break;
@@ -493,6 +507,7 @@ var ManagedSelect = function (_React$Component) {
     _this.onMouseLeaveHandler = handlers.onMouseLeaveHandler.bind(_this);
     _this.onBlurHandler = handlers.onBlurHandler.bind(_this);
     _this.state = {
+      display: _this.props.manager('display'),
       disabled: _this.props.manager('disabled'),
       focused: false,
       value: _this.props.manager('value'),
@@ -517,6 +532,7 @@ var ManagedSelect = function (_React$Component) {
         'div',
         {
           id: this.containerId,
+          style: { display: this.state.display },
           className: this.state.disabled ? this.styles.disabled : this.styles.active },
         this.state.focused && _react2.default.createElement(
           'div',
@@ -650,7 +666,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.componentDidMount = componentDidMount;
 exports.getDerivedStateFromProps = getDerivedStateFromProps;
 exports.shouldComponentUpdate = shouldComponentUpdate;
-var STATE_KEYS_TO_DERIVE = ['disabled', 'value', 'label', 'options', 'flag', 'error'];
+var STATE_KEYS_TO_DERIVE = ['display', 'disabled', 'value', 'label', 'options', 'flag', 'error'];
 
 var STATE_KEYS_TO_UPDATE = STATE_KEYS_TO_DERIVE.concat(['focused', 'proxyClass', 'labelClass', 'optionsClass']);
 
@@ -813,14 +829,16 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = selectManagerFactory;
 function selectManagerFactory() {
-  return function (aspect, option, aspects) {
+  return function (aspect, aspects) {
     switch (aspect) {
       case 'id':
         return aspects.id;
-      case 'styles':
-        return aspects.styles === undefined ? {} : aspects.styles;
+      case 'display':
+        return aspects.display === undefined ? 'block' : aspects.display;
       case 'disabled':
         return aspects.disabled === undefined ? false : aspects.disabled;
+      case 'styles':
+        return aspects.styles === undefined ? {} : aspects.styles;
       case 'value':
         return aspects.value === undefined ? null : aspects.value;
       case 'label':
@@ -852,6 +870,220 @@ function selectManagerFactory() {
 function emptyFunction() {
   return function () {
     null;
+  };
+}
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _handlers = __webpack_require__(11);
+
+var handlers = _interopRequireWildcard(_handlers);
+
+var _lifecycle = __webpack_require__(12);
+
+var lifecycle = _interopRequireWildcard(_lifecycle);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var ManagedButton = function (_React$Component) {
+  _inherits(ManagedButton, _React$Component);
+
+  function ManagedButton(props) {
+    _classCallCheck(this, ManagedButton);
+
+    var _this = _possibleConstructorReturn(this, (ManagedButton.__proto__ || Object.getPrototypeOf(ManagedButton)).call(this, props));
+
+    _this.id = _this.props.manager('id');
+    _this.componentDidMount = lifecycle.componentDidMount;
+    _this.shouldComponentUpdate = lifecycle.shouldComponentUpdate;
+    _this.onMouseOverHandler = handlers.onMouseOverHandler.bind(_this);
+    _this.onClickHandler = handlers.onClickHandler.bind(_this);
+    _this.onMouseLeaveHandler = handlers.onMouseLeaveHandler.bind(_this);
+    _this.styles = _this.props.manager('styles');
+    _this.state = {
+      display: _this.props.manager('display'),
+      disabled: _this.props.manager('disabled'),
+      flag: _this.props.manager('flag'),
+      buttonClass: _this.styles.button
+    };
+    return _this;
+  }
+
+  _createClass(ManagedButton, [{
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'div',
+        {
+          style: { display: this.state.display },
+          className: this.state.disabled ? this.styles.disabled : this.styles.active },
+        _react2.default.createElement(
+          'button',
+          {
+            id: this.id,
+            className: this.state.buttonClass,
+            disabled: this.props.manager('disabled'),
+            onMouseOver: this.onMouseOverHandler,
+            onClick: this.onClickHandler,
+            onMouseLeave: this.onMouseLeaveHandler },
+          this.props.manager('label')
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: this.styles.error },
+          this.props.manager('error')
+        )
+      );
+    }
+  }], [{
+    key: 'getDerivedStateFromProps',
+    value: function getDerivedStateFromProps(nextProps, prevstate) {
+      return lifecycle.getDerivedStateFromProps(nextProps, prevstate);
+    }
+  }]);
+
+  return ManagedButton;
+}(_react2.default.Component);
+
+exports.default = ManagedButton;
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.onMouseOverHandler = onMouseOverHandler;
+exports.onClickHandler = onClickHandler;
+exports.onMouseLeaveHandler = onMouseLeaveHandler;
+function onMouseOverHandler() {
+  this.props.manager('onMouseOver');
+}
+
+function onClickHandler() {
+  this.props.manager('onClick');
+}
+
+function onMouseLeaveHandler() {
+  this.props.manager('onMouseLeave');
+}
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.componentDidMount = componentDidMount;
+exports.getDerivedStateFromProps = getDerivedStateFromProps;
+exports.shouldComponentUpdate = shouldComponentUpdate;
+var STATE_KEYS_TO_DERIVE = ['display', 'label', 'disabled', 'error', 'flag'];
+
+var STATE_KEYS_TO_UPDATE = STATE_KEYS_TO_DERIVE.concat(['buttonClass']);
+
+function componentDidMount() {
+  this.button = document.getElementById(this.id);
+}
+
+function getDerivedStateFromProps(nextProps, prevState) {
+  var returnObject = {};
+  STATE_KEYS_TO_DERIVE.map(function (element) {
+    if (nextProps.manager(element) != prevState[element]) {
+      returnObject[element] = nextProps.manager(element);
+    }
+  });
+  return returnObject;
+}
+
+function shouldComponentUpdate(nextProps, nextState) {
+  var _this = this;
+
+  var shouldIt = false;
+  STATE_KEYS_TO_UPDATE.map(function (element) {
+    if (_this.state[element] !== nextState[element]) {
+      shouldIt = true;
+    }
+    if (_this.props[element] !== nextProps[element]) {
+      shouldIt = true;
+    }
+  });
+  return shouldIt;
+}
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = buttonManagerFactory;
+function buttonManagerFactory() {
+  return function (aspect, aspects) {
+    switch (aspect) {
+      case 'id':
+        return aspects.id;
+      case 'display':
+        return aspects.display === undefined ? 'block' : aspects.display;
+      case 'disabled':
+        return aspects.disabled === undefined ? false : aspects.disabled;
+      case 'styles':
+        return aspects.styles === undefined ? {} : aspects.styles;
+      case 'label':
+        return aspects.label;
+      case 'onMouseOver':
+        if (aspects.onMouseOver === undefined) return;
+        aspects.onMouseOver();
+        break;
+      case 'onClick':
+        aspects.onClick();
+        break;
+      case 'onMouseLeave':
+        if (aspects.onMouseLeave === undefined) return;
+        aspects.onMouseLeave();
+        break;
+      case 'error':
+        return aspects.error === undefined ? '' : aspects.error;
+      case 'flag':
+        aspects.flag === undefined ? null : aspects.flag;
+        break;
+      default:
+        break;
+    }
   };
 }
 

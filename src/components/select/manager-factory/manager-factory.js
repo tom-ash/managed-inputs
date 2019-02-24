@@ -1,12 +1,14 @@
 export default function selectManagerFactory() {
-  return (aspect, option, aspects) => {
+  return (aspect, aspects) => {
     switch(aspect) {
       case 'id':
         return aspects.id
-      case 'styles':
-        return aspects.styles === undefined ? {} : aspects.styles
+      case 'display':
+        return aspects.display === undefined ? 'block' : aspects.display
       case 'disabled':
         return aspects.disabled === undefined ? false : aspects.disabled
+      case 'styles':
+        return aspects.styles === undefined ? {} : aspects.styles
       case 'value':
         return aspects.value === undefined ? null : aspects.value
       case 'label':
@@ -21,22 +23,22 @@ export default function selectManagerFactory() {
         return aspects.optionDecorate
       case 'setValue':
         aspects.setValue === undefined ? emptyFunction() : aspects.setValue()
-        break;
+        break
       case 'onSelect':
         aspects.onSelect()
-        break;
+        break
       case 'error':
         return aspects.error === undefined ? '' : aspects.error
       case 'flag':
         return aspects.flag === undefined ? null : aspects.flag
       default:
-        break;
+        break
       }
     }
   }
 
 function emptyFunction() {
   return () => {
-    null;
+    null
   }
 }

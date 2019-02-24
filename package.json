@@ -1,7 +1,7 @@
 {
   "name": "managed-inputs",
-  "version": "0.0.3",
-  "description": "Single source managed inputs for React",
+  "version": "0.0.4",
+  "description": "single source managed inputs for React",
   "main": "build/index.js",
   "scripts": {
     "start": "webpack --watch",

@@ -9,25 +9,34 @@ and then
 ```
 import { ManagedText } from 'managed-inputs'
 import { ManagedSelect } from 'managed-inputs'
+import { ManagedButton } from 'managed-inputs'
 
 <ManagedText manager={/*manager function*/} />
 <ManagedSelect manager={/*manager function*/} />
+<ManagedButton manager={/*manager function*/} />
 ```
 
-To construct a manager for a Managed Input:
+To construct a manager for a Managed Input bind the manager to a React class and then:
 ```
 /*text*/
 import { textManagerFactory } from 'managed-inputs'
 
 function /*manager name*/(aspect, value) {
-  return textManagerFactory(aspect, value, aspects)
+  return textManagerFactory.call(this)(aspect, aspects)
 }
 
 /*select*/
 import { selectManagerFactory } from 'managed-inputs'
 
 function /*manager name*/(aspect, value) {
-  return selectManagerFactory(aspect, value, aspects)
+  return selectManagerFactory.call(this)(aspect, aspects)
+}
+
+/*button*/
+import { buttonManagerFactory } from 'managed-inputs'
+
+function /*manager name*/(aspect, value) {
+  return buttonManagerFactory.call(this)(aspect, aspects)
 }
 ```
 
@@ -36,6 +45,7 @@ The `aspects` parameter for a Managed Input accepts the following:
 /*text*/
 {
   id: /*string*/,
+  display: /*"block" or "none"*/,
   styles: /*object*/,
   value: /*string*/,
   label: /*string*/,
@@ -53,19 +63,34 @@ The `aspects` parameter for a Managed Input accepts the following:
 
 /*select*/
 {
- id: /*string*/,
- styles: /*object*/,
- disabled: /*boolean*/,
- value: /*string*/,
- label: /*string*/,
- options: /*array*/,
- optionKey: /*function*/,
- optionValue: /*string, number*/,
- optionDecorate: /*function*/,
- setValue: /*function*/,
- onSelect: /*function*/,
- error: /*string*/,
- flag: /*string, number, boolean*/
+  id: /*string*/,
+  display: /*"block" or "none"*/,
+  styles: /*object*/,
+  disabled: /*boolean*/,
+  value: /*string*/,
+  label: /*string*/,
+  options: /*array*/,
+  optionKey: /*function*/,
+  optionValue: /*string, number*/,
+  optionDecorate: /*function*/,
+  setValue: /*function*/,
+  onSelect: /*function*/,
+  error: /*string*/,
+  flag: /*string, number, boolean*/
+}
+
+/*button*/
+{
+  id: /*string*/,
+  display: /*"block" or "none"*/,
+  disabled: /*boolean*/,
+  styles: /*object*/,
+  onMouseOver: /*function*/,
+  onClick: /*function*/,
+  onMouseLeave: /*function*/,
+  label: /*string*/,
+  error: /*string*/,
+  flag: /*string, number, boolean*/
 }
 ```
 
@@ -98,5 +123,10 @@ The styles property for a Managed Input accepts the following:
   option: /*css class*/,
   mark: /*css class*/,
   error: /*css class*/,
+}
+
+/*button*/
+{
+  buttonClass: /*css class*/
 }
 ```

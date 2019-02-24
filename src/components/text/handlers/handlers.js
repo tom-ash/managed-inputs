@@ -25,7 +25,7 @@ export function onFocusHandler() {
 }
 
 export function onChangeHandler(e) {
-  this.props.manager('onChange', e.target.value);
+  this.props.manager('onChange', e.target.value)
 }
 
 export function onMouseLeaveHandler() {

@@ -21,6 +21,7 @@ export default class ManagedSelect extends React.Component {
     this.onMouseLeaveHandler = handlers.onMouseLeaveHandler.bind(this)
     this.onBlurHandler = handlers.onBlurHandler.bind(this)
     this.state = {
+      display: this.props.manager('display'),
       disabled: this.props.manager('disabled'),
       focused: false,
       value: this.props.manager('value'),
@@ -43,6 +44,7 @@ export default class ManagedSelect extends React.Component {
     return (
       <div
       id={ this.containerId }
+      style={{ display: this.state.display }}
       className={ this.state.disabled ?  this.styles.disabled : this.styles.active}>
         {
         this.state.focused &&

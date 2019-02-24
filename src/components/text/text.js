@@ -1,4 +1,4 @@
-import React from "react";
+import React from "react"
 import * as handlers from './handlers/handlers'
 import * as lifecycle from './lifecycle/lifecycle'
 
@@ -17,6 +17,7 @@ export default class ManagedText extends React.Component {
     this.onBlurHandler = handlers.onBlurHandler.bind(this)
     this.styles = this.props.manager('styles')
     this.state={
+      display: this.props.manager('display'),
       disabled: this.props.manager('disabled'),
       focused: false,
       value: this.props.manager('value'),
@@ -35,6 +36,7 @@ export default class ManagedText extends React.Component {
   render() {
     return (
       <div
+      style={{ display: this.state.display }}
       className={this.state.disabled ? this.styles.disabled : this.styles.active}>
         <input
         id={this.id}
