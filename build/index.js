@@ -101,7 +101,7 @@ module.exports = require("react");
 Object.defineProperty(exports, "__esModule", {
          value: true
 });
-exports.buttonManagerFactory = exports.ManagedButton = exports.selectManagerFactory = exports.ManagedSelect = exports.textManagerFactory = exports.ManagedText = undefined;
+exports.checkboxManagerFactory = exports.ManagedCheckbox = exports.buttonManagerFactory = exports.ManagedButton = exports.selectManagerFactory = exports.ManagedSelect = exports.textManagerFactory = exports.ManagedText = undefined;
 
 var _text = __webpack_require__(2);
 
@@ -127,6 +127,14 @@ var _managerFactory5 = __webpack_require__(13);
 
 var _managerFactory6 = _interopRequireDefault(_managerFactory5);
 
+var _checkbox = __webpack_require__(14);
+
+var _checkbox2 = _interopRequireDefault(_checkbox);
+
+var _managerFactory7 = __webpack_require__(16);
+
+var _managerFactory8 = _interopRequireDefault(_managerFactory7);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.ManagedText = _text2.default;
@@ -135,6 +143,8 @@ exports.ManagedSelect = _select2.default;
 exports.selectManagerFactory = _managerFactory4.default;
 exports.ManagedButton = _button2.default;
 exports.buttonManagerFactory = _managerFactory6.default;
+exports.ManagedCheckbox = _checkbox2.default;
+exports.checkboxManagerFactory = _managerFactory8.default;
 
 /***/ }),
 /* 2 */
@@ -1081,6 +1091,171 @@ function buttonManagerFactory() {
       case 'flag':
         aspects.flag === undefined ? null : aspects.flag;
         break;
+      default:
+        break;
+    }
+  };
+}
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _handlers = __webpack_require__(15);
+
+var handlers = _interopRequireWildcard(_handlers);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var ManagedCheckbox = function (_React$Component) {
+  _inherits(ManagedCheckbox, _React$Component);
+
+  function ManagedCheckbox(props) {
+    _classCallCheck(this, ManagedCheckbox);
+
+    var _this = _possibleConstructorReturn(this, (ManagedCheckbox.__proto__ || Object.getPrototypeOf(ManagedCheckbox)).call(this, props));
+
+    _this.id = _this.props.manager('id');
+    _this.detached = _this.props.manager('detached');
+    _this.onClickHandler = handlers.onClickHandler.bind(_this);
+    _this.state = {
+      disabled: _this.props.manager('disabled'),
+      styles: _this.props.manager('styles'),
+      checked: _this.props.manager('checked'),
+      label: _this.props.manager('label'),
+      error: _this.props.manager('error'),
+      flag: _this.props.manager('flag')
+    };
+    return _this;
+  }
+
+  _createClass(ManagedCheckbox, [{
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'div',
+        { className: this.state.disabled ? this.state.styles.disabled : this.state.styles.active },
+        _react2.default.createElement(
+          'div',
+          { className: this.state.styles.checkboxContainer },
+          _react2.default.createElement('input', {
+            type: 'checkbox',
+            id: this.id,
+            disabled: this.state.disabled,
+            readOnly: true,
+            style: { display: 'none' },
+            checked: this.detached ? undefined : this.state.checked }),
+          _react2.default.createElement(
+            'div',
+            {
+              className: this.state.styles.checkbox,
+              onClick: this.onClickHandler },
+            this.state.checked && _react2.default.createElement('div', { className: this.state.styles.tick })
+          )
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: this.state.styles.labelContainer },
+          _react2.default.createElement(
+            'div',
+            { className: this.state.styles.label },
+            this.state.label
+          )
+        ),
+        _react2.default.createElement('div', { style: { clear: 'both' } })
+      );
+    }
+  }]);
+
+  return ManagedCheckbox;
+}(_react2.default.Component);
+
+exports.default = ManagedCheckbox;
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.onClickHandler = onClickHandler;
+function onClickHandler() {
+  var checked = !this.state.checked;
+  if (this.detached === true) {
+    this.setState({ checked: checked });
+    var checkbox = document.getElementById(this.id);
+    checkbox.checked = checked;
+  }
+  this.props.manager('onClick', checked);
+}
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = checkboxManagerFactory;
+function emptyFunction() {
+  return function () {};
+}
+
+function checkboxManagerFactory() {
+  return function (aspect, aspects) {
+    switch (aspect) {
+      case 'id':
+        return aspects.id;
+      case 'detached':
+        return aspects.detached === undefined ? false : aspects.detached;
+      case 'disabled':
+        return aspects.disabled === undefined ? false : aspects.disabled;
+      case 'styles':
+        return aspects.styles === undefined ? {} : aspects.styles;
+      case 'label':
+        return aspects.label === undefined ? '' : aspects.label;
+      case 'checked':
+        return aspects.checked === undefined ? false : aspects.checked;
+      case 'onClick':
+        aspects.onClick();
+        break;
+      case 'validate':
+        return aspects.validate();
+      case 'setValue':
+        aspects.setValue === undefined ? emptyFunction() : aspects.setValue();
+        break;
+      case 'error':
+        return aspects.error === undefined ? '' : aspects.error;
+      case 'flag':
+        return aspects.flag === undefined ? null : aspects.flag;
       default:
         break;
     }
