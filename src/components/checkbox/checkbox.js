@@ -1,5 +1,5 @@
 import React from 'react'
-import * as handlers from './functions/handlers'
+import * as handlers from './handlers/handlers'
 
 export default class ManagedCheckbox extends React.Component {
   constructor(props) {

@@ -11,11 +11,13 @@ import { ManagedText } from 'managed-inputs'
 import { ManagedSelect } from 'managed-inputs'
 import { ManagedButton } from 'managed-inputs'
 import { ManagedCheckbox } from 'managed-inputs'
+import { ManagedTextarea } from 'managed-inputs'
 
 <ManagedText manager={/*manager function*/} />
 <ManagedSelect manager={/*manager function*/} />
 <ManagedButton manager={/*manager function*/} />
 <ManagedCheckbox manager={/*manager function*/} />
+<ManagedTextarea manager={/*manager function*/} />
 ```
 
 To construct a manager for a Managed Input bind the manager to a React class component and then:
@@ -46,6 +48,13 @@ import { checkboxManagerFactory } from 'managed-inputs'
 
 function /*manager name*/(aspect, value) {
   return checkboxManagerFactory.call(this)(aspect, aspects)
+}
+
+/*textarea*/
+import { textareaManagerFactory } from 'managed-inputs'
+
+function /*manager name*/(aspect, value) {
+  return textareaManagerFactory.call(this)(aspect, aspects)
 }
 ```
 
@@ -116,6 +125,20 @@ The `aspects` parameter for a Managed Input accepts the following:
   error: /*string*/,
   flag: /*string, number, boolean*/,
 }
+
+/*textarea*/
+{
+  id: /*string*/,
+  disabled: /*boolean*/,
+  styles: /*object*/,
+  value: /*string*/,
+  label: /*string*/,
+  counterLimit: /*integer*/,
+  onChange: /*function*/,
+  setValue: /*function*/,
+  error: /*string*/,
+  flag: /*string, number, boolean*/,
+}
 ```
 
 The styles property for a Managed Input accepts the following:
@@ -163,5 +186,19 @@ The styles property for a Managed Input accepts the following:
   tick: /*css class*/,
   labelContainer: /*css class*/,
   label: /*css class*/,
+}
+
+/*textarea*/
+{
+  active: /*css class*/,
+  disabled: /*css class*/,
+  textareaWithoutValue: /*css class*/,
+  textareaWithoutValueMouseOver: /*css class*/,
+  textareaWithoutValueFocus: /*css class*/,
+  textareaWithValue: /*css class*/,
+  labelWithoutValue: /*css class*/,
+  labelWithValue: /*css class*/,
+  counterWithoutValue: /*css class*/,
+  counterWithValue: /*css class*/,
 }
 ```

@@ -6,7 +6,7 @@ const STATE_KEYS_TO_UPDATE = STATE_KEYS_TO_DERIVE.concat([
 
 export function componentDidMount() {
   this.inputElement = document.getElementById(this.id)
-  this.labelElement = document.getElementById(this.labelId)
+  this.label = document.getElementById(this.labelId)
 }
 
 export function getDerivedStateFromProps(nextProps, prevState){

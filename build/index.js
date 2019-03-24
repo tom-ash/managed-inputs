@@ -101,7 +101,7 @@ module.exports = require("react");
 Object.defineProperty(exports, "__esModule", {
          value: true
 });
-exports.checkboxManagerFactory = exports.ManagedCheckbox = exports.buttonManagerFactory = exports.ManagedButton = exports.selectManagerFactory = exports.ManagedSelect = exports.textManagerFactory = exports.ManagedText = undefined;
+exports.textareaManagerFactory = exports.ManagedTextarea = exports.checkboxManagerFactory = exports.ManagedCheckbox = exports.buttonManagerFactory = exports.ManagedButton = exports.selectManagerFactory = exports.ManagedSelect = exports.textManagerFactory = exports.ManagedText = undefined;
 
 var _text = __webpack_require__(2);
 
@@ -135,6 +135,14 @@ var _managerFactory7 = __webpack_require__(16);
 
 var _managerFactory8 = _interopRequireDefault(_managerFactory7);
 
+var _textarea = __webpack_require__(17);
+
+var _textarea2 = _interopRequireDefault(_textarea);
+
+var _managerFactory9 = __webpack_require__(20);
+
+var _managerFactory10 = _interopRequireDefault(_managerFactory9);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.ManagedText = _text2.default;
@@ -145,6 +153,8 @@ exports.ManagedButton = _button2.default;
 exports.buttonManagerFactory = _managerFactory6.default;
 exports.ManagedCheckbox = _checkbox2.default;
 exports.checkboxManagerFactory = _managerFactory8.default;
+exports.ManagedTextarea = _textarea2.default;
+exports.textareaManagerFactory = _managerFactory10.default;
 
 /***/ }),
 /* 2 */
@@ -373,7 +383,7 @@ var STATE_KEYS_TO_UPDATE = STATE_KEYS_TO_DERIVE.concat(['inputClass', 'labelClas
 
 function componentDidMount() {
   this.inputElement = document.getElementById(this.id);
-  this.labelElement = document.getElementById(this.labelId);
+  this.label = document.getElementById(this.labelId);
 }
 
 function getDerivedStateFromProps(nextProps, prevState) {
@@ -685,7 +695,7 @@ function componentDidMount() {
 
   this.selectElement = document.getElementById(this.id);
   this.proxyUnselectedElement = document.getElementById(this.proxyId);
-  this.labelElement = document.getElementById(this.labelId);
+  this.label = document.getElementById(this.labelId);
   this.options = document.getElementById(this.optionsId);
   this.selectElement.addEventListener('blur', function () {
     _this.onBlurHandler();
@@ -1249,6 +1259,297 @@ function checkboxManagerFactory() {
         break;
       case 'validate':
         return aspects.validate();
+      case 'setValue':
+        aspects.setValue === undefined ? emptyFunction() : aspects.setValue();
+        break;
+      case 'error':
+        return aspects.error === undefined ? '' : aspects.error;
+      case 'flag':
+        return aspects.flag === undefined ? null : aspects.flag;
+      default:
+        break;
+    }
+  };
+}
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _lifecycle = __webpack_require__(18);
+
+var lifecycle = _interopRequireWildcard(_lifecycle);
+
+var _handlers = __webpack_require__(19);
+
+var handlers = _interopRequireWildcard(_handlers);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var ManagedTextarea = function (_React$Component) {
+  _inherits(ManagedTextarea, _React$Component);
+
+  function ManagedTextarea(props) {
+    _classCallCheck(this, ManagedTextarea);
+
+    var _this = _possibleConstructorReturn(this, (ManagedTextarea.__proto__ || Object.getPrototypeOf(ManagedTextarea)).call(this, props));
+
+    _this.id = _this.props.manager('id');
+    _this.labelId = _this.id + '-label';
+    _this.containerId = _this.id + '-container';
+    _this.counterId = _this.id + '-counter';
+    _this.styles = _this.props.manager('styles');
+    _this.componentDidMount = lifecycle.componentDidMount;
+    _this.shouldComponentUpdate = lifecycle.shouldComponentUpdate;
+    _this.onMouseOverHandler = handlers.onMouseOverHandler.bind(_this);
+    _this.onMouseLeaveHandler = handlers.onMouseLeaveHandler.bind(_this);
+    _this.onClickHandler = handlers.onClickHandler.bind(_this);
+    _this.onFocusHandler = handlers.onFocusHandler.bind(_this);
+    _this.onBlurHandler = handlers.onBlurHandler.bind(_this);
+    _this.onChangeHandler = handlers.onChangeHandler.bind(_this);
+    _this.state = {
+      disabled: false,
+      value: _this.props.manager('value'),
+      label: _this.props.manager('label'),
+      charactersUsed: 0,
+      counterLimit: _this.props.manager('counterLimit'),
+      textareaClass: _this.styles.textareaWithoutValue,
+      labelClass: _this.styles.labelWithoutValue,
+      counterClass: _this.styles.counterWithoutValue
+    };
+    return _this;
+  }
+
+  _createClass(ManagedTextarea, [{
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'div',
+        {
+          id: this.containerId,
+          className: this.state.disabled ? this.styles.disabled : this.styles.active },
+        _react2.default.createElement('textarea', {
+          id: this.id,
+          className: this.state.textareaClass,
+          value: this.state.value,
+          onClick: this.onClickHandler,
+          onMouseOver: this.onMouseOverHandler,
+          onMouseLeave: this.onMouseLeaveHandler,
+          onFocus: this.onFocusHandler,
+          onBlur: this.onBlurHandler,
+          onChange: this.onChangeHandler }),
+        _react2.default.createElement(
+          'div',
+          {
+            id: this.labelId,
+            className: this.state.labelClass,
+            onClick: this.onClickHandler,
+            onMouseOver: this.onMouseOverHandler,
+            onMouseLeave: this.onMouseLeaveHandler },
+          this.state.label
+        ),
+        _react2.default.createElement(
+          'div',
+          {
+            id: this.counterId,
+            className: this.state.counterClass },
+          this.state.charactersUsed,
+          ' / ',
+          this.state.counterLimit
+        )
+      );
+    }
+  }], [{
+    key: 'getDerivedStateFromProps',
+    value: function getDerivedStateFromProps(nextProps, prevstate) {
+      return lifecycle.getDerivedStateFromProps(nextProps, prevstate);
+    }
+  }]);
+
+  return ManagedTextarea;
+}(_react2.default.Component);
+
+exports.default = ManagedTextarea;
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.componentDidMount = componentDidMount;
+exports.getDerivedStateFromProps = getDerivedStateFromProps;
+exports.shouldComponentUpdate = shouldComponentUpdate;
+var STATE_KEYS_TO_DERIVE = ['disabled', 'value', 'label', 'styles', 'counterLimit', 'error', 'flag'];
+
+var STATE_KEYS_TO_UPDATE = STATE_KEYS_TO_DERIVE.concat(['textareaClass', 'labelClass', 'counterClass']);
+
+function componentDidMount() {
+  this.textarea = document.getElementById(this.id);
+  this.label = document.getElementById(this.labelId);
+  this.container = document.getElementById(this.containerId);
+  this.counter = document.getElementById(this.counterId);
+}
+
+function getDerivedStateFromProps(nextProps, prevState) {
+  var returnObject = {};
+  STATE_KEYS_TO_DERIVE.map(function (element) {
+    if (nextProps.manager(element) != prevState[element]) {
+      returnObject[element] = nextProps.manager(element);
+    }
+  });
+  return returnObject;
+}
+
+function shouldComponentUpdate(nextProps, nextState) {
+  var _this = this;
+
+  var updateComponent = false;
+  STATE_KEYS_TO_UPDATE.map(function (element) {
+    if (_this.state[element] !== nextState[element]) {
+      updateComponent = true;
+    }
+  });
+  return updateComponent;
+}
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.onMouseOverHandler = onMouseOverHandler;
+exports.onMouseLeaveHandler = onMouseLeaveHandler;
+exports.onClickHandler = onClickHandler;
+exports.onFocusHandler = onFocusHandler;
+exports.onBlurHandler = onBlurHandler;
+exports.onChangeHandler = onChangeHandler;
+var textareaClass = '';
+var labelClass = '';
+var counterClass = '';
+
+function onMouseOverHandler() {
+  if (this.state.disabled) return;
+  if (this.textarea !== document.activeElement && this.textarea.value === '') {
+    textareaClass = this.styles.textareaWithoutValue + ' ' + this.styles.textareaWithoutValueMouseOver;
+    this.setState({
+      textareaClass: textareaClass
+    });
+  }
+}
+
+function onMouseLeaveHandler() {
+  if (this.state.disabled) return;
+  if (this.textarea !== document.activeElement && this.textarea.value === '') {
+    textareaClass = this.styles.textareaWithoutValue;
+    this.setState({
+      textareaClass: textareaClass
+    });
+  }
+}
+
+function onClickHandler() {
+  this.textarea.focus();
+}
+
+function onFocusHandler() {
+  labelClass = this.styles.labelWithoutValueFocus;
+  textareaClass = this.styles.textareaWithoutValue + ' ' + this.styles.textareaWithoutValueFocus;
+  counterClass = this.styles.counterWithoutValueFocus;
+  this.setState({
+    labelClass: labelClass,
+    textareaClass: textareaClass,
+    counterClass: counterClass
+  });
+}
+
+function onBlurHandler() {
+  if (this.textarea.value === '') {
+    textareaClass = this.styles.textareaWithoutValue;
+    labelClass = this.styles.labelWithoutValue;
+    counterClass = this.styles.counterWithoutValue;
+  } else {
+    textareaClass = this.styles.textareaWithoutValue + ' ' + this.styles.textareaWithValue;
+    labelClass = this.styles.labelWithoutValueFocus + ' ' + this.styles.labelWithValue;
+    counterClass = this.styles.counterWithoutValueFocus + ' ' + this.styles.counterWithValue;
+  }
+  this.setState({
+    labelClass: labelClass,
+    textareaClass: textareaClass,
+    counterClass: counterClass
+  });
+}
+
+function onChangeHandler() {
+  var value = this.textarea.value;
+  var valueLength = value.length;
+  if (valueLength <= this.state.counterLimit) {
+    this.setState({ charactersUsed: valueLength });
+    this.props.manager('onChange', value);
+  } else {
+    this.textarea.value = this.textarea.value.slice(0, -1);
+  }
+}
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = textareaManagerFactory;
+function textareaManagerFactory() {
+  return function (aspect, aspects) {
+    switch (aspect) {
+      case 'id':
+        return aspects.id;
+      case 'disabled':
+        return aspects.disabled === undefined ? false : aspects.disabled;
+      case 'styles':
+        return aspects.styles === undefined ? {} : aspects.styles;
+      case 'value':
+        return aspects.value === undefined || aspects.value === null ? '' : aspects.value;
+      case 'label':
+        return aspects.label;
+      case 'counterLimit':
+        return aspects.counterLimit;
+      case 'onChange':
+        aspects.onChange();
+        break;
       case 'setValue':
         aspects.setValue === undefined ? emptyFunction() : aspects.setValue();
         break;

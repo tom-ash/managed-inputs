@@ -18,7 +18,7 @@ const STATE_KEYS_TO_UPDATE = STATE_KEYS_TO_DERIVE.concat([
 export function componentDidMount() {
   this.selectElement = document.getElementById(this.id)
   this.proxyUnselectedElement = document.getElementById(this.proxyId)
-  this.labelElement = document.getElementById(this.labelId)
+  this.label = document.getElementById(this.labelId)
   this.options = document.getElementById(this.optionsId)
   this.selectElement.addEventListener('blur', () => {
     this.onBlurHandler()
