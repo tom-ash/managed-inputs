@@ -1,47 +1,44 @@
-const STATE_KEYS_TO_DERIVE = [
+const STATE_KEYS_TO_DERIVE = [ 
   'display',
   'disabled',
   'value',
   'label',
   'options',
-  'flag',
-  'error'
+  'error',
+  'flag'
 ]
 
 const STATE_KEYS_TO_UPDATE = STATE_KEYS_TO_DERIVE.concat([
-  'focused',
-  'proxyClass',
-  'labelClass',
-  'optionsClass'
+  'mouseOver',
+  'focus',
+  'decorator'
 ])
 
 export function componentDidMount() {
-  this.selectElement = document.getElementById(this.id)
-  this.proxyUnselectedElement = document.getElementById(this.proxyId)
-  this.label = document.getElementById(this.labelId)
-  this.options = document.getElementById(this.optionsId)
-  this.selectElement.addEventListener('blur', () => {
-    this.onBlurHandler()
-  })
+  this.input = document.getElementById(this.id)
+  this.decorator()
 }
 
 export function getDerivedStateFromProps(nextProps, prevState){
   let returnObject = {}
   STATE_KEYS_TO_DERIVE.map((element) => {
-    if (nextProps.manager(element) != prevState[element]) {
+    if (JSON.stringify(nextProps.manager(element)) !== JSON.stringify(prevState[element])) {
       returnObject[element] = nextProps.manager(element)
     }
   })
   return returnObject
 }
 
-export function shouldComponentUpdate(nextProps, nextState) {
-  let someValue = false
+export function shouldComponentUpdate(_, nextState) {
+  let outcome = false
   STATE_KEYS_TO_UPDATE.map((element) => {
-    if (this.state[element] !== nextState[element]) {
-      someValue = true
+    if (JSON.stringify(this.state[element]) !== JSON.stringify(nextState[element])) {
+      outcome = true
     }
   })
-  return someValue
+  return outcome
 }
 
+export function componentDidUpdate() {
+  this.decorator()
+}

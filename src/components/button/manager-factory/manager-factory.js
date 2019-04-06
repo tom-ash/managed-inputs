@@ -4,29 +4,25 @@ export default function buttonManagerFactory() {
       case 'id':
         return aspects.id
       case 'display':
-        return aspects.display === undefined ? 'block' : aspects.display
+        return aspects.display || 'block'
       case 'disabled':
-        return aspects.disabled === undefined ? false : aspects.disabled
-      case 'styles':
-        return aspects.styles === undefined ? {} : aspects.styles
+        return aspects.disabled || false
+      case 'classNames':
+        return aspects.classNames || {}
       case 'label':
         return aspects.label
       case 'onMouseOver':
-        if (aspects.onMouseOver === undefined) return
-        aspects.onMouseOver()
-        break
-      case 'onClick':
-        aspects.onClick()
-        break
+        return aspects.onMouseOver && aspects.onMouseOver()
       case 'onMouseLeave':
-        if (aspects.onMouseLeave === undefined) return
-        aspects.onMouseLeave()
-        break
-      case 'error':
-        return aspects.error === undefined ? '' : aspects.error
+        return aspects.onMouseLeave && aspects.onMouseLeave()
+      case 'onFocus':
+        return aspects.onFocus && aspects.onFocus()
+      case 'onBlur':
+        return aspects.onBlur && aspects.onBlur()
+      case 'onClick':
+        return aspects.onClick && aspects.onClick()
       case 'flag':
-        aspects.flag === undefined ? null : aspects.flag
-        break
+        return aspects.flag || null
       default:
         break
     }

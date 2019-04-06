@@ -107,39 +107,39 @@ var _text = __webpack_require__(2);
 
 var _text2 = _interopRequireDefault(_text);
 
-var _managerFactory = __webpack_require__(5);
+var _managerFactory = __webpack_require__(6);
 
 var _managerFactory2 = _interopRequireDefault(_managerFactory);
 
-var _select = __webpack_require__(6);
+var _select = __webpack_require__(7);
 
 var _select2 = _interopRequireDefault(_select);
 
-var _managerFactory3 = __webpack_require__(9);
+var _managerFactory3 = __webpack_require__(11);
 
 var _managerFactory4 = _interopRequireDefault(_managerFactory3);
 
-var _button = __webpack_require__(10);
+var _button = __webpack_require__(12);
 
 var _button2 = _interopRequireDefault(_button);
 
-var _managerFactory5 = __webpack_require__(13);
+var _managerFactory5 = __webpack_require__(16);
 
 var _managerFactory6 = _interopRequireDefault(_managerFactory5);
 
-var _checkbox = __webpack_require__(14);
+var _checkbox = __webpack_require__(17);
 
 var _checkbox2 = _interopRequireDefault(_checkbox);
 
-var _managerFactory7 = __webpack_require__(16);
+var _managerFactory7 = __webpack_require__(21);
 
 var _managerFactory8 = _interopRequireDefault(_managerFactory7);
 
-var _textarea = __webpack_require__(17);
+var _textarea = __webpack_require__(22);
 
 var _textarea2 = _interopRequireDefault(_textarea);
 
-var _managerFactory9 = __webpack_require__(20);
+var _managerFactory9 = __webpack_require__(26);
 
 var _managerFactory10 = _interopRequireDefault(_managerFactory9);
 
@@ -173,13 +173,15 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _handlers = __webpack_require__(3);
+var _lifecycle = __webpack_require__(3);
+
+var lifecycle = _interopRequireWildcard(_lifecycle);
+
+var _handlers = __webpack_require__(4);
 
 var handlers = _interopRequireWildcard(_handlers);
 
-var _lifecycle = __webpack_require__(4);
-
-var lifecycle = _interopRequireWildcard(_lifecycle);
+var _decorator = __webpack_require__(5);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -199,27 +201,39 @@ var ManagedText = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (ManagedText.__proto__ || Object.getPrototypeOf(ManagedText)).call(this, props));
 
+    _this.controlled = _this.props.manager('controlled');
     _this.id = _this.props.manager('id');
-    _this.labelId = _this.id + '-label';
-    _this.detached = _this.props.manager('detached');
+    _this.type = _this.props.manager('type');
+    _this.autoComplete = props.manager('autoComplete');
+    _this.classNames = _this.props.manager('classNames');
+    _this.containerClass = _this.classNames.container || 'managed-input text';
+    _this.inputClass = _this.classNames.input || 'input';
+    _this.labelClass = _this.classNames.label || 'label';
+    _this.valueClass = _this.classNames.value || 'value';
+    _this.focusClass = _this.classNames.focus || 'focus';
+    _this.hoverClass = _this.classNames.hover || 'hover';
+    _this.errorContainerClass = _this.classNames.errorContainer || 'error-container';
+    _this.errorClass = _this.classNames.error || 'error';
     _this.componentDidMount = lifecycle.componentDidMount;
     _this.shouldComponentUpdate = lifecycle.shouldComponentUpdate;
+    _this.componentDidUpdate = lifecycle.componentDidUpdate;
     _this.onMouseOverHandler = handlers.onMouseOverHandler.bind(_this);
     _this.onMouseLeaveHandler = handlers.onMouseLeaveHandler.bind(_this);
     _this.onFocusHandler = handlers.onFocusHandler.bind(_this);
-    _this.onChangeHandler = handlers.onChangeHandler.bind(_this);
     _this.onBlurHandler = handlers.onBlurHandler.bind(_this);
-    _this.styles = _this.props.manager('styles');
+    _this.onChangeHandler = handlers.onChangeHandler.bind(_this);
+    _this.onClickHandler = handlers.onClickHandler.bind(_this);
+    _this.decorator = _decorator.decorator.bind(_this);
     _this.state = {
       display: _this.props.manager('display'),
       disabled: _this.props.manager('disabled'),
-      focused: false,
       value: _this.props.manager('value'),
       label: _this.props.manager('label'),
       error: _this.props.manager('error'),
       flag: _this.props.manager('flag'),
-      inputClass: _this.styles.inputWithoutValue,
-      labelClass: _this.styles.labelWithoutValue + ' ' + 'animation-none'
+      mouseOver: false,
+      focus: false,
+      decorator: ''
     };
     return _this;
   }
@@ -227,52 +241,32 @@ var ManagedText = function (_React$Component) {
   _createClass(ManagedText, [{
     key: 'render',
     value: function render() {
-      var _this2 = this;
-
       return _react2.default.createElement(
         'div',
         {
           style: { display: this.state.display },
-          className: this.state.disabled ? this.styles.disabled : this.styles.active },
-        _react2.default.createElement('input', {
-          id: this.id,
-          className: this.state.inputClass,
-          type: this.props.manager('type'),
-          disabled: this.props.manager('disabled'),
-          autoComplete: this.props.manager('autoComplete'),
-          value: this.detached ? undefined : this.state.value,
-          onMouseOver: function onMouseOver() {
-            return _this2.onMouseOverHandler();
-          },
-          onMouseLeave: function onMouseLeave() {
-            return _this2.onMouseLeaveHandler();
-          },
-          onFocus: function onFocus() {
-            return _this2.onFocusHandler();
-          },
-          onChange: function onChange(e) {
-            return _this2.onChangeHandler(e);
-          },
-          onBlur: function onBlur(e) {
-            return _this2.onBlurHandler(e);
-          } }),
+          className: this.containerClass + this.state.decorator,
+          onMouseOver: this.onMouseOverHandler,
+          onMouseLeave: this.onMouseLeaveHandler,
+          onClick: this.onClickHandler },
         _react2.default.createElement(
           'div',
-          {
-            id: this.labelId,
-            className: this.state.labelClass,
-            onMouseOver: function onMouseOver() {
-              return _this2.onMouseOverHandler();
-            },
-            onClick: function onClick() {
-              return _this2.onFocusHandler();
-            } },
+          { className: this.labelClass + this.state.decorator },
           this.state.label
         ),
+        _react2.default.createElement('input', {
+          id: this.id,
+          className: this.inputClass + this.state.decorator,
+          type: this.type,
+          disabled: this.state.disabled,
+          autoComplete: this.autoComplete,
+          value: this.controlled ? this.state.value : undefined,
+          onFocus: this.onFocusHandler,
+          onBlur: this.onBlurHandler,
+          onChange: this.onChangeHandler }),
         _react2.default.createElement(
           'div',
-          {
-            className: this.styles.error },
+          { className: this.errorContainerClass + this.state.decorator },
           this.state.error
         )
       );
@@ -299,91 +293,17 @@ exports.default = ManagedText;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.onMouseOverHandler = onMouseOverHandler;
-exports.onFocusHandler = onFocusHandler;
-exports.onChangeHandler = onChangeHandler;
-exports.onMouseLeaveHandler = onMouseLeaveHandler;
-exports.onBlurHandler = onBlurHandler;
-function onMouseOverHandler() {
-  var inputClass = void 0;
-  if (this.inputElement !== document.activeElement && this.inputElement.value === '') {
-    inputClass = this.styles.inputWithoutValue;
-    if (!this.state.disabled) {
-      inputClass += ' ' + this.styles.inputWithoutValueMouseOver;
-    }
-    this.setState({
-      inputClass: inputClass
-    });
-  }
-}
-
-function onFocusHandler() {
-  var inputClass = void 0;
-  var labelClass = void 0;
-  if (this.props.manager('disabled')) {
-    return;
-  }
-  inputClass = this.styles.inputWithoutValue + ' ' + this.styles.inputWithoutValueFocus;
-  labelClass = this.styles.labelWithValue;
-  this.setState({
-    inputClass: inputClass,
-    labelClass: labelClass
-  });
-  this.inputElement.focus();
-}
-
-function onChangeHandler(e) {
-  this.props.manager('onChange', e.target.value);
-}
-
-function onMouseLeaveHandler() {
-  var inputClass = void 0;
-  if (this.inputElement !== document.activeElement && this.inputElement.value === '') {
-    inputClass = this.styles.inputWithoutValue;
-    this.setState({
-      inputClass: inputClass
-    });
-  }
-}
-
-function onBlurHandler(e) {
-  var inputClass = void 0;
-  inputClass = this.styles.inputWithoutValue;
-  if (this.inputElement.value.length < 1) {
-    this.setState({
-      inputClass: inputClass,
-      labelClass: this.styles.labelWithoutValue
-    });
-  } else {
-    inputClass += ' ' + this.styles.inputWithValue;
-    this.setState({
-      inputClass: inputClass,
-      labelClass: this.styles.labelWithValue
-    });
-  }
-  this.props.manager('onBlur', e.target.value);
-}
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
 exports.componentDidMount = componentDidMount;
 exports.getDerivedStateFromProps = getDerivedStateFromProps;
 exports.shouldComponentUpdate = shouldComponentUpdate;
-var STATE_KEYS_TO_DERIVE = ['display', 'value', 'label', 'disabled', 'error', 'flag'];
+exports.componentDidUpdate = componentDidUpdate;
+var STATE_KEYS_TO_DERIVE = ['display', 'value', 'label', 'disabled', 'className', 'error', 'flag'];
 
-var STATE_KEYS_TO_UPDATE = STATE_KEYS_TO_DERIVE.concat(['inputClass', 'labelClass']);
+var STATE_KEYS_TO_UPDATE = STATE_KEYS_TO_DERIVE.concat(['mouseOver', 'focus', 'decorator']);
 
 function componentDidMount() {
   this.inputElement = document.getElementById(this.id);
-  this.label = document.getElementById(this.labelId);
+  this.decorator();
 }
 
 function getDerivedStateFromProps(nextProps, prevState) {
@@ -396,20 +316,100 @@ function getDerivedStateFromProps(nextProps, prevState) {
   return returnObject;
 }
 
-function shouldComponentUpdate(nextProps, nextState) {
+function shouldComponentUpdate(_, nextState) {
   var _this = this;
 
-  var shouldIt = false;
+  var outcome = false;
   STATE_KEYS_TO_UPDATE.map(function (element) {
     if (_this.state[element] !== nextState[element]) {
-      shouldIt = true;
+      outcome = true;
     }
   });
-  return shouldIt;
+  return outcome;
+}
+
+function componentDidUpdate() {
+  this.decorator();
+}
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.onMouseOverHandler = onMouseOverHandler;
+exports.onMouseLeaveHandler = onMouseLeaveHandler;
+exports.onFocusHandler = onFocusHandler;
+exports.onBlurHandler = onBlurHandler;
+exports.onClickHandler = onClickHandler;
+exports.onChangeHandler = onChangeHandler;
+function onMouseOverHandler(e) {
+  this.setState({ mouseOver: true });
+  this.props.manager('onMouseOver', e.target.value);
+}
+
+function onMouseLeaveHandler(e) {
+  this.setState({ mouseOver: false });
+  this.props.manager('onMouseLeave', e.target.value);
+}
+
+function onFocusHandler(e) {
+  this.setState({ focus: true });
+  this.props.manager('onFocus', e.target.value);
+}
+
+function onBlurHandler(e) {
+  this.setState({ focus: false });
+  this.props.manager('onBlur', e.target.value);
+}
+
+function onClickHandler(e) {
+  this.inputElement.focus();
+  this.props.manager('onClick', e.target.value);
+}
+
+function onChangeHandler(e) {
+  this.forceUpdate();
+  this.props.manager('onChange', e.target.value);
 }
 
 /***/ }),
 /* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.decorator = decorator;
+function decorator() {
+  var className = '';
+  if (this.inputElement && this.inputElement.value) {
+    className += ' ' + this.valueClass;
+  }
+  if (this.state.focus) {
+    className += ' ' + this.focusClass;
+  }
+  if (this.state.mouseOver) {
+    className += ' ' + this.hoverClass;
+  }
+  if (this.state.error) {
+    className += ' ' + this.errorClass;
+  }
+  this.setState({
+    decorator: className
+  });
+}
+
+/***/ }),
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -424,52 +424,50 @@ function textManagerFactory() {
     switch (aspect) {
       case 'id':
         return aspects.id;
-      case 'display':
-        return aspects.display === undefined ? 'block' : aspects.display;
-      case 'styles':
-        return aspects.styles === undefined ? {} : aspects.styles;
-      case 'value':
-        return aspects.value === undefined || aspects.value === null ? '' : aspects.value;
-      case 'label':
-        return aspects.label;
       case 'type':
-        return aspects.type === undefined ? 'text' : aspects.type;
+        return aspects.type || 'text';
+      case 'controlled':
+        return aspects.controlled === undefined ? true : false;
+      case 'display':
+        return aspects.display || 'block';
       case 'disabled':
-        return aspects.disabled === undefined ? false : aspects.disabled;
-      case 'detached':
-        return aspects.detached;
+        return aspects.disabled || false;
+      case 'classNames':
+        return aspects.classNames || {};
+      case 'value':
+        return aspects.value || '';
+      case 'label':
+        return aspects.label || '';
       case 'autoComplete':
-        return aspects.autoComplete === undefined ? '' : aspects.autoComplete;
-      case 'onChange':
-        aspects.onChange();
-        break;
-      case 'setValue':
-        aspects.setValue === undefined ? emptyFunction() : aspects.setValue();
-        break;
+        return aspects.autoComplete || '';
+      case 'onMouseOver':
+        return aspects.onMouseOver && aspects.onMouseOver();
+      case 'onMouseLeave':
+        return aspects.onMouseLeave && aspects.onMouseLeave();
+      case 'onFocus':
+        return aspects.onFocus && aspects.onFocus();
       case 'onBlur':
-        aspects.onBlur === undefined ? null : aspects.onBlur();
-        break;
+        return aspects.onBlur && aspects.onBlur();
+      case 'onClick':
+        return aspects.onClick && aspects.onClick();
+      case 'onChange':
+        return aspects.onChange && aspects.onChange();
+      case 'setValue':
+        return aspects.setValue && aspects.setValue();
       case 'validate':
-        return aspects.validate === undefined ? null : aspects.validate();
+        return aspects.validate && aspects.validate();
       case 'error':
-        return aspects.error === undefined ? '' : aspects.error;
+        return aspects.error;
       case 'flag':
-        aspects.flag === undefined ? null : aspects.flag;
-        break;
+        return aspects.flag;
       default:
         break;
     }
   };
 }
 
-function emptyFunction() {
-  return function () {
-    null;
-  };
-}
-
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -485,13 +483,15 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _lifecycle = __webpack_require__(7);
+var _lifecycle = __webpack_require__(8);
 
 var lifecycle = _interopRequireWildcard(_lifecycle);
 
-var _handlers = __webpack_require__(8);
+var _handlers = __webpack_require__(9);
 
 var handlers = _interopRequireWildcard(_handlers);
+
+var _decorator = __webpack_require__(10);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -512,13 +512,21 @@ var ManagedSelect = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (ManagedSelect.__proto__ || Object.getPrototypeOf(ManagedSelect)).call(this, props));
 
     _this.id = _this.props.manager('id');
-    _this.containerId = _this.id + '-container';
-    _this.proxyId = _this.id + '-proxy';
-    _this.labelId = _this.id + '-label';
-    _this.optionsId = _this.id + '-options';
-    _this.styles = _this.props.manager('styles');
+    _this.classNames = _this.props.manager('classNames');
+    _this.containerClass = _this.classNames.container || 'managed-input select';
+    _this.inputClass = _this.classNames.input || 'input';
+    _this.labelClass = _this.classNames.label || 'label';
+    _this.optionsClass = _this.classNames.options || 'options';
+    _this.optionClass = _this.classNames.option || 'option';
+    _this.markClass = _this.classNames.mark || 'mark';
+    _this.errorContainerClass = _this.classNames.errorContainer || 'error-container';
+    _this.valueClass = _this.classNames.value || 'value';
+    _this.focusClass = _this.classNames.focus || 'focus';
+    _this.hoverClass = _this.classNames.hover || 'hover';
+    _this.errorClass = _this.classNames.error || 'error';
     _this.componentDidMount = lifecycle.componentDidMount;
     _this.shouldComponentUpdate = lifecycle.shouldComponentUpdate;
+    _this.componentDidUpdate = lifecycle.componentDidUpdate;
     _this.onMouseOverHandler = handlers.onMouseOverHandler.bind(_this);
     _this.onClickHandler = handlers.onClickHandler.bind(_this);
     _this.onKeyDownHandler = handlers.onKeyDownHandler.bind(_this);
@@ -526,19 +534,18 @@ var ManagedSelect = function (_React$Component) {
     _this.onSelectHandler = handlers.onSelectHandler.bind(_this);
     _this.onMouseLeaveHandler = handlers.onMouseLeaveHandler.bind(_this);
     _this.onBlurHandler = handlers.onBlurHandler.bind(_this);
+    _this.decorator = _decorator.decorator.bind(_this);
     _this.state = {
       display: _this.props.manager('display'),
       disabled: _this.props.manager('disabled'),
-      focused: false,
       value: _this.props.manager('value'),
       label: _this.props.manager('label'),
-      options: _this.props.manager('options'),
-      optionsHovered: false,
-      flag: _this.props.manager('flag'),
       error: _this.props.manager('error'),
-      proxyClass: _this.styles.proxyUnselected,
-      labelClass: _this.styles.labelUnselected,
-      optionsClass: 'display-none'
+      options: _this.props.manager('options'),
+      flag: _this.props.manager('flag'),
+      mouseOver: false,
+      focus: false,
+      decorator: ''
     };
     return _this;
   }
@@ -551,28 +558,32 @@ var ManagedSelect = function (_React$Component) {
       return _react2.default.createElement(
         'div',
         {
-          id: this.containerId,
           style: { display: this.state.display },
-          className: this.state.disabled ? this.styles.disabled : this.styles.active },
-        this.state.focused && _react2.default.createElement(
+          className: this.containerClass + this.state.decorator },
+        _react2.default.createElement(
           'div',
           {
-            onMouseOver: function onMouseOver() {
-              return _this2.setState({ optionsHovered: true });
-            },
-            onMouseLeave: function onMouseLeave() {
-              return _this2.setState({ optionsHovered: false });
-            } },
+            onMouseOver: this.onMouseOverHandler,
+            onMouseLeave: this.onMouseLeaveHandler },
           _react2.default.createElement(
             'div',
+            { onClick: this.onClickHandler },
+            _react2.default.createElement(
+              'div',
+              { className: this.labelClass + this.state.decorator },
+              this.state.label
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: this.inputClass + this.state.decorator },
+              this.props.manager('optionDecorate', this.state.value),
+              _react2.default.createElement('div', { className: this.markClass + this.state.decorator })
+            )
+          ),
+          this.state.focus && _react2.default.createElement(
+            'div',
             {
-              id: this.optionsId,
-              className: this.state.optionsClass },
-            _react2.default.createElement('div', {
-              onClick: function onClick() {
-                return _this2.onSelectHandler(null);
-              },
-              className: this.styles.option }),
+              className: this.optionsClass + this.state.decorator },
             this.state.options.map(function (option) {
               return _react2.default.createElement(
                 'div',
@@ -581,7 +592,28 @@ var ManagedSelect = function (_React$Component) {
                   onClick: function onClick() {
                     return _this2.onSelectHandler(option);
                   },
-                  className: _this2.styles.option },
+                  className: _this2.optionClass + _this2.state.decorator },
+                _this2.props.manager('optionDecorate', option)
+              );
+            })
+          ),
+          _react2.default.createElement(
+            'select',
+            {
+              id: this.id,
+              value: this.state.value,
+              readOnly: true,
+              style: { position: 'absolute', left: -10000 },
+              disabled: this.state.disabled,
+              onFocus: this.onFocusHandler,
+              onKeyDown: this.onKeyDownHandler,
+              onBlur: this.onBlurHandler },
+            this.state.options.map(function (option) {
+              return _react2.default.createElement(
+                'option',
+                {
+                  key: _this2.props.manager('optionKey', option + 'originalSelect'),
+                  value: _this2.props.manager('optionValue', option) },
                 _this2.props.manager('optionDecorate', option)
               );
             })
@@ -589,74 +621,7 @@ var ManagedSelect = function (_React$Component) {
         ),
         _react2.default.createElement(
           'div',
-          {
-            id: this.labelId,
-            className: this.state.labelClass,
-            onMouseOver: function onMouseOver() {
-              return _this2.onMouseOverHandler();
-            },
-            onMouseLeave: function onMouseLeave() {
-              return _this2.onMouseLeaveHandler();
-            },
-            onClick: function onClick() {
-              return _this2.onClickHandler();
-            } },
-          this.state.label
-        ),
-        _react2.default.createElement('div', {
-          className: this.styles.mark,
-          onMouseLeave: function onMouseLeave() {
-            return _this2.onMouseLeaveHandler();
-          },
-          onClick: function onClick() {
-            return _this2.onClickHandler();
-          } }),
-        _react2.default.createElement(
-          'div',
-          {
-            id: this.proxyId,
-            className: this.state.proxyClass,
-            onMouseOver: function onMouseOver() {
-              return _this2.onMouseOverHandler();
-            },
-            onMouseLeave: function onMouseLeave() {
-              return _this2.onMouseLeaveHandler();
-            },
-            onClick: function onClick() {
-              return _this2.onClickHandler();
-            } },
-          this.props.manager('optionDecorate', this.state.value)
-        ),
-        _react2.default.createElement(
-          'select',
-          {
-            style: { border: 'none', height: 0, width: 0, zIndex: -999, outline: 'none', appearance: 'none' },
-            disabled: this.state.disabled,
-            onFocus: function onFocus() {
-              return _this2.onFocusHandler();
-            },
-            onKeyDown: function onKeyDown(e) {
-              return _this2.onKeyDownHandler(e);
-            },
-            onBlur: this.onBlurHandler,
-            defaultValue: null,
-            id: this.id },
-          _react2.default.createElement('option', {
-            key: 'nullKey',
-            value: null }),
-          this.state.options.map(function (option) {
-            return _react2.default.createElement(
-              'option',
-              {
-                key: _this2.props.manager('optionKey', option + 'originalSelect'),
-                value: _this2.props.manager('optionValue', option) },
-              _this2.props.manager('optionDecorate', option)
-            );
-          })
-        ),
-        _react2.default.createElement(
-          'div',
-          { className: this.styles.error },
+          { className: this.errorContainerClass + this.state.decorator },
           this.state.error
         )
       );
@@ -674,7 +639,7 @@ var ManagedSelect = function (_React$Component) {
 exports.default = ManagedSelect;
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -686,46 +651,44 @@ Object.defineProperty(exports, "__esModule", {
 exports.componentDidMount = componentDidMount;
 exports.getDerivedStateFromProps = getDerivedStateFromProps;
 exports.shouldComponentUpdate = shouldComponentUpdate;
-var STATE_KEYS_TO_DERIVE = ['display', 'disabled', 'value', 'label', 'options', 'flag', 'error'];
+exports.componentDidUpdate = componentDidUpdate;
+var STATE_KEYS_TO_DERIVE = ['display', 'disabled', 'value', 'label', 'options', 'error', 'flag'];
 
-var STATE_KEYS_TO_UPDATE = STATE_KEYS_TO_DERIVE.concat(['focused', 'proxyClass', 'labelClass', 'optionsClass']);
+var STATE_KEYS_TO_UPDATE = STATE_KEYS_TO_DERIVE.concat(['mouseOver', 'focus', 'decorator']);
 
 function componentDidMount() {
-  var _this = this;
-
-  this.selectElement = document.getElementById(this.id);
-  this.proxyUnselectedElement = document.getElementById(this.proxyId);
-  this.label = document.getElementById(this.labelId);
-  this.options = document.getElementById(this.optionsId);
-  this.selectElement.addEventListener('blur', function () {
-    _this.onBlurHandler();
-  });
+  this.input = document.getElementById(this.id);
+  this.decorator();
 }
 
 function getDerivedStateFromProps(nextProps, prevState) {
   var returnObject = {};
   STATE_KEYS_TO_DERIVE.map(function (element) {
-    if (nextProps.manager(element) != prevState[element]) {
+    if (JSON.stringify(nextProps.manager(element)) !== JSON.stringify(prevState[element])) {
       returnObject[element] = nextProps.manager(element);
     }
   });
   return returnObject;
 }
 
-function shouldComponentUpdate(nextProps, nextState) {
-  var _this2 = this;
+function shouldComponentUpdate(_, nextState) {
+  var _this = this;
 
-  var someValue = false;
+  var outcome = false;
   STATE_KEYS_TO_UPDATE.map(function (element) {
-    if (_this2.state[element] !== nextState[element]) {
-      someValue = true;
+    if (JSON.stringify(_this.state[element]) !== JSON.stringify(nextState[element])) {
+      outcome = true;
     }
   });
-  return someValue;
+  return outcome;
+}
+
+function componentDidUpdate() {
+  this.decorator();
 }
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -735,59 +698,39 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.onMouseOverHandler = onMouseOverHandler;
-exports.onClickHandler = onClickHandler;
-exports.onSelectHandler = onSelectHandler;
 exports.onMouseLeaveHandler = onMouseLeaveHandler;
-exports.onKeyDownHandler = onKeyDownHandler;
-exports.onBlurHandler = onBlurHandler;
 exports.onFocusHandler = onFocusHandler;
-function onMouseOverHandler() {
-  var proxyClass = void 0;
-  if (!this.state.focused) {
-    proxyClass = this.styles.proxyUnselected;
-    if (this.state.value === null) {
-      proxyClass += ' ' + this.styles.proxyUnselectedMouseOver;
-    } else {
-      proxyClass += ' ' + this.styles.proxySelected;
+exports.onBlurHandler = onBlurHandler;
+exports.onClickHandler = onClickHandler;
+exports.onKeyDownHandler = onKeyDownHandler;
+exports.onSelectHandler = onSelectHandler;
+function onMouseOverHandler(e) {
+  this.setState({ mouseOver: true });
+  this.props.manager('onMouseOver', e.target.value);
+}
+
+function onMouseLeaveHandler(e) {
+  this.setState({ mouseOver: false });
+  this.props.manager('onMouseLeave', e.target.value);
+}
+
+function onFocusHandler(e) {
+  this.setState({ focus: true });
+  this.props.manager('onFocus', e.target.value);
+}
+
+function onBlurHandler(e, tabDown) {
+  if (this.state.mouseOver === false || tabDown === true) {
+    if (e && e.target) {
+      this.props.manager('onBlur', e.target.value);
     }
-    this.setState({ proxyClass: proxyClass });
+    this.setState({ focus: false });
   }
 }
 
-function onClickHandler() {
-  isMobile() ? handleFocus.call(this) : this.selectElement.focus();
-  this.onFocusHandler();
-}
-
-function onSelectHandler(option) {
-  var proxyClass = void 0;
-  var labelClass = void 0;
-  proxyClass = this.styles.proxyUnselected;
-  if (option === null) {
-    labelClass = this.styles.labelUnselected;
-  } else {
-    proxyClass += ' ' + this.styles.proxySelected;
-    labelClass = this.styles.labelSelected;
-  }
-  this.selectElement.value = option;
-  this.props.manager('onSelect', option);
-  this.setState({
-    focused: false,
-    proxyClass: proxyClass,
-    labelClass: labelClass,
-    optionsHovered: false
-  });
-}
-
-function onMouseLeaveHandler() {
-  var proxyClass = void 0;
-  if (!this.state.focused) {
-    proxyClass = this.styles.proxyUnselected;
-    if (this.state.value !== null) {
-      proxyClass += ' ' + this.styles.proxySelected;
-    }
-    this.setState({ proxyClass: proxyClass });
-  }
+function onClickHandler(e) {
+  this.input.focus();
+  this.props.manager('onClick', e.target.value);
 }
 
 function onKeyDownHandler(e) {
@@ -799,46 +742,46 @@ function onKeyDownHandler(e) {
   }
 }
 
-function onBlurHandler(e, tabDown) {
-  if (this.state.optionsHovered === false || tabDown === true) {
-    var proxyClass = void 0;
-    var labelClass = void 0;
-    proxyClass = this.styles.proxyUnselected;
-    labelClass = this.styles.labelUnselected;
-    if (this.state.value !== null) {
-      proxyClass += ' ' + this.styles.proxySelected;
-      labelClass = this.styles.labelSelected;
-    }
-    this.setState({
-      labelClass: labelClass,
-      proxyClass: proxyClass,
-      focused: false
-    });
-  }
-}
-
-function onFocusHandler() {
-  var proxyClass = void 0;
-  var labelClass = void 0;
-  var optionsClass = void 0;
-  labelClass = this.styles.labelSelected;
-  optionsClass = this.styles.options;
-  proxyClass = this.styles.proxyUnselected + ' ' + this.styles.proxyUnselectedFocus;
+function onSelectHandler(option) {
   this.setState({
-    labelClass: labelClass,
-    proxyClass: proxyClass,
-    optionsClass: optionsClass,
-    focused: true
+    focus: false,
+    mouseOver: false
   });
-}
-
-function isMobile() {
-  return (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
-  );
+  this.props.manager('onSelect', option);
 }
 
 /***/ }),
-/* 9 */
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.decorator = decorator;
+function decorator() {
+  var className = '';
+  if (this.state.value) {
+    className += ' ' + this.valueClass;
+  }
+  if (this.state.focus) {
+    className += ' ' + this.focusClass;
+  }
+  if (this.state.mouseOver) {
+    className += ' ' + this.hoverClass;
+  }
+  if (this.state.error) {
+    className += ' ' + this.errorClass;
+  }
+  this.setState({
+    decorator: className
+  });
+}
+
+/***/ }),
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -853,16 +796,18 @@ function selectManagerFactory() {
     switch (aspect) {
       case 'id':
         return aspects.id;
+      case 'controlled':
+        return aspects.controlled || true;
       case 'display':
-        return aspects.display === undefined ? 'block' : aspects.display;
+        return aspects.display || 'block';
       case 'disabled':
-        return aspects.disabled === undefined ? false : aspects.disabled;
-      case 'styles':
-        return aspects.styles === undefined ? {} : aspects.styles;
+        return aspects.disabled || false;
+      case 'classNames':
+        return aspects.classNames || {};
       case 'value':
-        return aspects.value === undefined ? null : aspects.value;
+        return aspects.value;
       case 'label':
-        return aspects.label === undefined ? '' : aspects.label;
+        return aspects.label || '';
       case 'options':
         return aspects.options;
       case 'optionKey':
@@ -871,30 +816,30 @@ function selectManagerFactory() {
         return aspects.optionValue;
       case 'optionDecorate':
         return aspects.optionDecorate;
-      case 'setValue':
-        aspects.setValue === undefined ? emptyFunction() : aspects.setValue();
-        break;
+      case 'onMouseOver':
+        return aspects.onMouseOver && aspects.onMouseOver();
+      case 'onMouseLeave':
+        return aspects.onMouseLeave && aspects.onMouseLeave();
+      case 'onFocus':
+        return aspects.onFocus && aspects.onFocus();
+      case 'onBlur':
+        return aspects.onBlur && aspects.onBlur();
+      case 'onClick':
+        return aspects.onClick && aspects.onClick();
       case 'onSelect':
-        aspects.onSelect();
-        break;
+        return aspects.onSelect && aspects.onSelect();
       case 'error':
-        return aspects.error === undefined ? '' : aspects.error;
+        return aspects.error || '';
       case 'flag':
-        return aspects.flag === undefined ? null : aspects.flag;
+        return aspects.flag || null;
       default:
         break;
     }
   };
 }
 
-function emptyFunction() {
-  return function () {
-    null;
-  };
-}
-
 /***/ }),
-/* 10 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -910,13 +855,15 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _handlers = __webpack_require__(11);
+var _handlers = __webpack_require__(13);
 
 var handlers = _interopRequireWildcard(_handlers);
 
-var _lifecycle = __webpack_require__(12);
+var _lifecycle = __webpack_require__(14);
 
 var lifecycle = _interopRequireWildcard(_lifecycle);
+
+var _decorator = __webpack_require__(15);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -937,17 +884,28 @@ var ManagedButton = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (ManagedButton.__proto__ || Object.getPrototypeOf(ManagedButton)).call(this, props));
 
     _this.id = _this.props.manager('id');
+    _this.classNames = _this.props.manager('classNames');
+    _this.containerClass = _this.classNames.container || 'managed-input button';
+    _this.inputClass = _this.classNames.input || 'input';
+    _this.focusClass = _this.classNames.focus || 'focus';
+    _this.hoverClass = _this.classNames.hover || 'hover';
     _this.componentDidMount = lifecycle.componentDidMount;
     _this.shouldComponentUpdate = lifecycle.shouldComponentUpdate;
+    _this.componentDidUpdate = lifecycle.componentDidUpdate;
     _this.onMouseOverHandler = handlers.onMouseOverHandler.bind(_this);
-    _this.onClickHandler = handlers.onClickHandler.bind(_this);
     _this.onMouseLeaveHandler = handlers.onMouseLeaveHandler.bind(_this);
-    _this.styles = _this.props.manager('styles');
+    _this.onFocusHandler = handlers.onFocusHandler.bind(_this);
+    _this.onBlurHandler = handlers.onBlurHandler.bind(_this);
+    _this.onClickHandler = handlers.onClickHandler.bind(_this);
+    _this.decorator = _decorator.decorator.bind(_this);
     _this.state = {
       display: _this.props.manager('display'),
       disabled: _this.props.manager('disabled'),
+      label: _this.props.manager('label'),
       flag: _this.props.manager('flag'),
-      buttonClass: _this.styles.button
+      mouseOver: false,
+      focus: false,
+      decorator: ''
     };
     return _this;
   }
@@ -959,22 +917,19 @@ var ManagedButton = function (_React$Component) {
         'div',
         {
           style: { display: this.state.display },
-          className: this.state.disabled ? this.styles.disabled : this.styles.active },
+          className: this.containerClass + this.state.decorator },
         _react2.default.createElement(
           'button',
           {
             id: this.id,
-            className: this.state.buttonClass,
-            disabled: this.props.manager('disabled'),
+            className: this.inputClass + this.state.decorator,
+            disabled: this.state.disabled,
             onMouseOver: this.onMouseOverHandler,
-            onClick: this.onClickHandler,
-            onMouseLeave: this.onMouseLeaveHandler },
-          this.props.manager('label')
-        ),
-        _react2.default.createElement(
-          'div',
-          { className: this.styles.error },
-          this.props.manager('error')
+            onMouseLeave: this.onMouseLeaveHandler,
+            onFocus: this.onFocusHandler,
+            onBlur: this.onBlurHandler,
+            onClick: this.onClickHandler },
+          this.state.label
         )
       );
     }
@@ -991,7 +946,7 @@ var ManagedButton = function (_React$Component) {
 exports.default = ManagedButton;
 
 /***/ }),
-/* 11 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1001,22 +956,36 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.onMouseOverHandler = onMouseOverHandler;
-exports.onClickHandler = onClickHandler;
 exports.onMouseLeaveHandler = onMouseLeaveHandler;
+exports.onFocusHandler = onFocusHandler;
+exports.onBlurHandler = onBlurHandler;
+exports.onClickHandler = onClickHandler;
 function onMouseOverHandler() {
+  this.setState({ mouseOver: true });
   this.props.manager('onMouseOver');
+}
+
+function onMouseLeaveHandler() {
+  this.setState({ mouseOver: false });
+  this.props.manager('onMouseLeave');
+}
+
+function onFocusHandler(e) {
+  this.setState({ focus: true });
+  this.props.manager('onFocus', e.target.value);
+}
+
+function onBlurHandler(e) {
+  this.setState({ focus: false });
+  this.props.manager('onBlur', e.target.value);
 }
 
 function onClickHandler() {
   this.props.manager('onClick');
 }
 
-function onMouseLeaveHandler() {
-  this.props.manager('onMouseLeave');
-}
-
 /***/ }),
-/* 12 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1028,41 +997,68 @@ Object.defineProperty(exports, "__esModule", {
 exports.componentDidMount = componentDidMount;
 exports.getDerivedStateFromProps = getDerivedStateFromProps;
 exports.shouldComponentUpdate = shouldComponentUpdate;
-var STATE_KEYS_TO_DERIVE = ['display', 'label', 'disabled', 'error', 'flag'];
+exports.componentDidUpdate = componentDidUpdate;
+var STATE_KEYS_TO_DERIVE = ['display', 'disabled', 'label', 'flag'];
 
-var STATE_KEYS_TO_UPDATE = STATE_KEYS_TO_DERIVE.concat(['buttonClass']);
+var STATE_KEYS_TO_UPDATE = STATE_KEYS_TO_DERIVE.concat(['mouseOver', 'focus', 'decorator']);
 
 function componentDidMount() {
-  this.button = document.getElementById(this.id);
+  this.input = document.getElementById(this.id);
+  this.decorator();
 }
 
 function getDerivedStateFromProps(nextProps, prevState) {
   var returnObject = {};
   STATE_KEYS_TO_DERIVE.map(function (element) {
-    if (nextProps.manager(element) != prevState[element]) {
+    if (JSON.stringify(nextProps.manager(element)) !== JSON.stringify(prevState[element])) {
       returnObject[element] = nextProps.manager(element);
     }
   });
   return returnObject;
 }
 
-function shouldComponentUpdate(nextProps, nextState) {
+function shouldComponentUpdate(_, nextState) {
   var _this = this;
 
-  var shouldIt = false;
+  var outcome = false;
   STATE_KEYS_TO_UPDATE.map(function (element) {
-    if (_this.state[element] !== nextState[element]) {
-      shouldIt = true;
-    }
-    if (_this.props[element] !== nextProps[element]) {
-      shouldIt = true;
+    if (JSON.stringify(_this.state[element]) !== JSON.stringify(nextState[element])) {
+      outcome = true;
     }
   });
-  return shouldIt;
+  return outcome;
+}
+
+function componentDidUpdate() {
+  this.decorator();
 }
 
 /***/ }),
-/* 13 */
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.decorator = decorator;
+function decorator() {
+  var className = '';
+  if (this.state.focus) {
+    className += ' ' + this.focusClass;
+  }
+  if (this.state.mouseOver) {
+    className += ' ' + this.hoverClass;
+  }
+  this.setState({
+    decorator: className
+  });
+}
+
+/***/ }),
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1078,194 +1074,25 @@ function buttonManagerFactory() {
       case 'id':
         return aspects.id;
       case 'display':
-        return aspects.display === undefined ? 'block' : aspects.display;
+        return aspects.display || 'block';
       case 'disabled':
-        return aspects.disabled === undefined ? false : aspects.disabled;
-      case 'styles':
-        return aspects.styles === undefined ? {} : aspects.styles;
+        return aspects.disabled || false;
+      case 'classNames':
+        return aspects.classNames || {};
       case 'label':
         return aspects.label;
       case 'onMouseOver':
-        if (aspects.onMouseOver === undefined) return;
-        aspects.onMouseOver();
-        break;
-      case 'onClick':
-        aspects.onClick();
-        break;
+        return aspects.onMouseOver && aspects.onMouseOver();
       case 'onMouseLeave':
-        if (aspects.onMouseLeave === undefined) return;
-        aspects.onMouseLeave();
-        break;
-      case 'error':
-        return aspects.error === undefined ? '' : aspects.error;
-      case 'flag':
-        aspects.flag === undefined ? null : aspects.flag;
-        break;
-      default:
-        break;
-    }
-  };
-}
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _handlers = __webpack_require__(15);
-
-var handlers = _interopRequireWildcard(_handlers);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var ManagedCheckbox = function (_React$Component) {
-  _inherits(ManagedCheckbox, _React$Component);
-
-  function ManagedCheckbox(props) {
-    _classCallCheck(this, ManagedCheckbox);
-
-    var _this = _possibleConstructorReturn(this, (ManagedCheckbox.__proto__ || Object.getPrototypeOf(ManagedCheckbox)).call(this, props));
-
-    _this.id = _this.props.manager('id');
-    _this.detached = _this.props.manager('detached');
-    _this.onClickHandler = handlers.onClickHandler.bind(_this);
-    _this.state = {
-      disabled: _this.props.manager('disabled'),
-      styles: _this.props.manager('styles'),
-      checked: _this.props.manager('checked'),
-      label: _this.props.manager('label'),
-      error: _this.props.manager('error'),
-      flag: _this.props.manager('flag')
-    };
-    return _this;
-  }
-
-  _createClass(ManagedCheckbox, [{
-    key: 'render',
-    value: function render() {
-      return _react2.default.createElement(
-        'div',
-        { className: this.state.disabled ? this.state.styles.disabled : this.state.styles.active },
-        _react2.default.createElement(
-          'div',
-          { className: this.state.styles.checkboxContainer },
-          _react2.default.createElement('input', {
-            type: 'checkbox',
-            id: this.id,
-            disabled: this.state.disabled,
-            readOnly: true,
-            style: { display: 'none' },
-            checked: this.detached ? undefined : this.state.checked }),
-          _react2.default.createElement(
-            'div',
-            {
-              className: this.state.styles.checkbox,
-              onClick: this.onClickHandler },
-            this.state.checked && _react2.default.createElement('div', { className: this.state.styles.tick })
-          )
-        ),
-        _react2.default.createElement(
-          'div',
-          { className: this.state.styles.labelContainer },
-          _react2.default.createElement(
-            'div',
-            { className: this.state.styles.label },
-            this.state.label
-          )
-        ),
-        _react2.default.createElement('div', { style: { clear: 'both' } })
-      );
-    }
-  }]);
-
-  return ManagedCheckbox;
-}(_react2.default.Component);
-
-exports.default = ManagedCheckbox;
-
-/***/ }),
-/* 15 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.onClickHandler = onClickHandler;
-function onClickHandler() {
-  var checked = !this.state.checked;
-  if (this.detached === true) {
-    this.setState({ checked: checked });
-    var checkbox = document.getElementById(this.id);
-    checkbox.checked = checked;
-  }
-  this.props.manager('onClick', checked);
-}
-
-/***/ }),
-/* 16 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = checkboxManagerFactory;
-function emptyFunction() {
-  return function () {};
-}
-
-function checkboxManagerFactory() {
-  return function (aspect, aspects) {
-    switch (aspect) {
-      case 'id':
-        return aspects.id;
-      case 'detached':
-        return aspects.detached === undefined ? false : aspects.detached;
-      case 'disabled':
-        return aspects.disabled === undefined ? false : aspects.disabled;
-      case 'styles':
-        return aspects.styles === undefined ? {} : aspects.styles;
-      case 'label':
-        return aspects.label === undefined ? '' : aspects.label;
-      case 'checked':
-        return aspects.checked === undefined ? false : aspects.checked;
+        return aspects.onMouseLeave && aspects.onMouseLeave();
+      case 'onFocus':
+        return aspects.onFocus && aspects.onFocus();
+      case 'onBlur':
+        return aspects.onBlur && aspects.onBlur();
       case 'onClick':
-        aspects.onClick();
-        break;
-      case 'validate':
-        return aspects.validate();
-      case 'setValue':
-        aspects.setValue === undefined ? emptyFunction() : aspects.setValue();
-        break;
-      case 'error':
-        return aspects.error === undefined ? '' : aspects.error;
+        return aspects.onClick && aspects.onClick();
       case 'flag':
-        return aspects.flag === undefined ? null : aspects.flag;
+        return aspects.flag || null;
       default:
         break;
     }
@@ -1297,6 +1124,309 @@ var _handlers = __webpack_require__(19);
 
 var handlers = _interopRequireWildcard(_handlers);
 
+var _decorator = __webpack_require__(20);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var ManagedCheckbox = function (_React$Component) {
+  _inherits(ManagedCheckbox, _React$Component);
+
+  function ManagedCheckbox(props) {
+    _classCallCheck(this, ManagedCheckbox);
+
+    var _this = _possibleConstructorReturn(this, (ManagedCheckbox.__proto__ || Object.getPrototypeOf(ManagedCheckbox)).call(this, props));
+
+    _this.id = _this.props.manager('id');
+    _this.controlled = _this.props.manager('controlled');
+    _this.classNames = _this.props.manager('classNames');
+    _this.containerClass = _this.classNames.container || 'managed-input checkbox';
+    _this.checkboxContainerClass = _this.classNames.checkboxContainerClass || 'container';
+    _this.inputClass = _this.classNames.input || 'input';
+    _this.labelClass = _this.classNames.label || 'label';
+    _this.tickClass = _this.classNames.tick || 'tick';
+    _this.errorContainerClass = _this.classNames.errorContainer || 'error-container';
+    _this.checkedClass = _this.classNames.checked || 'checked';
+    _this.focusClass = _this.classNames.focus || 'focus';
+    _this.hoverClass = _this.classNames.hover || 'hover';
+    _this.errorClass = _this.classNames.error || 'error';
+    _this.componentDidMount = lifecycle.componentDidMount;
+    _this.shouldComponentUpdate = lifecycle.shouldComponentUpdate;
+    _this.componentDidUpdate = lifecycle.componentDidUpdate;
+    _this.onMouseOverHandler = handlers.onMouseOverHandler.bind(_this);
+    _this.onMouseLeaveHandler = handlers.onMouseLeaveHandler.bind(_this);
+    _this.onFocusHandler = handlers.onFocusHandler.bind(_this);
+    _this.onBlurHandler = handlers.onBlurHandler.bind(_this);
+    _this.onClickHandler = handlers.onClickHandler.bind(_this);
+    _this.decorator = _decorator.decorator.bind(_this);
+    _this.state = {
+      display: _this.props.manager('display'),
+      disabled: _this.props.manager('disabled'),
+      checked: _this.props.manager('checked'),
+      label: _this.props.manager('label'),
+      error: _this.props.manager('error'),
+      flag: _this.props.manager('flag'),
+      mouseOver: false,
+      focus: false,
+      decorator: ''
+    };
+    return _this;
+  }
+
+  _createClass(ManagedCheckbox, [{
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'div',
+        {
+          style: { display: this.state.display },
+          className: this.containerClass + this.state.decorator },
+        _react2.default.createElement(
+          'div',
+          {
+            className: this.inputClass + this.state.decorator,
+            onMouseOver: this.onMouseOverHandler,
+            onMouseLeave: this.onMouseLeaveHandler,
+            onClick: this.onClickHandler },
+          this.state.checked && _react2.default.createElement('div', { className: this.tickClass + this.state.decorator })
+        ),
+        _react2.default.createElement('input', {
+          type: 'checkbox',
+          id: this.id,
+          style: { position: 'absolute', left: -10000 },
+          value: this.controlled ? this.state.value : undefined,
+          onFocus: this.onFocusHandler,
+          onBlur: this.onBlurHandler,
+          onChange: this.onClickHandler }),
+        _react2.default.createElement(
+          'div',
+          {
+            onMouseOver: this.onMouseOverHandler,
+            onMouseLeave: this.onMouseLeaveHandler,
+            className: this.labelClass + this.state.decorator },
+          this.state.label
+        ),
+        _react2.default.createElement('div', { style: { clear: 'both' } })
+      );
+    }
+  }]);
+
+  return ManagedCheckbox;
+}(_react2.default.Component);
+
+exports.default = ManagedCheckbox;
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.componentDidMount = componentDidMount;
+exports.getDerivedStateFromProps = getDerivedStateFromProps;
+exports.shouldComponentUpdate = shouldComponentUpdate;
+exports.componentDidUpdate = componentDidUpdate;
+var STATE_KEYS_TO_DERIVE = ['disabled', 'checked', 'label', 'error', 'flag'];
+
+var STATE_KEYS_TO_UPDATE = STATE_KEYS_TO_DERIVE.concat(['mouseOver', 'focus', 'decorator']);
+
+function componentDidMount() {
+  this.inputElement = document.getElementById(this.id);
+  this.decorator();
+}
+
+function getDerivedStateFromProps(nextProps, prevState) {
+  var returnObject = {};
+  STATE_KEYS_TO_DERIVE.map(function (element) {
+    if (nextProps.manager(element) !== prevState[element]) {
+      returnObject[element] = nextProps.manager(element);
+    }
+  });
+  return returnObject;
+}
+
+function shouldComponentUpdate(_, nextState) {
+  var _this = this;
+
+  var outcome = false;
+  STATE_KEYS_TO_UPDATE.map(function (element) {
+    if (_this.state[element] !== nextState[element]) {
+      outcome = true;
+    }
+  });
+  return outcome;
+}
+
+function componentDidUpdate() {
+  this.decorator();
+}
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.onMouseOverHandler = onMouseOverHandler;
+exports.onMouseLeaveHandler = onMouseLeaveHandler;
+exports.onFocusHandler = onFocusHandler;
+exports.onBlurHandler = onBlurHandler;
+exports.onClickHandler = onClickHandler;
+function onMouseOverHandler() {
+  this.setState({ mouseOver: true });
+}
+
+function onMouseLeaveHandler() {
+  this.setState({ mouseOver: false });
+}
+
+function onFocusHandler(e) {
+  this.setState({ focus: true });
+  this.props.manager('onFocus', e.target.value);
+}
+
+function onBlurHandler(e) {
+  this.setState({ focus: false });
+  this.props.manager('onBlur', e.target.value);
+}
+
+function onClickHandler() {
+  this.inputElement.focus();
+  var checked = !this.state.checked;
+  if (this.controlled === false) {
+    this.setState({ checked: checked });
+    var checkbox = document.getElementById(this.id);
+    checkbox.checked = checked;
+  }
+  this.props.manager('onClick', checked);
+}
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.decorator = decorator;
+function decorator() {
+  var className = '';
+  if (this.inputElement.checked) {
+    className += ' ' + this.checkedClass;
+  }
+  if (this.state.focus) {
+    className += ' ' + this.focusClass;
+  }
+  if (this.state.mouseOver) {
+    className += ' ' + this.hoverClass;
+  }
+  if (this.state.error) {
+    className += ' ' + this.errorClass;
+  }
+  this.setState({
+    decorator: className
+  });
+}
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = checkboxManagerFactory;
+function checkboxManagerFactory() {
+  return function (aspect, aspects) {
+    switch (aspect) {
+      case 'id':
+        return aspects.id;
+      case 'controlled':
+        return aspects.controlled === undefined ? true : false;
+      case 'display':
+        return aspects.display || 'block';
+      case 'disabled':
+        return aspects.disabled || undefined;
+      case 'classNames':
+        return aspects.classNames || {};
+      case 'label':
+        return aspects.label || '';
+      case 'checked':
+        return aspects.checked || false;
+      case 'onMouseOver':
+        return aspects.onMouseOver && aspects.onMouseOver();
+      case 'onMouseLeave':
+        return aspects.onMouseLeave && aspects.onMouseLeave();
+      case 'onClick':
+        return aspects.onClick && aspects.onClick();
+      case 'onFocus':
+        return aspects.onFocus && aspects.onFocus();
+      case 'onBlur':
+        return aspects.onBlur && aspects.onBlur();
+      case 'onChange':
+        return aspects.onChange && aspects.onChange();
+      case 'validate':
+        return aspects.validate();
+      case 'setValue':
+        return aspects.setValue();
+      case 'error':
+        return aspects.error || '';
+      case 'flag':
+        return aspects.flag || null;
+      default:
+        break;
+    }
+  };
+}
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _lifecycle = __webpack_require__(23);
+
+var lifecycle = _interopRequireWildcard(_lifecycle);
+
+var _handlers = __webpack_require__(24);
+
+var handlers = _interopRequireWildcard(_handlers);
+
+var _decorator = __webpack_require__(25);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -1316,27 +1446,38 @@ var ManagedTextarea = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (ManagedTextarea.__proto__ || Object.getPrototypeOf(ManagedTextarea)).call(this, props));
 
     _this.id = _this.props.manager('id');
-    _this.labelId = _this.id + '-label';
-    _this.containerId = _this.id + '-container';
-    _this.counterId = _this.id + '-counter';
-    _this.styles = _this.props.manager('styles');
+    _this.controlled = _this.props.manager('controlled');
+    _this.classNames = _this.props.manager('classNames');
+    _this.containerClass = _this.classNames.container || 'managed-input textarea';
+    _this.inputClass = _this.classNames.input || 'input';
+    _this.labelClass = _this.classNames.label || 'label';
+    _this.counterClass = _this.classNames.counter || 'counter';
+    _this.valueClass = _this.classNames.value || 'value';
+    _this.focusClass = _this.classNames.focus || 'focus';
+    _this.hoverClass = _this.classNames.hover || 'hover';
+    _this.errorContainerClass = _this.classNames.errorContainer || 'error-container';
+    _this.errorClass = _this.classNames.error || 'error';
     _this.componentDidMount = lifecycle.componentDidMount;
     _this.shouldComponentUpdate = lifecycle.shouldComponentUpdate;
+    _this.componentDidUpdate = lifecycle.componentDidUpdate;
     _this.onMouseOverHandler = handlers.onMouseOverHandler.bind(_this);
     _this.onMouseLeaveHandler = handlers.onMouseLeaveHandler.bind(_this);
-    _this.onClickHandler = handlers.onClickHandler.bind(_this);
     _this.onFocusHandler = handlers.onFocusHandler.bind(_this);
     _this.onBlurHandler = handlers.onBlurHandler.bind(_this);
+    _this.onClickHandler = handlers.onClickHandler.bind(_this);
     _this.onChangeHandler = handlers.onChangeHandler.bind(_this);
+    _this.decorator = _decorator.decorator.bind(_this);
     _this.state = {
-      disabled: false,
+      display: _this.props.manager('display'),
+      disabled: _this.props.manager('disabled'),
       value: _this.props.manager('value'),
       label: _this.props.manager('label'),
-      charactersUsed: 0,
+      error: _this.props.manager('error'),
       counterLimit: _this.props.manager('counterLimit'),
-      textareaClass: _this.styles.textareaWithoutValue,
-      labelClass: _this.styles.labelWithoutValue,
-      counterClass: _this.styles.counterWithoutValue
+      counter: 0,
+      mouseOver: false,
+      focus: false,
+      decorator: ''
     };
     return _this;
   }
@@ -1347,36 +1488,36 @@ var ManagedTextarea = function (_React$Component) {
       return _react2.default.createElement(
         'div',
         {
-          id: this.containerId,
-          className: this.state.disabled ? this.styles.disabled : this.styles.active },
-        _react2.default.createElement('textarea', {
-          id: this.id,
-          className: this.state.textareaClass,
-          value: this.state.value,
-          onClick: this.onClickHandler,
+          style: { display: this.state.display },
+          className: this.containerClass + this.state.decorator,
           onMouseOver: this.onMouseOverHandler,
           onMouseLeave: this.onMouseLeaveHandler,
+          onClick: this.onClickHandler },
+        _react2.default.createElement(
+          'div',
+          { className: this.labelClass + this.state.decorator },
+          this.state.label
+        ),
+        _react2.default.createElement('textarea', {
+          id: this.id,
+          disabled: this.state.disabled,
+          className: this.inputClass + this.state.decorator,
+          value: this.controlled ? this.state.value : undefined,
           onFocus: this.onFocusHandler,
           onBlur: this.onBlurHandler,
           onChange: this.onChangeHandler }),
         _react2.default.createElement(
           'div',
           {
-            id: this.labelId,
-            className: this.state.labelClass,
-            onClick: this.onClickHandler,
-            onMouseOver: this.onMouseOverHandler,
-            onMouseLeave: this.onMouseLeaveHandler },
-          this.state.label
+            className: this.counterClass + this.state.decorator },
+          this.state.counter,
+          ' / ',
+          this.state.counterLimit
         ),
         _react2.default.createElement(
           'div',
-          {
-            id: this.counterId,
-            className: this.state.counterClass },
-          this.state.charactersUsed,
-          ' / ',
-          this.state.counterLimit
+          { className: this.errorContainerClass + this.state.decorator },
+          this.state.error
         )
       );
     }
@@ -1393,7 +1534,7 @@ var ManagedTextarea = function (_React$Component) {
 exports.default = ManagedTextarea;
 
 /***/ }),
-/* 18 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1405,15 +1546,13 @@ Object.defineProperty(exports, "__esModule", {
 exports.componentDidMount = componentDidMount;
 exports.getDerivedStateFromProps = getDerivedStateFromProps;
 exports.shouldComponentUpdate = shouldComponentUpdate;
+exports.componentDidUpdate = componentDidUpdate;
 var STATE_KEYS_TO_DERIVE = ['disabled', 'value', 'label', 'styles', 'counterLimit', 'error', 'flag'];
 
-var STATE_KEYS_TO_UPDATE = STATE_KEYS_TO_DERIVE.concat(['textareaClass', 'labelClass', 'counterClass']);
+var STATE_KEYS_TO_UPDATE = STATE_KEYS_TO_DERIVE.concat(['counter', 'mouseOver', 'focus', 'decorator']);
 
 function componentDidMount() {
-  this.textarea = document.getElementById(this.id);
-  this.label = document.getElementById(this.labelId);
-  this.container = document.getElementById(this.containerId);
-  this.counter = document.getElementById(this.counterId);
+  this.input = document.getElementById(this.id);
 }
 
 function getDerivedStateFromProps(nextProps, prevState) {
@@ -1426,20 +1565,24 @@ function getDerivedStateFromProps(nextProps, prevState) {
   return returnObject;
 }
 
-function shouldComponentUpdate(nextProps, nextState) {
+function shouldComponentUpdate(_, nextState) {
   var _this = this;
 
-  var updateComponent = false;
+  var outcome = false;
   STATE_KEYS_TO_UPDATE.map(function (element) {
     if (_this.state[element] !== nextState[element]) {
-      updateComponent = true;
+      outcome = true;
     }
   });
-  return updateComponent;
+  return outcome;
+}
+
+function componentDidUpdate() {
+  this.decorator();
 }
 
 /***/ }),
-/* 19 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1450,79 +1593,78 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.onMouseOverHandler = onMouseOverHandler;
 exports.onMouseLeaveHandler = onMouseLeaveHandler;
-exports.onClickHandler = onClickHandler;
 exports.onFocusHandler = onFocusHandler;
 exports.onBlurHandler = onBlurHandler;
+exports.onClickHandler = onClickHandler;
 exports.onChangeHandler = onChangeHandler;
-var textareaClass = '';
-var labelClass = '';
-var counterClass = '';
-
-function onMouseOverHandler() {
-  if (this.state.disabled) return;
-  if (this.textarea !== document.activeElement && this.textarea.value === '') {
-    textareaClass = this.styles.textareaWithoutValue + ' ' + this.styles.textareaWithoutValueMouseOver;
-    this.setState({
-      textareaClass: textareaClass
-    });
-  }
+function onMouseOverHandler(e) {
+  this.setState({ mouseOver: true });
+  this.props.manager('onMouseOver', e.target.value);
 }
 
-function onMouseLeaveHandler() {
-  if (this.state.disabled) return;
-  if (this.textarea !== document.activeElement && this.textarea.value === '') {
-    textareaClass = this.styles.textareaWithoutValue;
-    this.setState({
-      textareaClass: textareaClass
-    });
-  }
+function onMouseLeaveHandler(e) {
+  this.setState({ mouseOver: false });
+  this.props.manager('onMouseLeave', e.target.value);
 }
 
-function onClickHandler() {
-  this.textarea.focus();
+function onFocusHandler(e) {
+  this.setState({ focus: true });
+  this.props.manager('onFocus', e.target.value);
 }
 
-function onFocusHandler() {
-  labelClass = this.styles.labelWithoutValueFocus;
-  textareaClass = this.styles.textareaWithoutValue + ' ' + this.styles.textareaWithoutValueFocus;
-  counterClass = this.styles.counterWithoutValueFocus;
-  this.setState({
-    labelClass: labelClass,
-    textareaClass: textareaClass,
-    counterClass: counterClass
-  });
+function onBlurHandler(e) {
+  this.setState({ focus: false });
+  this.props.manager('onBlur', e.target.value);
 }
 
-function onBlurHandler() {
-  if (this.textarea.value === '') {
-    textareaClass = this.styles.textareaWithoutValue;
-    labelClass = this.styles.labelWithoutValue;
-    counterClass = this.styles.counterWithoutValue;
-  } else {
-    textareaClass = this.styles.textareaWithoutValue + ' ' + this.styles.textareaWithValue;
-    labelClass = this.styles.labelWithoutValueFocus + ' ' + this.styles.labelWithValue;
-    counterClass = this.styles.counterWithoutValueFocus + ' ' + this.styles.counterWithValue;
-  }
-  this.setState({
-    labelClass: labelClass,
-    textareaClass: textareaClass,
-    counterClass: counterClass
-  });
+function onClickHandler(e) {
+  this.input.focus();
+  this.props.manager('onClick', e.target.value);
 }
 
-function onChangeHandler() {
-  var value = this.textarea.value;
-  var valueLength = value.length;
+function onChangeHandler(e) {
+  var valueLength = e.target.value.length;
   if (valueLength <= this.state.counterLimit) {
-    this.setState({ charactersUsed: valueLength });
-    this.props.manager('onChange', value);
+    this.setState({ counter: valueLength });
+    this.props.manager('onChange', e.target.value);
+    this.forceUpdate();
   } else {
-    this.textarea.value = this.textarea.value.slice(0, -1);
+    this.input.value = this.input.value.slice(0, -1);
   }
 }
 
 /***/ }),
-/* 20 */
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.decorator = decorator;
+function decorator() {
+  var className = '';
+  if (this.input.value) {
+    className += ' ' + this.valueClass;
+  }
+  if (this.state.focus) {
+    className += ' ' + this.focusClass;
+  }
+  if (this.state.mouseOver) {
+    className += ' ' + this.hoverClass;
+  }
+  if (this.state.error) {
+    className += ' ' + this.errorClass;
+  }
+  this.setState({
+    decorator: className
+  });
+}
+
+/***/ }),
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1537,26 +1679,38 @@ function textareaManagerFactory() {
     switch (aspect) {
       case 'id':
         return aspects.id;
+      case 'controlled':
+        return aspects.controlled === undefined ? true : false;
+      case 'display':
+        return aspects.display || 'block';
       case 'disabled':
-        return aspects.disabled === undefined ? false : aspects.disabled;
-      case 'styles':
-        return aspects.styles === undefined ? {} : aspects.styles;
+        return aspects.disabled || false;
+      case 'classNames':
+        return aspects.classNames || {};
       case 'value':
-        return aspects.value === undefined || aspects.value === null ? '' : aspects.value;
+        return aspects.value || '';
       case 'label':
         return aspects.label;
       case 'counterLimit':
         return aspects.counterLimit;
+      case 'onMouseOver':
+        return aspects.onMouseOver && aspects.onMouseOver();
+      case 'onMouseLeave':
+        return aspects.onMouseLeave && aspects.onMouseLeave();
+      case 'onFocus':
+        return aspects.onFocus && aspects.onFocus();
+      case 'onBlur':
+        return aspects.onBlur && aspects.onBlur();
+      case 'onClick':
+        return aspects.onClick && aspects.onClick();
       case 'onChange':
-        aspects.onChange();
-        break;
+        return aspects.onChange && aspects.onChange();
       case 'setValue':
-        aspects.setValue === undefined ? emptyFunction() : aspects.setValue();
-        break;
+        return aspects.setValue();
       case 'error':
-        return aspects.error === undefined ? '' : aspects.error;
+        return aspects.error;
       case 'flag':
-        return aspects.flag === undefined ? null : aspects.flag;
+        return aspects.flag || null;
       default:
         break;
     }

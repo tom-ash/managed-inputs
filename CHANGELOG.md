@@ -1,3 +1,10 @@
+## 0.1.0 (April 13, 2019)
+### CHG styles, managers & handlers
+* Complete overhaul of styles system.
+* Unification of handlers.
+* Unification of managers' hooks.
+* README amendments.
+
 ## 0.0.6 (March 24, 2019)
 ### ADD ManagedTextarea
 * Added ManagedTextarea

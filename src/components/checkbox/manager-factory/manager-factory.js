@@ -1,34 +1,40 @@
-function emptyFunction() {
-  return () => {}
-}
-
 export default function checkboxManagerFactory() {
   return (aspect, aspects) => {
     switch(aspect) {
       case 'id':
         return aspects.id
-      case 'detached':
-        return aspects.detached === undefined ? false : aspects.detached
+      case 'controlled':
+        return aspects.controlled === undefined ? true : false
+      case 'display':
+        return aspects.display || 'block'
       case 'disabled':
-        return aspects.disabled === undefined ? false : aspects.disabled
-      case 'styles':
-        return aspects.styles === undefined ? {} : aspects.styles
+        return aspects.disabled || undefined
+      case 'classNames':
+        return aspects.classNames || {}
       case 'label':
-        return aspects.label === undefined ? '' : aspects.label
+        return aspects.label || ''
       case 'checked':
-        return aspects.checked === undefined ? false : aspects.checked
+        return aspects.checked || false
+      case 'onMouseOver':
+        return aspects.onMouseOver && aspects.onMouseOver()
+      case 'onMouseLeave':
+        return aspects.onMouseLeave && aspects.onMouseLeave()
       case 'onClick':
-        aspects.onClick()
-        break
+        return aspects.onClick && aspects.onClick()
+      case 'onFocus':
+        return aspects.onFocus && aspects.onFocus()
+      case 'onBlur':
+        return aspects.onBlur && aspects.onBlur()
+      case 'onChange':
+        return aspects.onChange && aspects.onChange()
       case 'validate':
         return aspects.validate()
       case 'setValue':
-        aspects.setValue === undefined ? emptyFunction() : aspects.setValue()
-        break
+        return aspects.setValue()
       case 'error':
-        return aspects.error === undefined ? '' : aspects.error
+        return aspects.error || ''
       case 'flag':
-        return aspects.flag === undefined ? null : aspects.flag
+        return aspects.flag || null
       default:
         break
     }

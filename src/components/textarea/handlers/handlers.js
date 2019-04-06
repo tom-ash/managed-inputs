@@ -1,66 +1,35 @@
-let textareaClass = ''
-let labelClass = ''
-let counterClass = ''
-
-export function onMouseOverHandler() {
-  if (this.state.disabled) return
-  if (this.textarea !== document.activeElement && this.textarea.value === '') {
-    textareaClass = this.styles.textareaWithoutValue + ' ' + this.styles.textareaWithoutValueMouseOver
-    this.setState({
-      textareaClass: textareaClass
-    })
-  }
+export function onMouseOverHandler(e) {
+  this.setState({ mouseOver: true })
+  this.props.manager('onMouseOver', e.target.value)
 }
 
-export function onMouseLeaveHandler() {
-  if (this.state.disabled) return
-  if (this.textarea !== document.activeElement && this.textarea.value === '') {
-    textareaClass = this.styles.textareaWithoutValue
-    this.setState({
-      textareaClass: textareaClass
-    })
-  }
+export function onMouseLeaveHandler(e) {
+  this.setState({ mouseOver: false })
+  this.props.manager('onMouseLeave', e.target.value)
 }
 
-export function onClickHandler() {
-  this.textarea.focus()
+export function onFocusHandler(e) {
+  this.setState({ focus: true })
+  this.props.manager('onFocus', e.target.value)
 }
 
-export function onFocusHandler() {
-  labelClass = this.styles.labelWithoutValueFocus
-  textareaClass = this.styles.textareaWithoutValue + ' ' + this.styles.textareaWithoutValueFocus
-  counterClass = this.styles.counterWithoutValueFocus
-  this.setState({
-    labelClass: labelClass,
-    textareaClass: textareaClass,
-    counterClass: counterClass
-  })
+export function onBlurHandler(e) {
+  this.setState({ focus: false })
+  this.props.manager('onBlur', e.target.value)
 }
 
-export function onBlurHandler() {
-  if (this.textarea.value === '') {
-    textareaClass = this.styles.textareaWithoutValue
-    labelClass = this.styles.labelWithoutValue
-    counterClass = this.styles.counterWithoutValue
-  } else {
-    textareaClass = this.styles.textareaWithoutValue + ' ' + this.styles.textareaWithValue
-    labelClass = this.styles.labelWithoutValueFocus + ' ' + this.styles.labelWithValue
-    counterClass = this.styles.counterWithoutValueFocus + ' ' + this.styles.counterWithValue
-  }
-  this.setState({
-    labelClass: labelClass,
-    textareaClass: textareaClass,
-    counterClass: counterClass
-  })
+export function onClickHandler(e) {
+  this.input.focus()
+  this.props.manager('onClick', e.target.value)
 }
 
-export function onChangeHandler() {
-  let value = this.textarea.value
-  let valueLength = value.length
+export function onChangeHandler(e) {
+  const valueLength = e.target.value.length
   if (valueLength <= this.state.counterLimit) {
-    this.setState({ charactersUsed: valueLength })
-    this.props.manager('onChange', value)
+    this.setState({ counter: valueLength })
+    this.props.manager('onChange', e.target.value)
+    this.forceUpdate()
   } else {
-    this.textarea.value = this.textarea.value.slice(0, -1)
+    this.input.value = this.input.value.slice(0, -1)
   }
 }

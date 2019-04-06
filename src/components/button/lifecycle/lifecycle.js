@@ -1,32 +1,41 @@
-const STATE_KEYS_TO_DERIVE = [ 'display', 'label', 'disabled', 'error', 'flag' ]
+const STATE_KEYS_TO_DERIVE = [
+  'display',
+  'disabled',
+  'label',
+  'flag'
+]
 
 const STATE_KEYS_TO_UPDATE = STATE_KEYS_TO_DERIVE.concat([
-  'buttonClass'
+  'mouseOver',
+  'focus',
+  'decorator'
 ])
 
 export function componentDidMount() {
-  this.button = document.getElementById(this.id)
+  this.input = document.getElementById(this.id)
+  this.decorator()
 }
 
 export function getDerivedStateFromProps(nextProps, prevState) {
   let returnObject = {}
   STATE_KEYS_TO_DERIVE.map((element) => {
-    if (nextProps.manager(element) != prevState[element]) {
+    if (JSON.stringify(nextProps.manager(element)) !== JSON.stringify(prevState[element])) {
       returnObject[element] = nextProps.manager(element)
     }
   })
   return returnObject
 }
 
-export function shouldComponentUpdate(nextProps, nextState) {
-  let shouldIt = false
+export function shouldComponentUpdate(_, nextState) {
+  let outcome = false
   STATE_KEYS_TO_UPDATE.map((element) => {
-    if (this.state[element] !== nextState[element]) {
-      shouldIt = true
-    }
-    if (this.props[element] !== nextProps[element]) {
-      shouldIt = true
+    if (JSON.stringify(this.state[element]) !== JSON.stringify(nextState[element])) {
+      outcome = true
     }
   })
-  return shouldIt
+  return outcome
+}
+
+export function componentDidUpdate() {
+  this.decorator()
 }

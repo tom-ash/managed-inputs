@@ -3,16 +3,18 @@ export default function selectManagerFactory() {
     switch(aspect) {
       case 'id':
         return aspects.id
+      case 'controlled':
+        return aspects.controlled || true
       case 'display':
-        return aspects.display === undefined ? 'block' : aspects.display
+        return aspects.display || 'block'
       case 'disabled':
-        return aspects.disabled === undefined ? false : aspects.disabled
-      case 'styles':
-        return aspects.styles === undefined ? {} : aspects.styles
+        return aspects.disabled || false
+      case 'classNames':
+        return aspects.classNames || {}
       case 'value':
-        return aspects.value === undefined ? null : aspects.value
+        return aspects.value
       case 'label':
-        return aspects.label === undefined ? '' : aspects.label
+        return aspects.label || ''
       case 'options':
         return aspects.options
       case 'optionKey':
@@ -21,24 +23,24 @@ export default function selectManagerFactory() {
         return aspects.optionValue
       case 'optionDecorate':
         return aspects.optionDecorate
-      case 'setValue':
-        aspects.setValue === undefined ? emptyFunction() : aspects.setValue()
-        break
+      case 'onMouseOver':
+        return aspects.onMouseOver && aspects.onMouseOver()
+      case 'onMouseLeave':
+        return aspects.onMouseLeave && aspects.onMouseLeave()
+      case 'onFocus':
+        return aspects.onFocus && aspects.onFocus()
+      case 'onBlur':
+        return aspects.onBlur && aspects.onBlur()
+      case 'onClick':
+        return aspects.onClick && aspects.onClick()
       case 'onSelect':
-        aspects.onSelect()
-        break
+        return aspects.onSelect && aspects.onSelect()
       case 'error':
-        return aspects.error === undefined ? '' : aspects.error
+        return aspects.error || ''
       case 'flag':
-        return aspects.flag === undefined ? null : aspects.flag
+        return aspects.flag || null
       default:
         break
-      }
     }
-  }
-
-function emptyFunction() {
-  return () => {
-    null
   }
 }
