@@ -1,6 +1,6 @@
 export function decorator() {
   let className = ''
-  if (this.inputElement && this.inputElement.value) {
+  if (this.input.current.value) {
     className += ' ' + this.valueClass
   }
   if (this.state.focus) {

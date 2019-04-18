@@ -9,7 +9,10 @@ export function onMouseLeaveHandler(e) {
 }
 
 export function onFocusHandler(e) {
-  this.setState({ focus: true })
+  this.setState({
+    focus: true,
+    animation: undefined
+  })
   this.props.manager('onFocus', e.target.value)
 }
 
@@ -19,7 +22,7 @@ export function onBlurHandler(e) {
 }
 
 export function onClickHandler(e) {
-  this.inputElement.focus()
+  this.input.current.focus()
   this.props.manager('onClick', e.target.value)
 }
 

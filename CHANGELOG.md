@@ -1,3 +1,10 @@
+## 0.2.0 (May 1, 2019)
+### ADD Managed Radio, Multiple Checkbox, refs, base class inheritance
+* Added Managed Radio
+* Added Managed Multiple Checkbox
+* Added refs
+* Added base class inheritance
+
 ## 0.1.0 (April 13, 2019)
 ### CHG styles, managers & handlers
 * Complete overhaul of styles system.
@@ -25,7 +32,7 @@
 ## 0.0.3 (February 24, 2019)
 ### FIX/CHG ManagedText & ManagedSelect
 * Fixed ManagedText focus not firing on label click.
-* Fixed MangedSelect focusing and blurring on mouse clicks and tab key.
+* Fixed ManagedSelect focusing and blurring on mouse clicks and tab key.
 * Turned off ManagedSelect up and down keyboard arrow keys browser default behavior.
 
 ## 0.0.2 (February 16, 2019)

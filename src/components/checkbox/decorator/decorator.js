@@ -1,6 +1,6 @@
 export function decorator() {
   let className = ''
-  if (this.inputElement.checked) {
+  if (this.input.current.checked) {
     className += ' ' + this.checkedClass
   }
   if (this.state.focus) {

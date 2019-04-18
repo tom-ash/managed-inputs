@@ -1,123 +1,78 @@
 # Managed Inputs
-Managed Inputs are single function managed inputs for React.
+`Divide and conquer` - military maxim.
 
-To add Managed Inputs to a React project:
+Managed Inputs is a React add-on library which aims (among other things) to implement the rule of `separation of concerns` with regards to a JSX 'DOM'. It extracts all logic regarding a given input from the JSX to a separate `manager` function which then can be put in a separate file. For example, for a Managed Text the only thing left in the JSX is:
 ```
-npm install --save managed-inputs
+<ManagedText manager={fooBarManager} />
 ```
-and then
+All the logic regarding the input is transferred to a manager function which may take the following form:
 ```
-import { ManagedText } from 'managed-inputs'
-import { ManagedTextarea } from 'managed-inputs'
-import { ManagedSelect } from 'managed-inputs'
-import { ManagedCheckbox } from 'managed-inputs'
-import { ManagedButton } from 'managed-inputs'
+function fooBarManager(aspect, value) {
+  return managerAgent(aspect, {
+    value: this.state.fooBar,
+    label: 'fooBar',
+    onChange: () => this.setState({ fooBar: value })
+  })
+}
+```
 
-<ManagedText manager={/*manager function*/} />
-<ManagedTextarea manager={/*manager function*/} />
-<ManagedSelect manager={/*manager function*/} />
-<ManagedCheckbox manager={/*manager function*/} />
-<ManagedButton manager={/*manager function*/} />
-```
+Furthermore Managed Inputs come with built-in functionality like labelling, CSS classing, counting and error handling out of the box. For example, when an error is transmitted to a Managed Input all its elements get CSS class `error`.
+
+Managed Inputs include Text, Textarea, Select, Radio, Checkbox, Multiple Checkbox and Button.
 
 ## Managers
 Managers are functions which manage all aspects of a given Managed Input. Each Managed Input has one and only one manager.
 
-To construct a manager for a Managed Input bind the manager to a React class component and then:
+A manager communicates with its input through a `managerAgent` function which accepts two parameters: `aspect` and `aspects`. The `aspects` parameter is an object which keys correspond to relevant aspects of the input.
 
-* text
-```
-import { textManagerFactory } from 'managed-inputs'
-
-function /*manager name*/(aspect, value) {
-  return textManagerFactory.call(this)(aspect, aspects)
-}
-```
-
-* textarea
-```
-import { textareaManagerFactory } from 'managed-inputs'
-
-function /*manager name*/(aspect, value) {
-  return textareaManagerFactory.call(this)(aspect, aspects)
-}
-```
-
-* checkbox
-```
-import { checkboxManagerFactory } from 'managed-inputs'
-
-function /*manager name*/(aspect, value) {
-  return checkboxManagerFactory.call(this)(aspect, aspects)
-}
-```
-
-* select
-```
-import { selectManagerFactory } from 'managed-inputs'
-
-function /*manager name*/(aspect, value) {
-  return selectManagerFactory.call(this)(aspect, aspects)
-}
-```
-
-* button
-```
-import { buttonManagerFactory } from 'managed-inputs'
-
-function /*manager name*/(aspect, value) {
-  return buttonManagerFactory.call(this)(aspect, aspects)
-}
-```
-
-## Aspects
-R - required, O - optional
-
-### Shared
 The `aspects` parameter of all Managed Inputs accepts the following:
-* `id` - string | R
-* `display` - string | default: `block` | O
-* `disabled` - boolean | default: `false` | O
-* `classNames` - object | default: see below | O
-* `label` - string or JSX | default: none | O
-* `onMouseOver` - function | default: none | O
-* `onMouseLeave` - function | default: none | O
-* `onFocus` - function | default: none | O
-* `onBlur` - function | default: none | O
-* `onClick` - function | default: none | O
-* `flag` - string, number or boolean | default: none | O
+* `display`: string (default: `block`)
+* `classNames`: object
+* `onMouseOver`: function
+* `onMouseLeave`: function
+* `onFocus`: function
+* `onBlur`: function
+* `onClick`: function
+* `validate`: function
 
 The `aspects` parameter of all Managed Inputs but Button accepts also:
-* `error` - string or JSX | default: none | O
+* `error`: string or JSX
 
-The `aspects` parameter of all Managed Inputs but Button and Select accepts also:
-* `controlled` - boolean | default: `true` | O
-* `onChange` - function | default: none | O
-* `setValue` - function | default: none | O
+The `aspects` parameter of all Managed Inputs but Radio and Multiple Checkbox accepts also:
+* `id`: string
+* `disabled`: boolean (default: `false`)
+* `label`: string or JSX
 
-The `aspects` parameter of all Managed Inputs but Button and Checkbox accepts also:
-* `value` - string | default: none | O
+The `aspects` parameter of Managed Inputs but Button and Select accepts also:
+* `onChange`: function
 
-The `aspects` parameter of all Managed Inputs but Select and Button accepts also:
-* `validate` - function | default: none | O
+The `aspects` parameter of the Managed Text and Managed Textarea accepts also:
+* `controlled`: boolean (default: `true`)
+* `setValue`: function
 
-### Specific
-The `aspects` parameter of Managed Text accepts also the following:
-* `type` - string | default: `text` | O
-* `autoComplete` - string | default: none | O
+The `aspects` parameter of all Managed Inputs but Button, Checkbox and Multiple Checkbox accepts also:
+* `value`: string
 
-The `aspects` parameter of Managed Textarea accepts also the following:
-* `counterLimit` - integer | default: none | O
+The `aspects` parameter of the Managed Text accepts also the following:
+* `type`: string (default: `text`)
+* `autoComplete`: string
 
-The `aspects` parameter of Managed Select accepts also the following:
-* `options` - array | R
-* `optionKey` - option derived string | R
-* `optionValue` - option derived string, number or boolean | R
-* `optionDecorate` - option derived string | R
-* `onSelect` - function | R
+The `aspects` parameter of the Managed Textarea accepts also the following:
+* `counterLimit`: integer
 
-The `aspects` parameter of Managed Checkbox accepts also the following:
-* `checked` - boolean | default: `false` | O
+The `aspects` parameter of the Managed Select accepts also the following:
+* `options`: array of which each element is like the following object `{ value: string, text: string }`
+* `onSelect`: function
+
+The `aspects` parameter of Managed Checkbox and Radio accepts also the following:
+* `checked` - boolean (default `false`)
+
+The `aspects` parameter of Managed Multiple Checkbox accepts also the following:
+* `checkboxes`: array of which each element is like the following object `{ ref: string, checked: boolean, label: string }`
+
+The `aspects` parameter of Managed Radio accepts also the following:
+* `name`: string
+* `radios`: array of which each element is like the following object `{ value: string, label: string }`
 
 ## Styles
 All Managed Inputs have default CSS classes.
@@ -126,14 +81,14 @@ The default CSS classes for containers are (respectively):
 * `managed-input text`
 * `managed-input textarea`
 * `managed-input select`
+* `managed-input radio`
 * `managed-input checkbox`
 * `managed-input button`
 
-The default class for `input` is `input` however when Manged Select and Checkbox are concerned the class regards a `div` element which is displayed instead of the original DOM elements (which are always invisible).
+The default class for `input` is `input` however when Managed Select, Radio, Checkbox and Multiple Checkbox are concerned the class regards a `div` element which is displayed instead of the original DOM elements <u>which are always invisible</u>.
 
-CSS classes for `label`, `error container` and `error` are:
+CSS classes for `label` and `error` are:
 * `label`
-* `error-container`
 * `error`
 
 All elements of the Managed Inputs (i.e. inputs, labels, errors) get the following classes when applicable:
@@ -151,13 +106,12 @@ className: {
   value: ...,
   focus: ...,
   hover: ...,
-  errorContainer: ...,
   error: ...
 }
 ```
 
 Unique CSS classes are:
 * Textarea: `counter`
-* Select: `options`, `option`, `mark`
-* Checkbox: `tick`
+* Select: `options`, `option`, `preselected`, `mark`
+* Checkbox, Multiple Checkbox and Radio: `tick`
 
