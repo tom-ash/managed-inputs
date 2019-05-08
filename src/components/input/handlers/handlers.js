@@ -9,15 +9,22 @@ export function onMouseLeaveHandler(e) {
 }
 
 export function onFocusHandler(e) {
+  let autofill = true
+  if (this.state.value === '') { autofill = false }
   this.setState({
-    focus: true,
-    animation: undefined
+    autofill: autofill,
+    focus: true
   })
   this.props.manager('onFocus', e.target.value)
 }
 
 export function onBlurHandler(e) {
-  this.setState({ focus: false })
+  let autofill = true
+  if (this.state.value === '') { autofill = false }
+  this.setState({
+    autofill: autofill,
+    focus: false
+  })
   this.props.manager('onBlur', e.target.value)
 }
 

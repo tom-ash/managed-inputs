@@ -5,6 +5,7 @@ import ManagedRadio from './components/radio/radio'
 import ManagedCheckbox from './components/checkbox/checkbox'
 import ManagedMultipleCheckbox from './components/multiple-checkbox/multiple-checkbox'
 import ManagedButton from './components/button/button'
+import ManagedPagination from './components/pagination/pagination'
 import managerAgent from './manager-agent/manager-agent'
 
 export { ManagedText,
@@ -14,4 +15,5 @@ export { ManagedText,
          ManagedButton,
          ManagedCheckbox,
          ManagedMultipleCheckbox,
+         ManagedPagination,
          managerAgent }

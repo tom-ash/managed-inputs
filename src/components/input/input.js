@@ -13,6 +13,7 @@ export default class ManagedInput extends React.Component {
     this.inputClass = this.classNames.input || 'input'
     this.labelClass = this.classNames.label || 'label'
     this.valueClass = this.classNames.value || 'value'
+    this.autofillClass = this.classNames.value || 'autofill'
     this.focusClass = this.classNames.focus || 'focus'
     this.hoverClass = this.classNames.hover || 'hover'
     this.errorClass = this.classNames.error || 'error'
@@ -35,8 +36,8 @@ export default class ManagedInput extends React.Component {
       value: this.props.manager('value'),
       label: this.props.manager('label'),
       error: this.props.manager('error'),
-      animation: 'none',
       mouseOver: false,
+      autofill: true,
       focus: false,
       decorator: ''
     }
@@ -44,5 +45,9 @@ export default class ManagedInput extends React.Component {
 
   static getDerivedStateFromProps(nextProps, prevstate) {
     return lifecycle.getDerivedStateFromProps(nextProps, prevstate)
+  }
+
+  isMobile() {
+    return /Android|BlackBerry|IEMobile|Opera Mini|iPad|iPhone|iPod|webOS/i.test(navigator.userAgent)
   }
 }

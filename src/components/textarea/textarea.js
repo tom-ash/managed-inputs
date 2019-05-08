@@ -26,9 +26,7 @@ export default class ManagedTextarea extends ManagedInput {
       onMouseOver={this.onMouseOverHandler}
       onMouseLeave={this.onMouseLeaveHandler}
       onClick={this.onClickHandler}>
-        <div
-        style={{ animation: this.state.animation }}
-        className={this.labelClass + this.state.decorator}>
+        <div className={this.labelClass + this.state.decorator}>
           {this.state.label}
         </div>
         <textarea

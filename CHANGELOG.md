@@ -1,3 +1,10 @@
+## 0.3.0 (July 6, 2019)
+### ADD Pagination, Input autofill, Select key traversing
+* Added Managed Pagination
+* Added Input autofill
+* Added Managed Select key traversing
+* Fixed Managed Checkbox label onClick
+
 ## 0.2.0 (May 1, 2019)
 ### ADD Managed Radio, Multiple Checkbox, refs, base class inheritance
 * Added Managed Radio

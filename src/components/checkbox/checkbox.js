@@ -48,6 +48,7 @@ export default class ManagedCheckbox extends ManagedInput {
         <div
         onMouseOver={this.onMouseOverHandler}
         onMouseLeave={this.onMouseLeaveHandler}
+        onClick={this.onClickHandler}
         className={this.labelClass + this.state.decorator}>
           {this.state.label}
         </div>

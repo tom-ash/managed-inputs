@@ -1,7 +1,7 @@
 export default function managerAgent(aspect, aspects) {
   switch(aspect) {
     case 'value':
-      return aspects.value || ''
+      return aspects.value === undefined ? '' : aspects.value
     case 'checked':
       return aspects.checked || false
     case 'onMouseOver':
@@ -50,6 +50,12 @@ export default function managerAgent(aspect, aspects) {
       return aspects.setValue && aspects.setValue()
     case 'validate':
       return aspects.validate && aspects.validate()
+    case 'current':
+      return aspects.current
+    case 'resultsPerPage':
+      return aspects.resultsPerPage
+    case 'resultAmount':
+      return aspects.resultAmount
     default:
       break
   }

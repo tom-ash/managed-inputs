@@ -143,6 +143,7 @@ var ManagedInput = function (_React$Component) {
     _this.inputClass = _this.classNames.input || 'input';
     _this.labelClass = _this.classNames.label || 'label';
     _this.valueClass = _this.classNames.value || 'value';
+    _this.autofillClass = _this.classNames.value || 'autofill';
     _this.focusClass = _this.classNames.focus || 'focus';
     _this.hoverClass = _this.classNames.hover || 'hover';
     _this.errorClass = _this.classNames.error || 'error';
@@ -165,15 +166,21 @@ var ManagedInput = function (_React$Component) {
       value: _this.props.manager('value'),
       label: _this.props.manager('label'),
       error: _this.props.manager('error'),
-      animation: 'none',
       mouseOver: false,
+      autofill: true,
       focus: false,
       decorator: ''
     };
     return _this;
   }
 
-  _createClass(ManagedInput, null, [{
+  _createClass(ManagedInput, [{
+    key: 'isMobile',
+    value: function isMobile() {
+      return (/Android|BlackBerry|IEMobile|Opera Mini|iPad|iPhone|iPod|webOS/i.test(navigator.userAgent)
+      );
+    }
+  }], [{
     key: 'getDerivedStateFromProps',
     value: function getDerivedStateFromProps(nextProps, prevstate) {
       return lifecycle.getDerivedStateFromProps(nextProps, prevstate);
@@ -195,7 +202,7 @@ exports.default = ManagedInput;
 Object.defineProperty(exports, "__esModule", {
          value: true
 });
-exports.managerAgent = exports.ManagedMultipleCheckbox = exports.ManagedCheckbox = exports.ManagedButton = exports.ManagedRadio = exports.ManagedTextarea = exports.ManagedSelect = exports.ManagedText = undefined;
+exports.managerAgent = exports.ManagedPagination = exports.ManagedMultipleCheckbox = exports.ManagedCheckbox = exports.ManagedButton = exports.ManagedRadio = exports.ManagedTextarea = exports.ManagedSelect = exports.ManagedText = undefined;
 
 var _text = __webpack_require__(3);
 
@@ -225,7 +232,11 @@ var _button = __webpack_require__(20);
 
 var _button2 = _interopRequireDefault(_button);
 
-var _managerAgent = __webpack_require__(22);
+var _pagination = __webpack_require__(22);
+
+var _pagination2 = _interopRequireDefault(_pagination);
+
+var _managerAgent = __webpack_require__(26);
 
 var _managerAgent2 = _interopRequireDefault(_managerAgent);
 
@@ -238,6 +249,7 @@ exports.ManagedRadio = _radio2.default;
 exports.ManagedButton = _button2.default;
 exports.ManagedCheckbox = _checkbox2.default;
 exports.ManagedMultipleCheckbox = _multipleCheckbox2.default;
+exports.ManagedPagination = _pagination2.default;
 exports.managerAgent = _managerAgent2.default;
 
 /***/ }),
@@ -296,9 +308,7 @@ var ManagedText = function (_ManagedInput) {
           onClick: this.onClickHandler },
         _react2.default.createElement(
           'div',
-          {
-            style: { animation: this.state.animation },
-            className: this.labelClass + this.state.decorator },
+          { className: this.labelClass + this.state.decorator },
           this.state.label
         ),
         _react2.default.createElement('input', {
@@ -398,15 +408,26 @@ function onMouseLeaveHandler(e) {
 }
 
 function onFocusHandler(e) {
+  var autofill = true;
+  if (this.state.value === '') {
+    autofill = false;
+  }
   this.setState({
-    focus: true,
-    animation: undefined
+    autofill: autofill,
+    focus: true
   });
   this.props.manager('onFocus', e.target.value);
 }
 
 function onBlurHandler(e) {
-  this.setState({ focus: false });
+  var autofill = true;
+  if (this.state.value === '') {
+    autofill = false;
+  }
+  this.setState({
+    autofill: autofill,
+    focus: false
+  });
   this.props.manager('onBlur', e.target.value);
 }
 
@@ -435,6 +456,9 @@ function decorator() {
   var className = '';
   if (this.input.current.value) {
     className += ' ' + this.valueClass;
+  }
+  if (this.state.autofill) {
+    className += ' ' + this.autofillClass;
   }
   if (this.state.focus) {
     className += ' ' + this.focusClass;
@@ -523,9 +547,7 @@ var ManagedTextarea = function (_ManagedInput) {
           onClick: this.onClickHandler },
         _react2.default.createElement(
           'div',
-          {
-            style: { animation: this.state.animation },
-            className: this.labelClass + this.state.decorator },
+          { className: this.labelClass + this.state.decorator },
           this.state.label
         ),
         _react2.default.createElement('textarea', {
@@ -628,12 +650,14 @@ var ManagedSelect = function (_ManagedInput) {
 
     var _this = _possibleConstructorReturn(this, (ManagedSelect.__proto__ || Object.getPrototypeOf(ManagedSelect)).call(this, props));
 
+    _this.options = _react2.default.createRef();
     _this.containerClass = _this.classNames.container || 'managed-input select';
     _this.optionsClass = _this.classNames.options || 'options';
     _this.optionClass = _this.classNames.option || 'option';
     _this.markClass = _this.classNames.mark || 'mark';
     _this.stateKeysToDerive = [].concat(_toConsumableArray(_this.stateKeysToDerive), ['options']);
     _this.stateKeysToUpdate = [].concat(_toConsumableArray(_this.stateKeysToUpdate), ['options', 'preSelected']);
+    _this.onClickHandler = handlers.onClickHandler.bind(_this);
     _this.onKeyDownHandler = handlers.onKeyDownHandler.bind(_this);
     _this.onBlurHandler = handlers.onBlurHandler.bind(_this);
     _this.onSelectHandler = handlers.onSelectHandler.bind(_this);
@@ -666,9 +690,7 @@ var ManagedSelect = function (_ManagedInput) {
             { onClick: this.onClickHandler },
             _react2.default.createElement(
               'div',
-              {
-                style: { animation: this.state.animation },
-                className: this.labelClass + this.state.decorator },
+              { className: this.labelClass + this.state.decorator },
               this.state.label
             ),
             _react2.default.createElement(
@@ -680,9 +702,16 @@ var ManagedSelect = function (_ManagedInput) {
               _react2.default.createElement('div', { className: this.markClass + this.state.decorator })
             )
           ),
+          this.state.focus && this.isMobile && _react2.default.createElement('div', {
+            onClick: function onClick() {
+              return _this2.onBlurHandler(undefined, undefined, true);
+            },
+            style: { position: 'fixed', top: 0, right: 0, bottom: 0, left: 0, zIndex: 998 } }),
           this.state.focus && _react2.default.createElement(
             'div',
             {
+              style: { zIndex: 999 },
+              ref: this.options,
               className: this.optionsClass + this.state.decorator },
             this.state.options.map(function (option, index) {
               return _react2.default.createElement(
@@ -718,7 +747,7 @@ var ManagedSelect = function (_ManagedInput) {
                 {
                   key: 'key-original-' + option.value + '-' + index,
                   value: option.value },
-                option.text
+                JSON.stringify(option.text)
               );
             })
           )
@@ -748,29 +777,19 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.onKeyDownHandler = onKeyDownHandler;
+exports.onClickHandler = onClickHandler;
 exports.onOptionMouseOver = onOptionMouseOver;
 exports.onBlurHandler = onBlurHandler;
 exports.onSelectHandler = onSelectHandler;
 function onKeyDownHandler(e) {
-  if (e.keyCode === 38 || e.keyCode === 40) {
+  var keyCode = e.keyCode;
+  if (keyCode === 38 || keyCode === 40) {
     e.preventDefault();
-    var preSelected = this.state.preSelected;
-    if (e.keyCode == 40) {
-      if (preSelected < this.state.options.length - 1) {
-        preSelected += 1;
-      } else {
-        preSelected = 0;
-      }
-    } else {
-      if (preSelected > 0) {
-        preSelected -= 1;
-      } else {
-        preSelected = this.state.options.length - 1;
-      }
-    }
+    var preSelected = computePreSelected.call(this, keyCode);
+    this.options.current.scrollTop = computeScroll.call(this, preSelected, keyCode);
     this.setState({ preSelected: preSelected });
   }
-  if (e.keyCode === 13) {
+  if (keyCode === 13) {
     var option = this.state.options[this.state.preSelected];
     this.setState({
       focus: false,
@@ -778,30 +797,96 @@ function onKeyDownHandler(e) {
     });
     this.props.manager('onSelect', option);
   }
-  if (e.keyCode === 9) {
+  if (keyCode === 9) {
     this.onBlurHandler(e, true);
   }
+}
+
+function onClickHandler(e) {
+  if (this.isMobile()) {
+    var autofill = true;
+    if (this.state.value === '') {
+      autofill = false;
+    }
+    this.setState({
+      autofill: autofill,
+      focus: true
+    });
+    this.props.manager('onFocus', e.target.value);
+  } else {
+    this.input.current.focus();
+  }
+  this.props.manager('onClick', e.target.value);
 }
 
 function onOptionMouseOver(index) {
   this.setState({ preSelected: index });
 }
 
-function onBlurHandler(e, tabDown) {
-  if (this.state.mouseOver === false || tabDown === true) {
+function onBlurHandler(e, tabDown, isMobile) {
+  if (this.state.mouseOver === false || tabDown === true || isMobile) {
     if (e && e.target) {
       this.props.manager('onBlur', e.target.value);
     }
-    this.setState({ focus: false });
+    this.setState({
+      focus: false,
+      mouseOver: false
+    });
   }
 }
 
 function onSelectHandler(option) {
+  var autofill = true;
+  if (option.value === '') {
+    autofill = false;
+  }
   this.setState({
+    autofill: autofill,
     focus: false,
     mouseOver: false
   });
   this.props.manager('onSelect', option);
+}
+
+function computePreSelected(keyCode) {
+  var preSelected = this.state.preSelected;
+  if (keyCode == 40) {
+    if (preSelected < this.state.options.length - 1) {
+      return preSelected + 1;
+    } else {
+      return 0;
+    }
+  } else {
+    if (preSelected > 0) {
+      return preSelected - 1;
+    } else {
+      return this.state.options.length - 1;
+    }
+  }
+}
+
+function computeScroll(preSelectedIndex, keyCode) {
+  var options = this.options.current;
+  var optionsHeight = options.offsetHeight;
+  var optionsScroll = options.scrollTop;
+  var preSelected = options.children[preSelectedIndex];
+  var preSelectedHeight = preSelected.offsetHeight;
+  var preSelectedOffset = preSelected.offsetTop;
+  switch (preSelectedIndex) {
+    case 0:
+      return 0;
+    case this.state.options.length - 1:
+      return options.scrollHeight;
+    default:
+      if (keyCode === 38 && preSelectedOffset < optionsScroll) {
+        return preSelectedOffset;
+      }
+      if (keyCode === 40 && preSelectedOffset + preSelectedHeight > optionsScroll + optionsHeight) {
+        var diff = (preSelectedOffset + preSelectedHeight - optionsHeight) % preSelectedHeight - preSelectedHeight;
+        return preSelectedOffset - optionsHeight + preSelectedHeight - diff;
+      }
+      return this.options.current.scrollTop;
+  }
 }
 
 /***/ }),
@@ -1139,6 +1224,7 @@ var ManagedCheckbox = function (_ManagedInput) {
           {
             onMouseOver: this.onMouseOverHandler,
             onMouseLeave: this.onMouseLeaveHandler,
+            onClick: this.onClickHandler,
             className: this.labelClass + this.state.decorator },
           this.state.label
         ),
@@ -1545,11 +1631,289 @@ function decorator() {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _input = __webpack_require__(1);
+
+var _input2 = _interopRequireDefault(_input);
+
+var _lifecycle = __webpack_require__(23);
+
+var _decorator = __webpack_require__(24);
+
+var _handlers = __webpack_require__(25);
+
+var handlers = _interopRequireWildcard(_handlers);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var ManagedPagination = function (_ManagedInput) {
+  _inherits(ManagedPagination, _ManagedInput);
+
+  function ManagedPagination(props) {
+    _classCallCheck(this, ManagedPagination);
+
+    var _this = _possibleConstructorReturn(this, (ManagedPagination.__proto__ || Object.getPrototypeOf(ManagedPagination)).call(this, props));
+
+    _this.containerClass = _this.classNames.container || 'managed-input pagination';
+    _this.currentClass = _this.classNames.current || 'current';
+    _this.arrowClass = _this.classNames.arrow || 'arrow';
+    _this.decorator = _decorator.decorator.bind(_this);
+    _this.componentDidMount = _lifecycle.componentDidMount;
+    _this.componentDidUpdate = _lifecycle.componentDidUpdate;
+    _this.stateKeysToDerive = [].concat(_toConsumableArray(_this.stateKeysToDerive), ['resultsPerPage', 'resultAmount', 'current']);
+    _this.stateKeysToUpdate = [].concat(_toConsumableArray(_this.stateKeysToUpdate), ['resultsPerPage', 'resultAmount', 'buttons', 'current']);
+    _this.onMouseOverHandler = handlers.onMouseOverHandler.bind(_this);
+    _this.onMouseLeaveHandler = handlers.onMouseLeaveHandler.bind(_this);
+    _this.onFocusHandler = handlers.onFocusHandler.bind(_this);
+    _this.onBlurHandler = handlers.onBlurHandler.bind(_this);
+    _this.onClickHandler = handlers.onClickHandler.bind(_this);
+    _this.state = _extends({}, _this.state, {
+      stateKeysToDerive: _this.stateKeysToDerive,
+      resultsPerPage: _this.props.manager('resultsPerPage'),
+      resultAmount: _this.props.manager('resultAmount'),
+      buttons: [],
+      current: _this.props.manager('current'),
+      mouseOver: {},
+      focus: {},
+      decorator: {}
+    });
+    _this.jsxProvider = _this.jsxProvider.bind(_this);
+    _this.showButton = _this.showButton.bind(_this);
+    _this.edgeHandler = _this.edgeHandler.bind(_this);
+    return _this;
+  }
+
+  _createClass(ManagedPagination, [{
+    key: 'jsxProvider',
+    value: function jsxProvider(button) {
+      if (button === 0) {
+        return '<';
+      } else if (button === this.state.buttons.length - 1) {
+        return '>';
+      } else {
+        return button;
+      }
+    }
+  }, {
+    key: 'showButton',
+    value: function showButton(button) {
+      if (this.state.buttons.length == 2 || this.state.buttons.length == 3) return false;
+      return true;
+    }
+  }, {
+    key: 'edgeHandler',
+    value: function edgeHandler(button) {
+      if (button === 0 && this.state.current === 1) return 'hidden';
+      if (button === this.state.buttons.length - 1 && this.state.current === this.state.buttons.length - 2) return 'hidden';
+      return 'visible';
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _this2 = this;
+
+      return _react2.default.createElement(
+        'div',
+        {
+          style: { display: this.state.display },
+          className: this.containerClass },
+        this.state.buttons.map(function (button) {
+          return _this2.showButton(button) && _react2.default.createElement(
+            'button',
+            {
+              style: { visibility: _this2.edgeHandler(button) },
+              key: 'paginationButtoNo' + button,
+              className: _this2.inputClass + _this2.state.decorator[button],
+              onMouseOver: function onMouseOver() {
+                return _this2.onMouseOverHandler(button);
+              },
+              onMouseLeave: function onMouseLeave() {
+                return _this2.onMouseLeaveHandler(button);
+              },
+              onFocus: function onFocus() {
+                return _this2.onFocusHandler(button);
+              },
+              onBlur: function onBlur() {
+                return _this2.onBlurHandler(button);
+              },
+              onClick: function onClick() {
+                return _this2.onClickHandler(button);
+              } },
+            _this2.jsxProvider(button)
+          );
+        })
+      );
+    }
+  }]);
+
+  return ManagedPagination;
+}(_input2.default);
+
+exports.default = ManagedPagination;
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.componentDidMount = componentDidMount;
+exports.componentDidUpdate = componentDidUpdate;
+function componentDidMount() {
+  computeButtons.call(this);
+  this.decorator();
+}
+
+function componentDidUpdate(prevProps, prevState) {
+  if (prevState.resultsPerPage !== this.state.resultsPerPage || prevState.resultAmount !== this.state.resultAmount) {
+    computeButtons.call(this);
+  }
+  this.decorator();
+}
+
+function computeButtons() {
+  this.setState({
+    buttons: createButtonsArray(Math.ceil(this.state.resultAmount / this.state.resultsPerPage))
+  });
+}
+
+function createButtonsArray(limit) {
+  var buttonsArray = [];
+  for (var i = 0; i < limit + 2; i++) {
+    buttonsArray.push(i);
+  }
+  return buttonsArray;
+}
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.decorator = decorator;
+function decorator() {
+  var _this = this;
+
+  var decorator = {};
+  var className = void 0;
+  [0].concat(this.state.buttons).map(function (button) {
+    className = '';
+    if (_this.state.focus[button]) {
+      className += ' ' + _this.focusClass;
+    }
+    if (_this.state.mouseOver[button]) {
+      className += ' ' + _this.hoverClass;
+    }
+    if (_this.state.current === button) {
+      className += ' ' + _this.currentClass;
+    }
+    decorator[button] = className;
+  });
+  this.setState({ decorator: decorator });
+}
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+exports.onMouseOverHandler = onMouseOverHandler;
+exports.onMouseLeaveHandler = onMouseLeaveHandler;
+exports.onFocusHandler = onFocusHandler;
+exports.onBlurHandler = onBlurHandler;
+exports.onClickHandler = onClickHandler;
+function onMouseOverHandler(button) {
+  var mouseOver = _extends({}, this.state.mouseOver);
+  mouseOver[button] = true;
+  this.setState({ mouseOver: mouseOver });
+  this.props.manager('onMouseOver', button);
+}
+
+function onMouseLeaveHandler(button) {
+  var mouseOver = _extends({}, this.state.mouseOver);
+  mouseOver[button] = false;
+  this.setState({ mouseOver: mouseOver });
+  this.props.manager('onMouseOver', button);
+}
+
+function onFocusHandler(button) {
+  var focus = _extends({}, this.state.focus);
+  focus[button] = true;
+  this.setState({ focus: focus });
+  this.props.manager('onFocus', button);
+}
+
+function onBlurHandler(button) {
+  var focus = _extends({}, this.state.focus);
+  focus[button] = false;
+  this.setState({ focus: focus });
+  this.props.manager('onFocus', button);
+}
+
+function onClickHandler(button) {
+  if (button === 0 || button === this.state.buttons.length - 1) {
+    var current = void 0;
+    if (button === 0) {
+      current = this.state.current - 1;
+    } else {
+      current = this.state.current + 1;
+    }
+    this.props.manager('onClick', current);
+    return;
+  }
+  this.props.manager('onClick', button);
+}
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.default = managerAgent;
 function managerAgent(aspect, aspects) {
   switch (aspect) {
     case 'value':
-      return aspects.value || '';
+      return aspects.value === undefined ? '' : aspects.value;
     case 'checked':
       return aspects.checked || false;
     case 'onMouseOver':
@@ -1598,6 +1962,12 @@ function managerAgent(aspect, aspects) {
       return aspects.setValue && aspects.setValue();
     case 'validate':
       return aspects.validate && aspects.validate();
+    case 'current':
+      return aspects.current;
+    case 'resultsPerPage':
+      return aspects.resultsPerPage;
+    case 'resultAmount':
+      return aspects.resultAmount;
     default:
       break;
   }

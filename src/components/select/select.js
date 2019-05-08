@@ -5,12 +5,14 @@ import * as handlers from './handlers/handlers'
 export default class ManagedSelect extends ManagedInput {
   constructor(props) {
     super(props)
+    this.options = React.createRef()
     this.containerClass = this.classNames.container || 'managed-input select'
     this.optionsClass = this.classNames.options || 'options'
     this.optionClass = this.classNames.option || 'option'
     this.markClass = this.classNames.mark || 'mark'
     this.stateKeysToDerive = [...this.stateKeysToDerive, 'options']
     this.stateKeysToUpdate = [...this.stateKeysToUpdate, 'options', 'preSelected']
+    this.onClickHandler = handlers.onClickHandler.bind(this)
     this.onKeyDownHandler = handlers.onKeyDownHandler.bind(this)
     this.onBlurHandler = handlers.onBlurHandler.bind(this)
     this.onSelectHandler = handlers.onSelectHandler.bind(this)
@@ -32,9 +34,7 @@ export default class ManagedSelect extends ManagedInput {
         onMouseOver={this.onMouseOverHandler}
         onMouseLeave={this.onMouseLeaveHandler}>
           <div onClick={this.onClickHandler}>
-            <div
-            style={{ animation: this.state.animation }}
-            className={this.labelClass + this.state.decorator}>
+            <div className={this.labelClass + this.state.decorator}>
               {this.state.label}
             </div>
             <div className={this.inputClass + this.state.decorator}>
@@ -43,8 +43,17 @@ export default class ManagedSelect extends ManagedInput {
             </div>
           </div>
           {
+          this.state.focus && this.isMobile &&
+          <div
+          onClick={() => this.onBlurHandler(undefined, undefined, true)}
+          style={{ position: 'fixed', top: 0, right: 0, bottom: 0, left: 0, zIndex: 998 }}>
+          </div>
+          }
+          {
           this.state.focus &&
           <div
+          style={{ zIndex: 999 }}
+          ref={this.options}
           className={this.optionsClass + this.state.decorator}>
             {
             this.state.options.map((option, index) => (
@@ -73,7 +82,7 @@ export default class ManagedSelect extends ManagedInput {
             <option
             key={`key-original-${option.value}-${index}`}
             value={option.value}>
-              {option.text}
+              {JSON.stringify(option.text)}
             </option>))
             }
           </select>
