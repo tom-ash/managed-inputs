@@ -147,6 +147,7 @@ var ManagedInput = function (_React$Component) {
     _this.focusClass = _this.classNames.focus || 'focus';
     _this.hoverClass = _this.classNames.hover || 'hover';
     _this.errorClass = _this.classNames.error || 'error';
+    _this.errorContainerClass = _this.classNames.error || 'error-container';
     _this.componentDidMount = lifecycle.componentDidMount;
     _this.shouldComponentUpdate = lifecycle.shouldComponentUpdate;
     _this.componentDidUpdate = lifecycle.componentDidUpdate;
@@ -208,35 +209,35 @@ var _text = __webpack_require__(3);
 
 var _text2 = _interopRequireDefault(_text);
 
-var _textarea = __webpack_require__(7);
+var _textarea = __webpack_require__(8);
 
 var _textarea2 = _interopRequireDefault(_textarea);
 
-var _select = __webpack_require__(9);
+var _select = __webpack_require__(10);
 
 var _select2 = _interopRequireDefault(_select);
 
-var _radio = __webpack_require__(11);
+var _radio = __webpack_require__(12);
 
 var _radio2 = _interopRequireDefault(_radio);
 
-var _checkbox = __webpack_require__(14);
+var _checkbox = __webpack_require__(15);
 
 var _checkbox2 = _interopRequireDefault(_checkbox);
 
-var _multipleCheckbox = __webpack_require__(17);
+var _multipleCheckbox = __webpack_require__(18);
 
 var _multipleCheckbox2 = _interopRequireDefault(_multipleCheckbox);
 
-var _button = __webpack_require__(20);
+var _button = __webpack_require__(21);
 
 var _button2 = _interopRequireDefault(_button);
 
-var _pagination = __webpack_require__(22);
+var _pagination = __webpack_require__(23);
 
 var _pagination2 = _interopRequireDefault(_pagination);
 
-var _managerAgent = __webpack_require__(26);
+var _managerAgent = __webpack_require__(27);
 
 var _managerAgent2 = _interopRequireDefault(_managerAgent);
 
@@ -273,6 +274,12 @@ var _input = __webpack_require__(1);
 
 var _input2 = _interopRequireDefault(_input);
 
+var _handlers = __webpack_require__(7);
+
+var handlers = _interopRequireWildcard(_handlers);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -291,7 +298,10 @@ var ManagedText = function (_ManagedInput) {
 
     _this.type = _this.props.manager('type');
     _this.autoComplete = props.manager('autoComplete');
+    _this.match = props.manager('match');
     _this.containerClass = _this.classNames.container || 'managed-input text';
+    _this.onKeyDownHandler = handlers.onKeyDownHandler.bind(_this);
+    _this.onChangeHandler = handlers.onChangeHandler.bind(_this);
     return _this;
   }
 
@@ -320,11 +330,12 @@ var ManagedText = function (_ManagedInput) {
           autoComplete: this.autoComplete,
           value: this.controlled ? this.state.value : undefined,
           onFocus: this.onFocusHandler,
+          onKeyDown: this.onKeyDownHandler,
           onBlur: this.onBlurHandler,
           onChange: this.onChangeHandler }),
         _react2.default.createElement(
           'div',
-          { className: this.errorClass + this.state.decorator },
+          { className: this.errorContainerClass + this.state.decorator },
           this.state.error
         )
       );
@@ -484,6 +495,29 @@ function decorator() {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.onKeyDownHandler = onKeyDownHandler;
+exports.onChangeHandler = onChangeHandler;
+function onKeyDownHandler(e) {
+  this.props.manager('onKeyDown', e.target.value, e);
+}
+
+function onChangeHandler(e) {
+  if (this.match && !e.target.value.match(this.match)) {
+    this.input.current.value = this.input.current.value.slice(0, -1);
+  }
+  this.props.manager('onChange', e.target.value);
+}
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -497,7 +531,7 @@ var _input = __webpack_require__(1);
 
 var _input2 = _interopRequireDefault(_input);
 
-var _handlers = __webpack_require__(8);
+var _handlers = __webpack_require__(9);
 
 var handlers = _interopRequireWildcard(_handlers);
 
@@ -582,7 +616,7 @@ var ManagedTextarea = function (_ManagedInput) {
 exports.default = ManagedTextarea;
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -604,7 +638,7 @@ function onChangeHandler(e) {
 }
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -626,7 +660,7 @@ var _input = __webpack_require__(1);
 
 var _input2 = _interopRequireDefault(_input);
 
-var _handlers = __webpack_require__(10);
+var _handlers = __webpack_require__(11);
 
 var handlers = _interopRequireWildcard(_handlers);
 
@@ -767,7 +801,7 @@ var ManagedSelect = function (_ManagedInput) {
 exports.default = ManagedSelect;
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -890,7 +924,7 @@ function computeScroll(preSelectedIndex, keyCode) {
 }
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -912,11 +946,11 @@ var _input = __webpack_require__(1);
 
 var _input2 = _interopRequireDefault(_input);
 
-var _handlers = __webpack_require__(12);
+var _handlers = __webpack_require__(13);
 
 var handlers = _interopRequireWildcard(_handlers);
 
-var _decorator = __webpack_require__(13);
+var _decorator = __webpack_require__(14);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -1036,7 +1070,7 @@ var ManagedRadio = function (_ManagedInput) {
 exports.default = ManagedRadio;
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1096,7 +1130,7 @@ function onClickHandler(value, index) {
 }
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1130,7 +1164,7 @@ function decorator() {
 }
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1152,11 +1186,11 @@ var _input = __webpack_require__(1);
 
 var _input2 = _interopRequireDefault(_input);
 
-var _handlers = __webpack_require__(15);
+var _handlers = __webpack_require__(16);
 
 var handlers = _interopRequireWildcard(_handlers);
 
-var _decorator = __webpack_require__(16);
+var _decorator = __webpack_require__(17);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -1239,7 +1273,7 @@ var ManagedCheckbox = function (_ManagedInput) {
 exports.default = ManagedCheckbox;
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1255,7 +1289,7 @@ function onClickHandler() {
 }
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1285,7 +1319,7 @@ function decorator() {
 }
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1307,11 +1341,11 @@ var _input = __webpack_require__(1);
 
 var _input2 = _interopRequireDefault(_input);
 
-var _handlers = __webpack_require__(18);
+var _handlers = __webpack_require__(19);
 
 var handlers = _interopRequireWildcard(_handlers);
 
-var _decorator = __webpack_require__(19);
+var _decorator = __webpack_require__(20);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -1431,7 +1465,7 @@ var ManagedMultipleCheckbox = function (_ManagedInput) {
 exports.default = ManagedMultipleCheckbox;
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1491,7 +1525,7 @@ function onKeyDownHandler(e, ref) {
 }
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1523,7 +1557,7 @@ function decorator() {
 }
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1543,7 +1577,7 @@ var _input = __webpack_require__(1);
 
 var _input2 = _interopRequireDefault(_input);
 
-var _decorator = __webpack_require__(21);
+var _decorator = __webpack_require__(22);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1598,7 +1632,7 @@ var ManagedButton = function (_ManagedInput) {
 exports.default = ManagedButton;
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1622,7 +1656,7 @@ function decorator() {
 }
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1644,11 +1678,11 @@ var _input = __webpack_require__(1);
 
 var _input2 = _interopRequireDefault(_input);
 
-var _lifecycle = __webpack_require__(23);
+var _lifecycle = __webpack_require__(24);
 
-var _decorator = __webpack_require__(24);
+var _decorator = __webpack_require__(25);
 
-var _handlers = __webpack_require__(25);
+var _handlers = __webpack_require__(26);
 
 var handlers = _interopRequireWildcard(_handlers);
 
@@ -1770,7 +1804,7 @@ var ManagedPagination = function (_ManagedInput) {
 exports.default = ManagedPagination;
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1808,7 +1842,7 @@ function createButtonsArray(limit) {
 }
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1840,7 +1874,7 @@ function decorator() {
 }
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1900,7 +1934,7 @@ function onClickHandler(button) {
 }
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1914,6 +1948,8 @@ function managerAgent(aspect, aspects) {
   switch (aspect) {
     case 'value':
       return aspects.value === undefined ? '' : aspects.value;
+    case 'match':
+      return aspects.match;
     case 'checked':
       return aspects.checked || false;
     case 'onMouseOver':
@@ -1926,6 +1962,8 @@ function managerAgent(aspect, aspects) {
       return aspects.onBlur && aspects.onBlur();
     case 'onClick':
       return aspects.onClick && aspects.onClick();
+    case 'onKeyDown':
+      return aspects.onKeyDown && aspects.onKeyDown();
     case 'onChange':
       return aspects.onChange && aspects.onChange();
     case 'onSelect':

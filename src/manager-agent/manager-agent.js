@@ -2,6 +2,8 @@ export default function managerAgent(aspect, aspects) {
   switch(aspect) {
     case 'value':
       return aspects.value === undefined ? '' : aspects.value
+    case 'match':
+      return aspects.match
     case 'checked':
       return aspects.checked || false
     case 'onMouseOver':
@@ -14,6 +16,8 @@ export default function managerAgent(aspect, aspects) {
       return aspects.onBlur && aspects.onBlur()
     case 'onClick':
       return aspects.onClick && aspects.onClick()
+    case 'onKeyDown':
+      return aspects.onKeyDown && aspects.onKeyDown()
     case 'onChange':
       return aspects.onChange && aspects.onChange()
     case 'onSelect':

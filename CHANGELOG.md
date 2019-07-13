@@ -1,3 +1,9 @@
+## 0.3.1 (July 22, 2019)
+### ADD ManagedText onKeyDown & onChange handlers, FIX Input error container class
+* Added ManagedText onKeyDown handler
+* Added ManagedText onChange handler with match
+* Fixed error container CSS class
+
 ## 0.3.0 (July 6, 2019)
 ### ADD Pagination, Input autofill, Select key traversing
 * Added Managed Pagination

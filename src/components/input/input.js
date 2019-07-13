@@ -17,6 +17,7 @@ export default class ManagedInput extends React.Component {
     this.focusClass = this.classNames.focus || 'focus'
     this.hoverClass = this.classNames.hover || 'hover'
     this.errorClass = this.classNames.error || 'error'
+    this.errorContainerClass = this.classNames.error || 'error-container'
     this.componentDidMount = lifecycle.componentDidMount
     this.shouldComponentUpdate = lifecycle.shouldComponentUpdate
     this.componentDidUpdate = lifecycle.componentDidUpdate

@@ -1,12 +1,16 @@
 import React from 'react'
 import ManagedInput from '../input/input'
+import * as handlers from './handlers/handlers'
 
 export default class ManagedText extends ManagedInput {
   constructor(props) {
     super(props)
     this.type = this.props.manager('type')
     this.autoComplete = props.manager('autoComplete')
+    this.match = props.manager('match')
     this.containerClass = this.classNames.container || 'managed-input text'
+    this.onKeyDownHandler = handlers.onKeyDownHandler.bind(this)
+    this.onChangeHandler = handlers.onChangeHandler.bind(this)
   }
 
   render() {
@@ -29,9 +33,10 @@ export default class ManagedText extends ManagedInput {
         autoComplete = {this.autoComplete}
         value={this.controlled ? this.state.value : undefined}
         onFocus={this.onFocusHandler}
+        onKeyDown={this.onKeyDownHandler}
         onBlur={this.onBlurHandler}
         onChange={this.onChangeHandler} />
-        <div className={this.errorClass + this.state.decorator}>
+        <div className={this.errorContainerClass + this.state.decorator}>
           {this.state.error}
         </div>
       </div>
