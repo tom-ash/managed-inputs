@@ -977,6 +977,7 @@ var ManagedRadio = function (_ManagedInput) {
     _this.radios = _this.props.manager('radios');
     _this.containerClass = _this.classNames.container || 'managed-input radio';
     _this.radioContainerClass = _this.classNames.radioContainerClass || 'container';
+    _this.checkedClass = _this.classNames.checked || 'checked';
     _this.tickClass = _this.classNames.tick || 'tick';
     _this.stateKeysToDerive = [].concat(_toConsumableArray(_this.stateKeysToDerive), ['checked']);
     _this.stateKeysToUpdate = [].concat(_toConsumableArray(_this.stateKeysToUpdate), ['checked']);
@@ -1007,7 +1008,10 @@ var ManagedRadio = function (_ManagedInput) {
             'div',
             {
               className: _this2.containerClass + _this2.state.decorator[index],
-              key: radio.key || 'radio-' + _this2.name + '-' + index },
+              key: radio.key || 'radio-' + _this2.name + '-' + index,
+              onClick: function onClick() {
+                return _this2.onClickHandler(radio.value, index);
+              } },
             _react2.default.createElement(
               'div',
               {
@@ -1017,9 +1021,6 @@ var ManagedRadio = function (_ManagedInput) {
                 },
                 onMouseLeave: function onMouseLeave(e) {
                   return _this2.onMouseLeaveHandler(e, index);
-                },
-                onClick: function onClick() {
-                  return _this2.onClickHandler(radio.value, index);
                 } },
               radio.value === _this2.state.checked && _react2.default.createElement('div', { className: _this2.tickClass + _this2.state.decorator[index] })
             ),
@@ -1050,9 +1051,6 @@ var ManagedRadio = function (_ManagedInput) {
                 },
                 onMouseLeave: function onMouseLeave(e) {
                   return _this2.onMouseLeaveHandler(e, index);
-                },
-                onClick: function onClick() {
-                  return _this2.onClickHandler(radio.value, index);
                 } },
               radio.label
             ),

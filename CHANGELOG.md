@@ -1,3 +1,8 @@
+## 0.3.2 (July 28, 2019)
+### CHG ManagedRadio onClick, FIX ManagedRadio checked class
+* Changed ManagedRadio onClick hook to include the radio container.
+* Fixed ManagedRadio checked class.
+
 ## 0.3.1 (July 22, 2019)
 ### ADD ManagedText onKeyDown & onChange handlers, FIX Input error container class
 * Added ManagedText onKeyDown handler
