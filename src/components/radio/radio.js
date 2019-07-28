@@ -11,6 +11,7 @@ export default class ManagedRadio extends ManagedInput {
     this.radios = this.props.manager('radios')
     this.containerClass = this.classNames.container || 'managed-input radio'
     this.radioContainerClass = this.classNames.radioContainerClass || 'container'
+    this.checkedClass = this.classNames.checked || 'checked'
     this.tickClass = this.classNames.tick || 'tick'
     this.stateKeysToDerive = [...this.stateKeysToDerive, 'checked']
     this.stateKeysToUpdate = [...this.stateKeysToUpdate, 'checked']
@@ -35,12 +36,12 @@ export default class ManagedRadio extends ManagedInput {
         this.radios.map((radio, index) => (
         <div
         className={this.containerClass + this.state.decorator[index]}
-        key={radio.key || `radio-${this.name}-${index}`}>
+        key={radio.key || `radio-${this.name}-${index}`}
+        onClick={() => this.onClickHandler(radio.value, index)}>
           <div
           className={this.inputClass + this.state.decorator[index]}
           onMouseOver={(e) => this.onMouseOverHandler(e, index)}
-          onMouseLeave={(e) => this.onMouseLeaveHandler(e, index)}
-          onClick={() => this.onClickHandler(radio.value, index)}>
+          onMouseLeave={(e) => this.onMouseLeaveHandler(e, index)}>
             {
             radio.value === this.state.checked &&
             <div className={this.tickClass + this.state.decorator[index]} />
@@ -61,8 +62,7 @@ export default class ManagedRadio extends ManagedInput {
           <label
           className={this.labelClass + this.state.decorator[index]}
           onMouseOver={(e) => this.onMouseOverHandler(e, index)}
-          onMouseLeave={(e) => this.onMouseLeaveHandler(e, index)}
-          onClick={() => this.onClickHandler(radio.value, index)}>
+          onMouseLeave={(e) => this.onMouseLeaveHandler(e, index)}>
             {radio.label}
           </label>
           <div style={{ clear: 'both' }} />
