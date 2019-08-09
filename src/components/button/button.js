@@ -26,6 +26,7 @@ export default class ManagedButton extends ManagedInput {
         onClick={this.onClickHandler}>
           {this.state.label}
         </button>
+        {this.props.manager('children')}
       </div>
     )
   }

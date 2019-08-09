@@ -17,6 +17,9 @@ export default class ManagedSelect extends ManagedInput {
     this.onBlurHandler = handlers.onBlurHandler.bind(this)
     this.onSelectHandler = handlers.onSelectHandler.bind(this)
     this.onOptionMouseOver = handlers.onOptionMouseOver.bind(this)
+    this.onFocusCoverZIndex = this.props.manager('onFocusCoverZIndex') || 2
+    this.disableOnFocusCover = this.props.manager('disableOnFocusCover')
+    this.disableSelectOptions = this.props.manager('disableSelectOptions')
     this.state = {
       ...this.state,
       stateKeysToDerive: this.stateKeysToDerive,
@@ -43,14 +46,14 @@ export default class ManagedSelect extends ManagedInput {
             </div>
           </div>
           {
-          this.state.focus && this.isMobile &&
+          this.state.focus && this.isMobile && !this.disableOnFocusCover &&
           <div
           onClick={() => this.onBlurHandler(undefined, undefined, true)}
-          style={{ position: 'fixed', top: 0, right: 0, bottom: 0, left: 0, zIndex: 998 }}>
+          style={{ position: 'fixed', top: 0, right: 0, bottom: 0, left: 0, zIndex: this.onFocusCoverZIndex }}>
           </div>
           }
           {
-          this.state.focus &&
+          this.state.focus && !this.disableSelectOptions &&
           <div
           style={{ zIndex: 999 }}
           ref={this.options}
@@ -87,6 +90,7 @@ export default class ManagedSelect extends ManagedInput {
             }
           </select>
         </div>
+        {this.props.manager('children')}
         <div className={this.errorContainerClass + this.state.decorator}>
           {this.state.error}
         </div>

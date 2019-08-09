@@ -22,6 +22,8 @@ export default function managerAgent(aspect, aspects) {
       return aspects.onChange && aspects.onChange()
     case 'onSelect':
       return aspects.onSelect && aspects.onSelect()
+    case 'children':
+      return aspects.children
     case 'error':
       return aspects.error || ''
     case 'options':
@@ -60,6 +62,12 @@ export default function managerAgent(aspect, aspects) {
       return aspects.resultsPerPage
     case 'resultAmount':
       return aspects.resultAmount
+    case 'disableOnFocusCover':
+      return aspects.disableOnFocusCover
+    case 'disableSelectOptions':
+        return aspects.disableSelectOptions
+    case 'onFocusCoverZIndex':
+      return aspects.onFocusCoverZIndex
     default:
       break
   }

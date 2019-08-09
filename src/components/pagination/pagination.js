@@ -78,6 +78,7 @@ export default class ManagedPagination extends ManagedInput {
         </button>
         ))
         }
+        {this.props.manager('children')}
       </div>
     )
   }

@@ -70,6 +70,7 @@ export default class ManagedMultipleCheckbox extends ManagedInput {
         ))
         }
         <div style={{ clear: 'both' }} />
+        {this.props.manager('children')}
       </div>
     )
   }

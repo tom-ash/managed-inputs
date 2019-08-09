@@ -297,8 +297,8 @@ var ManagedText = function (_ManagedInput) {
     var _this = _possibleConstructorReturn(this, (ManagedText.__proto__ || Object.getPrototypeOf(ManagedText)).call(this, props));
 
     _this.type = _this.props.manager('type');
-    _this.autoComplete = props.manager('autoComplete');
-    _this.match = props.manager('match');
+    _this.autoComplete = _this.props.manager('autoComplete');
+    _this.match = _this.props.manager('match');
     _this.containerClass = _this.classNames.container || 'managed-input text';
     _this.onKeyDownHandler = handlers.onKeyDownHandler.bind(_this);
     _this.onChangeHandler = handlers.onChangeHandler.bind(_this);
@@ -333,6 +333,7 @@ var ManagedText = function (_ManagedInput) {
           onKeyDown: this.onKeyDownHandler,
           onBlur: this.onBlurHandler,
           onChange: this.onChangeHandler }),
+        this.props.manager('children'),
         _react2.default.createElement(
           'div',
           { className: this.errorContainerClass + this.state.decorator },
@@ -601,6 +602,7 @@ var ManagedTextarea = function (_ManagedInput) {
           ' / ',
           this.state.counterLimit
         ),
+        this.props.manager('children'),
         _react2.default.createElement(
           'div',
           { className: this.errorContainerClass + this.state.decorator },
@@ -696,6 +698,9 @@ var ManagedSelect = function (_ManagedInput) {
     _this.onBlurHandler = handlers.onBlurHandler.bind(_this);
     _this.onSelectHandler = handlers.onSelectHandler.bind(_this);
     _this.onOptionMouseOver = handlers.onOptionMouseOver.bind(_this);
+    _this.onFocusCoverZIndex = _this.props.manager('onFocusCoverZIndex') || 2;
+    _this.disableOnFocusCover = _this.props.manager('disableOnFocusCover');
+    _this.disableSelectOptions = _this.props.manager('disableSelectOptions');
     _this.state = _extends({}, _this.state, {
       stateKeysToDerive: _this.stateKeysToDerive,
       options: _this.props.manager('options'),
@@ -736,12 +741,12 @@ var ManagedSelect = function (_ManagedInput) {
               _react2.default.createElement('div', { className: this.markClass + this.state.decorator })
             )
           ),
-          this.state.focus && this.isMobile && _react2.default.createElement('div', {
+          this.state.focus && this.isMobile && !this.disableOnFocusCover && _react2.default.createElement('div', {
             onClick: function onClick() {
               return _this2.onBlurHandler(undefined, undefined, true);
             },
-            style: { position: 'fixed', top: 0, right: 0, bottom: 0, left: 0, zIndex: 998 } }),
-          this.state.focus && _react2.default.createElement(
+            style: { position: 'fixed', top: 0, right: 0, bottom: 0, left: 0, zIndex: this.onFocusCoverZIndex } }),
+          this.state.focus && !this.disableSelectOptions && _react2.default.createElement(
             'div',
             {
               style: { zIndex: 999 },
@@ -786,6 +791,7 @@ var ManagedSelect = function (_ManagedInput) {
             })
           )
         ),
+        this.props.manager('children'),
         _react2.default.createElement(
           'div',
           { className: this.errorContainerClass + this.state.decorator },
@@ -834,6 +840,7 @@ function onKeyDownHandler(e) {
   if (keyCode === 9) {
     this.onBlurHandler(e, true);
   }
+  this.props.manager('onKeyDown', undefined, e.keyCode);
 }
 
 function onClickHandler(e) {
@@ -859,13 +866,10 @@ function onOptionMouseOver(index) {
 
 function onBlurHandler(e, tabDown, isMobile) {
   if (this.state.mouseOver === false || tabDown === true || isMobile) {
-    if (e && e.target) {
-      this.props.manager('onBlur', e.target.value);
-    }
-    this.setState({
-      focus: false,
-      mouseOver: false
-    });
+    var value = void 0;
+    if (e && e.target) value = e.target.value;
+    this.props.manager('onBlur', value);
+    this.setState({ focus: false, mouseOver: false });
   }
 }
 
@@ -1057,7 +1061,8 @@ var ManagedRadio = function (_ManagedInput) {
             _react2.default.createElement('div', { style: { clear: 'both' } })
           );
         }),
-        _react2.default.createElement('div', { style: { clear: 'both' } })
+        _react2.default.createElement('div', { style: { clear: 'both' } }),
+        this.props.manager('children')
       );
     }
   }]);
@@ -1260,7 +1265,8 @@ var ManagedCheckbox = function (_ManagedInput) {
             className: this.labelClass + this.state.decorator },
           this.state.label
         ),
-        _react2.default.createElement('div', { style: { clear: 'both' } })
+        _react2.default.createElement('div', { style: { clear: 'both' } }),
+        this.props.manager('children')
       );
     }
   }]);
@@ -1452,7 +1458,8 @@ var ManagedMultipleCheckbox = function (_ManagedInput) {
             _react2.default.createElement('div', { style: { clear: 'both' } })
           );
         }),
-        _react2.default.createElement('div', { style: { clear: 'both' } })
+        _react2.default.createElement('div', { style: { clear: 'both' } }),
+        this.props.manager('children')
       );
     }
   }]);
@@ -1619,7 +1626,8 @@ var ManagedButton = function (_ManagedInput) {
             onBlur: this.onBlurHandler,
             onClick: this.onClickHandler },
           this.state.label
-        )
+        ),
+        this.props.manager('children')
       );
     }
   }]);
@@ -1791,7 +1799,8 @@ var ManagedPagination = function (_ManagedInput) {
               } },
             _this2.jsxProvider(button)
           );
-        })
+        }),
+        this.props.manager('children')
       );
     }
   }]);
@@ -1966,6 +1975,8 @@ function managerAgent(aspect, aspects) {
       return aspects.onChange && aspects.onChange();
     case 'onSelect':
       return aspects.onSelect && aspects.onSelect();
+    case 'children':
+      return aspects.children;
     case 'error':
       return aspects.error || '';
     case 'options':
@@ -2004,6 +2015,12 @@ function managerAgent(aspect, aspects) {
       return aspects.resultsPerPage;
     case 'resultAmount':
       return aspects.resultAmount;
+    case 'disableOnFocusCover':
+      return aspects.disableOnFocusCover;
+    case 'disableSelectOptions':
+      return aspects.disableSelectOptions;
+    case 'onFocusCoverZIndex':
+      return aspects.onFocusCoverZIndex;
     default:
       break;
   }

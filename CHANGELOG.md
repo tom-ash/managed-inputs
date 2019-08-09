@@ -1,3 +1,9 @@
+## 0.3.3 (August 11, 2019)
+### ADD ManagedInputs children, CHG ManagedSelect onFocus API, FIX ManagedSelect onBlur
+* Added children to all ManagedInputs.
+* Extended ManagedSelect API regarding onFocus.
+* Fixed ManagedSelect onBlur.
+
 ## 0.3.2 (July 28, 2019)
 ### CHG ManagedRadio onClick, FIX ManagedRadio checked class
 * Changed ManagedRadio onClick hook to include the radio container.

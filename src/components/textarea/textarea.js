@@ -42,6 +42,7 @@ export default class ManagedTextarea extends ManagedInput {
         className={this.counterClass + this.state.decorator}>
           {this.state.counter} / {this.state.counterLimit}
         </div>
+        {this.props.manager('children')}
         <div className={this.errorContainerClass + this.state.decorator}>
           {this.state.error}
         </div>

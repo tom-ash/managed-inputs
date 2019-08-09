@@ -17,6 +17,7 @@ export function onKeyDownHandler(e) {
   if (keyCode === 9) {
     this.onBlurHandler(e, true)
   }
+  this.props.manager('onKeyDown', undefined, e.keyCode)
 }
 
 export function onClickHandler(e) {
@@ -40,11 +41,10 @@ export function onOptionMouseOver(index) {
 
 export function onBlurHandler(e, tabDown, isMobile) {
   if (this.state.mouseOver === false || tabDown === true || isMobile) {
-    if (e && e.target) { this.props.manager('onBlur', e.target.value) }
-    this.setState({
-      focus: false,
-      mouseOver: false
-    })
+    let value
+    if (e && e.target) value = e.target.value
+    this.props.manager('onBlur', value)
+    this.setState({ focus: false, mouseOver: false })
   }
 }
 

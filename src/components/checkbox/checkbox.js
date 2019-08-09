@@ -53,6 +53,7 @@ export default class ManagedCheckbox extends ManagedInput {
           {this.state.label}
         </div>
         <div style={{ clear: 'both' }} />
+        {this.props.manager('children')}
       </div>
     )
   }
