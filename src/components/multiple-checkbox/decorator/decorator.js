@@ -1,18 +1,16 @@
-export function decorator() {
+export function decorator(options) {
   let decorator = {}
-  let className
-  this.state.checkboxes.map((checkbox) => {
-    className = ''
-    if (this.input && this.input[checkbox.ref] && this.input[checkbox.ref].current.checked) {
-      className += ' ' + this.checkedClass
-    }
-    if (this.state.focus[checkbox.ref]) {
-      className += ' ' + this.focusClass
-    }
-    if (this.state.mouseOver[checkbox.ref]) {
-      className += ' ' + this.hoverClass
-    }
+  const values = {
+    ...(({ focus, mouseOver }) => ({ focus, mouseOver }))(this.state),
+    ...options
+  }
+  const { focus, mouseOver } = values
+  const { checkboxes } = this.props
+  checkboxes.map(checkbox => {
+    let className = ''
+    if (focus[checkbox.ref]) className += ' ' + this.focusClass
+    if (mouseOver[checkbox.ref]) className += ' ' + this.hoverClass
     decorator[checkbox.ref] = className
   })
-  this.setState({ decorator: decorator })
+  return decorator
 }

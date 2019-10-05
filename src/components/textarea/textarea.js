@@ -7,44 +7,43 @@ export default class ManagedTextarea extends ManagedInput {
     super(props)
     this.containerClass = this.classNames.container || 'managed-input textarea'
     this.counterClass = this.classNames.counter || 'counter'
-    this.stateKeysToDerive = [...this.stateKeysToDerive, 'counterLimit']
-    this.stateKeysToUpdate = [...this.stateKeysToUpdate, 'counterLimit', 'counter']
     this.onChangeHandler = handlers.onChangeHandler.bind(this)
     this.state = {
       ...this.state,
-      stateKeysToDerive: this.stateKeysToDerive,
-      counterLimit: this.props.manager('counterLimit'),
       counter: 0
     }
   }
 
-  render() { 
+  render() {
+    const { display, value, disabled, label, counterLimit, children, error } = this.props 
+    const { decorator, counter } = this.state
+
     return (
       <div
-      style={{ display: this.state.display }}
-      className={this.containerClass + this.state.decorator}
+      style={{ display }}
+      className={this.containerClass + decorator}
       onMouseOver={this.onMouseOverHandler}
       onMouseLeave={this.onMouseLeaveHandler}
       onClick={this.onClickHandler}>
-        <div className={this.labelClass + this.state.decorator}>
-          {this.state.label}
+        <div className={this.labelClass + decorator}>
+          {label}
         </div>
         <textarea
         ref={this.input}
-        disabled = {this.state.disabled}
+        disabled = {disabled}
         id={this.id}
-        className={this.inputClass + this.state.decorator}
-        value={this.controlled ? this.state.value : undefined}
+        className={this.inputClass + decorator}
+        value={value}
         onFocus={this.onFocusHandler}
         onBlur={this.onBlurHandler}
         onChange={this.onChangeHandler} />
         <div
-        className={this.counterClass + this.state.decorator}>
-          {this.state.counter} / {this.state.counterLimit}
+        className={this.counterClass + decorator}>
+          {counter} / {counterLimit}
         </div>
-        {this.props.manager('children')}
-        <div className={this.errorContainerClass + this.state.decorator}>
-          {this.state.error}
+        {children}
+        <div className={this.errorContainerClass + decorator}>
+          {error}
         </div>
       </div>
     )

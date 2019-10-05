@@ -1,10 +1,12 @@
 export function onKeyDownHandler(e) {
-  this.props.manager('onKeyDown', e.target.value, e)
+  const { onKeyDown } = this.props
+  onKeyDown && onKeyDown(e.target.value)
 }
 
 export function onChangeHandler(e) {
+  const { onChange } = this.props
   if (this.match && !e.target.value.match(this.match)) {
     this.input.current.value = this.input.current.value.slice(0, -1)
   }
-  this.props.manager('onChange', e.target.value)
+  onChange && onChange(e.target.value)
 }

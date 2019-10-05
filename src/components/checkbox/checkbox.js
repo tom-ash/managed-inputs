@@ -1,7 +1,6 @@
 import React from 'react'
 import ManagedInput from '../input/input'
 import * as handlers from './handlers/handlers'
-import { decorator } from './decorator/decorator'
 
 export default class ManagedCheckbox extends ManagedInput {
   constructor(props) {
@@ -10,30 +9,24 @@ export default class ManagedCheckbox extends ManagedInput {
     this.checkboxContainerClass = this.classNames.checkboxContainerClass || 'container'
     this.tickClass = this.classNames.tick || 'tick'
     this.checkedClass = this.classNames.checked || 'checked'
-    this.stateKeysToDerive = [...this.stateKeysToDerive, 'checked']
-    this.stateKeysToUpdate = [...this.stateKeysToUpdate, 'checked']
     this.onClickHandler = handlers.onClickHandler.bind(this)
-    this.decorator = decorator.bind(this)
-    this.state = {
-      ...this.state,
-      stateKeysToDerive: this.stateKeysToDerive,
-      checked: this.props.manager('checked')
-    }
   }
 
   render() {
+    const { display, checked, label, children } = this.props
+    const decorator = `${this.state.decorator}${checked ? ' value' : ''}`
     return (
       <div
-      style={{ display: this.state.display }}
-      className={this.containerClass + this.state.decorator}>
+      style={{ display }}
+      className={this.containerClass + decorator}>
         <div
-        className={this.inputClass + this.state.decorator}
+        className={this.inputClass + decorator}
         onMouseOver={this.onMouseOverHandler}
         onMouseLeave={this.onMouseLeaveHandler}
         onClick={this.onClickHandler}>
           {
-          this.state.checked &&
-          <div className={this.tickClass + this.state.decorator} />
+          checked &&
+          <div className={this.tickClass + decorator} />
           }
         </div>
         <input
@@ -41,7 +34,7 @@ export default class ManagedCheckbox extends ManagedInput {
         type='checkbox'
         id={this.id}
         style={{ position: 'absolute', left: -10000 }}
-        checked={this.state.checked}
+        checked={checked}
         onFocus={this.onFocusHandler}
         onBlur={this.onBlurHandler}
         onChange={this.onClickHandler} />
@@ -49,11 +42,11 @@ export default class ManagedCheckbox extends ManagedInput {
         onMouseOver={this.onMouseOverHandler}
         onMouseLeave={this.onMouseLeaveHandler}
         onClick={this.onClickHandler}
-        className={this.labelClass + this.state.decorator}>
-          {this.state.label}
+        className={this.labelClass + decorator}>
+          {label}
         </div>
         <div style={{ clear: 'both' }} />
-        {this.props.manager('children')}
+        {children}
       </div>
     )
   }

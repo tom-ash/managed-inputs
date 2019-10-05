@@ -1,39 +1,52 @@
 export function onMouseOverHandler(e) {
-  this.setState({ mouseOver: true })
-  this.props.manager('onMouseOver', e.target.value)
+  const { onMouseOver } = this.props
+  this.setState({
+    mouseOver: true,
+    decorator: this.decorator({ mouseOver: true })
+  })
+  onMouseOver && onMouseOver(e.target.value)
 }
 
 export function onMouseLeaveHandler(e) {
-  this.setState({ mouseOver: false })
-  this.props.manager('onMouseLeave', e.target.value)
+  const { onMouseLeave } = this.props
+  this.setState({
+    mouseOver: false,
+    decorator: this.decorator({ mouseOver: false })
+  })
+  onMouseLeave && onMouseLeave(e.target.value)
 }
 
 export function onFocusHandler(e) {
+  const { onFocus } = this.props
   let autofill = true
-  if (this.state.value === '') { autofill = false }
+  if (this.state.value === '') autofill = false
   this.setState({
-    autofill: autofill,
-    focus: true
+    autofill,
+    focus: true,
+    decorator: this.decorator({ focus: true })
   })
-  this.props.manager('onFocus', e.target.value)
+  onFocus && onFocus(e.target.value)
 }
 
 export function onBlurHandler(e) {
+  const { onBlur } =  this.props
   let autofill = true
-  if (this.state.value === '') { autofill = false }
+  if (this.state.value === '') autofill = false
   this.setState({
-    autofill: autofill,
-    focus: false
+    autofill,
+    focus: false,
+    decorator: this.decorator({ focus: false })
   })
-  this.props.manager('onBlur', e.target.value)
+  onBlur && onBlur(e.target.value)
 }
 
 export function onClickHandler(e) {
+  const { onClick } = this.props
   this.input.current.focus()
-  this.props.manager('onClick', e.target.value)
+  onClick && onClick(e.target.value)
 }
 
 export function onChangeHandler(e) {
-  this.forceUpdate()
-  this.props.manager('onChange', e.target.value)
+  const { onChange } = this.props
+  onChange && onChange(e.target.value)
 }

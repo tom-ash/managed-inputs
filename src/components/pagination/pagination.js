@@ -13,8 +13,6 @@ export default class ManagedPagination extends ManagedInput {
     this.decorator = decorator.bind(this)
     this.componentDidMount = componentDidMount
     this.componentDidUpdate = componentDidUpdate
-    this.stateKeysToDerive = [...this.stateKeysToDerive, 'resultsPerPage', 'resultAmount', 'current']
-    this.stateKeysToUpdate = [...this.stateKeysToUpdate, 'resultsPerPage', 'resultAmount', 'buttons', 'current']
     this.onMouseOverHandler = handlers.onMouseOverHandler.bind(this)
     this.onMouseLeaveHandler = handlers.onMouseLeaveHandler.bind(this)
     this.onFocusHandler = handlers.onFocusHandler.bind(this)
@@ -22,14 +20,10 @@ export default class ManagedPagination extends ManagedInput {
     this.onClickHandler = handlers.onClickHandler.bind(this)
     this.state = {
       ...this.state,
-      stateKeysToDerive: this.stateKeysToDerive,
-      resultsPerPage: this.props.manager('resultsPerPage'),
-      resultAmount: this.props.manager('resultAmount'),
       buttons: [],
-      current: this.props.manager('current'),
       mouseOver: {},
       focus: {},
-      decorator: {}
+      decorator: []
     }
     this.jsxProvider = this.jsxProvider.bind(this)
     this.showButton = this.showButton.bind(this)
@@ -37,48 +31,47 @@ export default class ManagedPagination extends ManagedInput {
   }
 
   jsxProvider(button) {
-    if (button === 0) {
-      return '<'
-    } else if (button === this.state.buttons.length - 1) {
-      return '>'
-    } else {
-      return button
-    }
+    if (button === 0) return '<'
+    else if (button === this.state.buttons.length - 1) return '>'
+    else return button
   }
 
   showButton(button) {
-    if (this.state.buttons.length == 2 || this.state.buttons.length == 3) return false
+    if (this.state.buttons.length < 4) return false
     return true
   }
 
   edgeHandler(button) {
-    if (button === 0 && this.state.current === 1) return 'hidden'
-    if (button === this.state.buttons.length - 1 && this.state.current === this.state.buttons.length - 2) return 'hidden'
+    if (button === 0 && this.props.current === 1) return 'hidden'
+    if (button === this.state.buttons.length - 1 && this.props.current === this.state.buttons.length - 2) return 'hidden'
     return 'visible'
   }
 
   render() {
+    const { display, current, children } = this.props
+    const { buttons, decorator } = this.state
+
     return (
       <div
-      style={{ display: this.state.display }}
+      style={{ display }}
       className={this.containerClass}>
         {
-        this.state.buttons.map(button => (
-        this.showButton(button) &&
-        <button
-        style = {{ visibility: this.edgeHandler(button) }}
-        key={`paginationButtoNo${button}`}
-        className={this.inputClass + this.state.decorator[button]}
-        onMouseOver={() => this.onMouseOverHandler(button)}
-        onMouseLeave={() => this.onMouseLeaveHandler(button)}
-        onFocus={() => this.onFocusHandler(button)}
-        onBlur={() => this.onBlurHandler(button)}
-        onClick={() => this.onClickHandler(button)}>
-          {this.jsxProvider(button)}
-        </button>
+        buttons.map((button, index) => (
+          this.showButton(button) &&
+          <button
+          style = {{ visibility: this.edgeHandler(button) }}
+          key={`paginationButtoNo${button}`}
+          className={`${this.inputClass}${current === index ? ' current' : ''}${decorator[button] ? decorator[button] : ''}`}
+          onMouseOver={() => this.onMouseOverHandler(button)}
+          onMouseLeave={() => this.onMouseLeaveHandler(button)}
+          onFocus={() => this.onFocusHandler(button)}
+          onBlur={() => this.onBlurHandler(button)}
+          onClick={() => this.onClickHandler(button)}>
+            {this.jsxProvider(button)}
+          </button>
         ))
         }
-        {this.props.manager('children')}
+        {children}
       </div>
     )
   }

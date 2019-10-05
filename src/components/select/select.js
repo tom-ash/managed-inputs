@@ -10,39 +10,41 @@ export default class ManagedSelect extends ManagedInput {
     this.optionsClass = this.classNames.options || 'options'
     this.optionClass = this.classNames.option || 'option'
     this.markClass = this.classNames.mark || 'mark'
-    this.stateKeysToDerive = [...this.stateKeysToDerive, 'options']
-    this.stateKeysToUpdate = [...this.stateKeysToUpdate, 'options', 'preSelected']
     this.onClickHandler = handlers.onClickHandler.bind(this)
     this.onKeyDownHandler = handlers.onKeyDownHandler.bind(this)
     this.onBlurHandler = handlers.onBlurHandler.bind(this)
     this.onSelectHandler = handlers.onSelectHandler.bind(this)
     this.onOptionMouseOver = handlers.onOptionMouseOver.bind(this)
-    this.onFocusCoverZIndex = this.props.manager('onFocusCoverZIndex') || 2
-    this.disableOnFocusCover = this.props.manager('disableOnFocusCover')
-    this.disableSelectOptions = this.props.manager('disableSelectOptions')
+    this.onFocusCoverZIndex = this.props.onFocusCoverZIndex || 2
+    this.disableOnFocusCover = this.props.disableOnFocusCover
+    this.disableSelectOptions = this.props.disableSelectOptions
     this.state = {
       ...this.state,
-      stateKeysToDerive: this.stateKeysToDerive,
-      options: this.props.manager('options'),
       preSelected: 0
     }
   }
 
   render() {
+    const { display, value, options, error, children, label } = this.props
+    const decorator = `${this.state.decorator}${value !== '' ? ' value' : ''}${error ? ' error' : ''}`
+
     return (
       <div
-      style={{ display: this.state.display }}
-      className={this.containerClass + this.state.decorator}>
+      style={{ display }}
+      className={this.containerClass + decorator}>
         <div
         onMouseOver={this.onMouseOverHandler}
         onMouseLeave={this.onMouseLeaveHandler}>
           <div onClick={this.onClickHandler}>
-            <div className={this.labelClass + this.state.decorator}>
-              {this.state.label}
+            <div className={this.labelClass + decorator}>
+              {label}
             </div>
-            <div className={this.inputClass + this.state.decorator}>
-              {this.state.options.find(option => (option.value === this.state.value)).text}
-              <div className={this.markClass + this.state.decorator} />
+            <div className={this.inputClass + decorator}>
+              {
+              (options.find(option => (option.value === value)) || {}).text
+
+              }
+              <div className={this.markClass + decorator} />
             </div>
           </div>
           {
@@ -57,14 +59,14 @@ export default class ManagedSelect extends ManagedInput {
           <div
           style={{ zIndex: 999 }}
           ref={this.options}
-          className={this.optionsClass + this.state.decorator}>
+          className={this.optionsClass + decorator}>
             {
-            this.state.options.map((option, index) => (
+            options.map((option, index) => (
             <div
             key={`key-proxy-${option.value}-${index}`}
             onMouseOver={() => this.onOptionMouseOver(index)}
             onClick={() => this.onSelectHandler(option)}
-            className={this.optionClass + this.state.decorator + `${this.state.preSelected === index ? ' preselected' : ''}`}>
+            className={this.optionClass + decorator + `${this.state.preSelected === index ? ' preselected' : ''}`}>
               {option.text}
             </div>))
             }
@@ -73,7 +75,7 @@ export default class ManagedSelect extends ManagedInput {
           <select
           ref={this.input}
           id={this.id}
-          value={this.state.value}
+          value={value}
           readOnly={true}
           style={{ position: 'absolute', left: -10000 }}
           disabled={this.state.disabled}
@@ -81,18 +83,18 @@ export default class ManagedSelect extends ManagedInput {
           onKeyDown={this.onKeyDownHandler}
           onBlur={this.onBlurHandler}>
             {
-            this.state.options.map((option, index) => (
+            options.map((option, index) => (
             <option
             key={`key-original-${option.value}-${index}`}
             value={option.value}>
-              {JSON.stringify(option.text)}
+              {option.value}
             </option>))
             }
           </select>
         </div>
-        {this.props.manager('children')}
-        <div className={this.errorContainerClass + this.state.decorator}>
-          {this.state.error}
+        {children}
+        <div className={this.errorContainerClass + decorator}>
+          {error}
         </div>
       </div>
     )

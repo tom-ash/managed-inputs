@@ -1,4 +1,5 @@
 export function onClickHandler() {
+  const { onClick, checked } = this.props
   this.input.current.focus()
-  this.props.manager('onClick', !this.state.checked)
+  onClick(!checked)
 }

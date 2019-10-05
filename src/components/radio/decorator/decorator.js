@@ -1,20 +1,16 @@
-export function decorator() {
-  let decorator = []
-  this.radios.map((radio, index) => {
+export function decorator(options) {
+  let decorator = {}
+  const values = {
+    ...(({ focus, mouseOver }) => ({ focus, mouseOver }))(this.state),
+    ...options
+  }
+  const { focus, mouseOver } = values
+  const { radios } = this.props
+  radios.map((_, index) => {
     let className = ''
-    if (this.input && this.input[index] && this.input[index].current.checked) {
-      className += ' ' + this.checkedClass
-    }
-    if (this.state.focus[index]) {
-      className += ' ' + this.focusClass
-    }
-    if (this.state.mouseOver[index]) {
-      className += ' ' + this.hoverClass
-    }
-    if (this.state.error[index]) {
-      className += ' ' + this.errorClass
-    }
+    if (focus[index]) className += ' ' + this.focusClass
+    if (mouseOver[index]) className += ' ' + this.hoverClass
     decorator[index] = className
   })
-  this.setState({ decorator: decorator })
+  return decorator
 }

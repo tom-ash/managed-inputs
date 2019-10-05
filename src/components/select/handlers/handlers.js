@@ -1,4 +1,5 @@
 export function onKeyDownHandler(e) {
+  const { onSelect, onKeyDown } = this.props
   const keyCode = e.keyCode
   if (keyCode === 38 || keyCode === 40) {
     e.preventDefault()
@@ -7,32 +8,34 @@ export function onKeyDownHandler(e) {
     this.setState({ preSelected: preSelected })
   }
   if (keyCode === 13) {
-    const option = this.state.options[this.state.preSelected]
+    const option = this.props.options[this.state.preSelected]
     this.setState({
       focus: false,
       mouseOver: false
     })
-    this.props.manager('onSelect', option)
+    onSelect(option)
   }
   if (keyCode === 9) {
     this.onBlurHandler(e, true)
   }
-  this.props.manager('onKeyDown', undefined, e.keyCode)
+  onKeyDown && onKeyDown(e.keyCode)
 }
 
 export function onClickHandler(e) {
+  const { onFocus, onClick } = this.props
   if (this.isMobile()) {
     let autofill = true
-    if (this.state.value === '') { autofill = false }
+    if (this.props.value === '') { autofill = false }
     this.setState({
       autofill: autofill,
-      focus: true
+      focus: true,
+      decorator: this.decorator({ focus: true })
     })
-    this.props.manager('onFocus', e.target.value)
+    onFocus && onFocus(e.target.value)
   } else {
     this.input.current.focus()
   }
-  this.props.manager('onClick', e.target.value)
+  onClick && onClick(e.target.value)
 }
 
 export function onOptionMouseOver(index) {
@@ -40,29 +43,36 @@ export function onOptionMouseOver(index) {
 }
 
 export function onBlurHandler(e, tabDown, isMobile) {
+  const { onBlur } = this.props
   if (this.state.mouseOver === false || tabDown === true || isMobile) {
     let value
     if (e && e.target) value = e.target.value
-    this.props.manager('onBlur', value)
-    this.setState({ focus: false, mouseOver: false })
+    onBlur && onBlur(value)
+    this.setState({
+      focus: false,
+      mouseOver: false,
+      decorator: this.decorator({ focus: false, mouseOver: false })
+    })
   }
 }
 
 export function onSelectHandler(option) {
+  const { onSelect } = this.props
   let autofill = true
-  if (option.value === '') { autofill = false }
+  if (option.value === '') autofill = false
   this.setState({
     autofill: autofill,
     focus: false,
-    mouseOver: false
+    mouseOver: false,
+    decorator: this.decorator({ focus: false, mouseOver: false, value: option.value })
   })
-  this.props.manager('onSelect', option)
+  onSelect(option)
 }
 
 function computePreSelected(keyCode) {
   let preSelected = this.state.preSelected
   if (keyCode == 40) {
-    if (preSelected < this.state.options.length - 1) {
+    if (preSelected < this.props.options.length - 1) {
       return preSelected + 1
     } else {
       return 0
@@ -71,7 +81,7 @@ function computePreSelected(keyCode) {
     if (preSelected > 0) {
       return preSelected - 1
     } else {
-      return this.state.options.length - 1
+      return this.props.options.length - 1
     }
   }
 }
@@ -86,7 +96,7 @@ function computeScroll(preSelectedIndex, keyCode) {
   switch (preSelectedIndex) {
     case 0:
       return 0
-    case this.state.options.length - 1:
+    case this.props.options.length - 1:
       return options.scrollHeight
     default:
       if (keyCode === 38 && preSelectedOffset < optionsScroll) {

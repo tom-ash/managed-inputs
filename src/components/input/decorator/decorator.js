@@ -1,21 +1,12 @@
-export function decorator() {
+export function decorator(options) {
+  const values = {
+    ...(({ autofill, focus, mouseOver }) => ({ autofill, focus, mouseOver }))(this.state),
+    ...options
+  }
+  const { autofill, focus, mouseOver } = values
   let className = ''
-  if (this.input.current.value) {
-    className += ' ' + this.valueClass
-  }
-  if (this.state.autofill) {
-    className += ' ' + this.autofillClass
-  }
-  if (this.state.focus) {
-    className += ' ' + this.focusClass
-  }
-  if (this.state.mouseOver) {
-    className += ' ' + this.hoverClass
-  }
-  if (this.state.error) {
-    className += ' ' + this.errorClass
-  }
-  this.setState({
-    decorator: className
-  })
+  if (autofill) className += ' ' + this.autofillClass
+  if (focus) className += ' ' + this.focusClass
+  if (mouseOver) className += ' ' + this.hoverClass
+  return className
 }

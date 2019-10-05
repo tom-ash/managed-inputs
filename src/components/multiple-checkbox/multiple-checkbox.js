@@ -11,8 +11,6 @@ export default class ManagedMultipleCheckbox extends ManagedInput {
     this.checkboxContainerClass = this.classNames.checkboxContainerClass || 'container'
     this.tickClass = this.classNames.tick || 'tick'
     this.checkedClass = this.classNames.checked || 'checked'
-    this.stateKeysToDerive = [...this.stateKeysToDerive, 'checkboxes']
-    this.stateKeysToUpdate = [...this.stateKeysToUpdate, 'checkboxes']
     this.onMouseOverHandler = handlers.onMouseOverHandler.bind(this)
     this.onMouseLeaveHandler = handlers.onMouseLeaveHandler.bind(this)
     this.onFocusHandler = handlers.onFocusHandler.bind(this)
@@ -22,8 +20,6 @@ export default class ManagedMultipleCheckbox extends ManagedInput {
     this.decorator = decorator.bind(this)
     this.state = {
       ...this.state,
-      stateKeysToDerive: this.stateKeysToDerive,
-      checkboxes: this.props.manager('checkboxes'),
       mouseOver: {},
       focus: {},
       decorator: {}
@@ -31,22 +27,27 @@ export default class ManagedMultipleCheckbox extends ManagedInput {
   }
 
   render() {
+    const { display, checkboxes, children } = this.props
+    const { decorator } = this.state
     return (
       <div
-      style={{ display: this.state.display }}>
+      style={{ display }}>
         {
-        this.state.checkboxes.map(checkbox => (
+        checkboxes.map(checkbox => (
           <div
-          className={this.containerClass + this.state.decorator[checkbox.ref]}
+          className={`${this.containerClass}${checkbox.checked ? ' checked' : ''}${decorator[checkbox.ref] ? decorator[checkbox.ref] : ''}`}
           key={`multiple-checkbox-${checkbox.ref}`}>
             <div
-            className={this.inputClass + this.state.decorator[checkbox.ref]}
+            className={`${this.inputClass}${checkbox.checked ? ' checked' : ''}${decorator[checkbox.ref] ? decorator[checkbox.ref] : ''}`}
             onMouseOver={(e) => this.onMouseOverHandler(e, checkbox.ref)}
             onMouseLeave={(e) => this.onMouseLeaveHandler(e, checkbox.ref)}
             onClick={() => this.onClickHandler(checkbox.ref)}>
               {
               checkbox.checked &&
-              <div className={this.tickClass + this.state.decorator[checkbox.ref]} />
+              <div
+              className={this.tickClass + this.state.decorator[checkbox.ref]}
+              className={`${this.tickClass} ${decorator[checkbox.ref] ? decorator[checkbox.ref] : ''} checked`}
+              />
               }
             </div>
             <input
@@ -57,12 +58,12 @@ export default class ManagedMultipleCheckbox extends ManagedInput {
             type='checkbox'
             checked={checkbox.checked}
             onKeyDown={(e) => this.onKeyDownHandler(e, checkbox.ref)}
-            onChange={() => {}} />
+            onChange={() => null} />
             <div
             onMouseOver={(e) => this.onMouseOverHandler(e, checkbox.ref)}
             onMouseLeave={(e) => this.onMouseLeaveHandler(e, checkbox.ref)}
             onClick={() => this.onClickHandler(checkbox.ref)}
-            className={this.labelClass + this.state.decorator[checkbox.ref]}>
+            className={`${this.labelClass}${checkbox.checked ? ' checked' : ''}${decorator[checkbox.ref] ? decorator[checkbox.ref] : ''}`} >
               {checkbox.label}
             </div>
             <div style={{ clear: 'both' }} />
@@ -70,7 +71,7 @@ export default class ManagedMultipleCheckbox extends ManagedInput {
         ))
         }
         <div style={{ clear: 'both' }} />
-        {this.props.manager('children')}
+        {children}
       </div>
     )
   }

@@ -1,18 +1,16 @@
-export function decorator() {
-  let decorator = {}
-  let className;
-  [0].concat(this.state.buttons).map(button => {
-    className = ''
-    if (this.state.focus[button]) {
-      className += ' ' + this.focusClass
-    }
-    if (this.state.mouseOver[button]) {
-      className += ' ' + this.hoverClass
-    }
-    if (this.state.current === button) {
-      className += ' ' + this.currentClass
-    }
+export function decorator(options) {
+  let decorator = []
+  const values = {
+    ...(({ focus, mouseOver }) => ({ focus, mouseOver }))(this.state),
+    ...options
+  }
+  const { focus, mouseOver } = values
+  const { buttons } = this.state;
+  [0].concat(buttons).map(button => {
+    let className = ''
+    if (focus[button]) className += ' ' + this.focusClass
+    if (mouseOver[button]) className += ' ' + this.hoverClass
     decorator[button] = className
   })
-  this.setState({ decorator: decorator })
+  return decorator
 }

@@ -108,15 +108,11 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _lifecycle = __webpack_require__(4);
-
-var lifecycle = _interopRequireWildcard(_lifecycle);
-
-var _handlers = __webpack_require__(5);
+var _handlers = __webpack_require__(4);
 
 var handlers = _interopRequireWildcard(_handlers);
 
-var _decorator = __webpack_require__(6);
+var _decorator = __webpack_require__(5);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -137,9 +133,9 @@ var ManagedInput = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (ManagedInput.__proto__ || Object.getPrototypeOf(ManagedInput)).call(this, props));
 
     _this.input = _react2.default.createRef();
-    _this.controlled = _this.props.manager('controlled');
-    _this.id = _this.props.manager('id');
-    _this.classNames = _this.props.manager('classNames');
+    _this.controlled = _this.props.controlled;
+    _this.id = _this.props.id;
+    _this.classNames = _this.props.classNames || {};
     _this.inputClass = _this.classNames.input || 'input';
     _this.labelClass = _this.classNames.label || 'label';
     _this.valueClass = _this.classNames.value || 'value';
@@ -148,9 +144,6 @@ var ManagedInput = function (_React$Component) {
     _this.hoverClass = _this.classNames.hover || 'hover';
     _this.errorClass = _this.classNames.error || 'error';
     _this.errorContainerClass = _this.classNames.error || 'error-container';
-    _this.componentDidMount = lifecycle.componentDidMount;
-    _this.shouldComponentUpdate = lifecycle.shouldComponentUpdate;
-    _this.componentDidUpdate = lifecycle.componentDidUpdate;
     _this.onMouseOverHandler = handlers.onMouseOverHandler.bind(_this);
     _this.onMouseLeaveHandler = handlers.onMouseLeaveHandler.bind(_this);
     _this.onFocusHandler = handlers.onFocusHandler.bind(_this);
@@ -158,15 +151,7 @@ var ManagedInput = function (_React$Component) {
     _this.onChangeHandler = handlers.onChangeHandler.bind(_this);
     _this.onClickHandler = handlers.onClickHandler.bind(_this);
     _this.decorator = _decorator.decorator.bind(_this);
-    _this.stateKeysToDerive = ['display', 'disabled', 'value', 'label', 'error'];
-    _this.stateKeysToUpdate = _this.stateKeysToDerive.concat(['mouseOver', 'focus', 'decorator']);
     _this.state = {
-      stateKeysToDerive: _this.stateKeysToDerive,
-      display: _this.props.manager('display'),
-      disabled: _this.props.manager('disabled'),
-      value: _this.props.manager('value'),
-      label: _this.props.manager('label'),
-      error: _this.props.manager('error'),
       mouseOver: false,
       autofill: true,
       focus: false,
@@ -180,11 +165,6 @@ var ManagedInput = function (_React$Component) {
     value: function isMobile() {
       return (/Android|BlackBerry|IEMobile|Opera Mini|iPad|iPhone|iPod|webOS/i.test(navigator.userAgent)
       );
-    }
-  }], [{
-    key: 'getDerivedStateFromProps',
-    value: function getDerivedStateFromProps(nextProps, prevstate) {
-      return lifecycle.getDerivedStateFromProps(nextProps, prevstate);
     }
   }]);
 
@@ -203,43 +183,39 @@ exports.default = ManagedInput;
 Object.defineProperty(exports, "__esModule", {
          value: true
 });
-exports.managerAgent = exports.ManagedPagination = exports.ManagedMultipleCheckbox = exports.ManagedCheckbox = exports.ManagedButton = exports.ManagedRadio = exports.ManagedTextarea = exports.ManagedSelect = exports.ManagedText = undefined;
+exports.ManagedPagination = exports.ManagedMultipleCheckbox = exports.ManagedCheckbox = exports.ManagedButton = exports.ManagedRadio = exports.ManagedTextarea = exports.ManagedSelect = exports.ManagedText = undefined;
 
 var _text = __webpack_require__(3);
 
 var _text2 = _interopRequireDefault(_text);
 
-var _textarea = __webpack_require__(8);
+var _textarea = __webpack_require__(7);
 
 var _textarea2 = _interopRequireDefault(_textarea);
 
-var _select = __webpack_require__(10);
+var _select = __webpack_require__(9);
 
 var _select2 = _interopRequireDefault(_select);
 
-var _radio = __webpack_require__(12);
+var _radio = __webpack_require__(11);
 
 var _radio2 = _interopRequireDefault(_radio);
 
-var _checkbox = __webpack_require__(15);
+var _checkbox = __webpack_require__(14);
 
 var _checkbox2 = _interopRequireDefault(_checkbox);
 
-var _multipleCheckbox = __webpack_require__(18);
+var _multipleCheckbox = __webpack_require__(16);
 
 var _multipleCheckbox2 = _interopRequireDefault(_multipleCheckbox);
 
-var _button = __webpack_require__(21);
+var _button = __webpack_require__(19);
 
 var _button2 = _interopRequireDefault(_button);
 
-var _pagination = __webpack_require__(23);
+var _pagination = __webpack_require__(20);
 
 var _pagination2 = _interopRequireDefault(_pagination);
-
-var _managerAgent = __webpack_require__(27);
-
-var _managerAgent2 = _interopRequireDefault(_managerAgent);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -251,7 +227,6 @@ exports.ManagedButton = _button2.default;
 exports.ManagedCheckbox = _checkbox2.default;
 exports.ManagedMultipleCheckbox = _multipleCheckbox2.default;
 exports.ManagedPagination = _pagination2.default;
-exports.managerAgent = _managerAgent2.default;
 
 /***/ }),
 /* 3 */
@@ -274,7 +249,7 @@ var _input = __webpack_require__(1);
 
 var _input2 = _interopRequireDefault(_input);
 
-var _handlers = __webpack_require__(7);
+var _handlers = __webpack_require__(6);
 
 var handlers = _interopRequireWildcard(_handlers);
 
@@ -296,9 +271,10 @@ var ManagedText = function (_ManagedInput) {
 
     var _this = _possibleConstructorReturn(this, (ManagedText.__proto__ || Object.getPrototypeOf(ManagedText)).call(this, props));
 
-    _this.type = _this.props.manager('type');
-    _this.autoComplete = _this.props.manager('autoComplete');
-    _this.match = _this.props.manager('match');
+    _this.input = _react2.default.createRef();
+    _this.type = _this.props.type;
+    _this.autoComplete = _this.props.autoComplete;
+    _this.match = _this.props.match;
     _this.containerClass = _this.classNames.container || 'managed-input text';
     _this.onKeyDownHandler = handlers.onKeyDownHandler.bind(_this);
     _this.onChangeHandler = handlers.onChangeHandler.bind(_this);
@@ -308,36 +284,46 @@ var ManagedText = function (_ManagedInput) {
   _createClass(ManagedText, [{
     key: 'render',
     value: function render() {
+      var _props = this.props,
+          display = _props.display,
+          disabled = _props.disabled,
+          value = _props.value,
+          label = _props.label,
+          children = _props.children,
+          error = _props.error;
+
+      var decorator = '' + this.state.decorator + (error ? ' error' : '') + (this.input.current && this.input.current.value ? ' value' : '');
+
       return _react2.default.createElement(
         'div',
         {
-          style: { display: this.state.display },
-          className: this.containerClass + this.state.decorator,
+          style: { display: display },
+          className: this.containerClass + decorator,
           onMouseOver: this.onMouseOverHandler,
           onMouseLeave: this.onMouseLeaveHandler,
           onClick: this.onClickHandler },
         _react2.default.createElement(
           'div',
-          { className: this.labelClass + this.state.decorator },
-          this.state.label
+          { className: this.labelClass + decorator },
+          label
         ),
         _react2.default.createElement('input', {
           ref: this.input,
           type: this.type,
-          disabled: this.state.disabled,
+          disabled: disabled,
           id: this.id,
-          className: this.inputClass + this.state.decorator,
+          className: '' + this.inputClass + decorator,
           autoComplete: this.autoComplete,
-          value: this.controlled ? this.state.value : undefined,
+          value: this.controlled ? value : undefined,
           onFocus: this.onFocusHandler,
           onKeyDown: this.onKeyDownHandler,
           onBlur: this.onBlurHandler,
           onChange: this.onChangeHandler }),
-        this.props.manager('children'),
+        children,
         _react2.default.createElement(
           'div',
-          { className: this.errorContainerClass + this.state.decorator },
-          this.state.error
+          { className: this.errorContainerClass + decorator },
+          error
         )
       );
     }
@@ -358,39 +344,69 @@ exports.default = ManagedText;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.componentDidMount = componentDidMount;
-exports.getDerivedStateFromProps = getDerivedStateFromProps;
-exports.shouldComponentUpdate = shouldComponentUpdate;
-exports.componentDidUpdate = componentDidUpdate;
-function componentDidMount() {
-  this.decorator();
-}
+exports.onMouseOverHandler = onMouseOverHandler;
+exports.onMouseLeaveHandler = onMouseLeaveHandler;
+exports.onFocusHandler = onFocusHandler;
+exports.onBlurHandler = onBlurHandler;
+exports.onClickHandler = onClickHandler;
+exports.onChangeHandler = onChangeHandler;
+function onMouseOverHandler(e) {
+  var onMouseOver = this.props.onMouseOver;
 
-function getDerivedStateFromProps(nextProps, prevState) {
-  var returnObject = {};
-
-  prevState.stateKeysToDerive.map(function (element) {
-    if (JSON.stringify(nextProps.manager(element)) !== JSON.stringify(prevState[element])) {
-      returnObject[element] = nextProps.manager(element);
-    }
+  this.setState({
+    mouseOver: true,
+    decorator: this.decorator({ mouseOver: true })
   });
-  return returnObject;
+  onMouseOver && onMouseOver(e.target.value);
 }
 
-function shouldComponentUpdate(_, nextState) {
-  var _this = this;
+function onMouseLeaveHandler(e) {
+  var onMouseLeave = this.props.onMouseLeave;
 
-  var outcome = false;
-  this.stateKeysToUpdate.map(function (element) {
-    if (JSON.stringify(_this.state[element]) !== JSON.stringify(nextState[element])) {
-      outcome = true;
-    }
+  this.setState({
+    mouseOver: false,
+    decorator: this.decorator({ mouseOver: false })
   });
-  return outcome;
+  onMouseLeave && onMouseLeave(e.target.value);
 }
 
-function componentDidUpdate() {
-  this.decorator();
+function onFocusHandler(e) {
+  var onFocus = this.props.onFocus;
+
+  var autofill = true;
+  if (this.state.value === '') autofill = false;
+  this.setState({
+    autofill: autofill,
+    focus: true,
+    decorator: this.decorator({ focus: true })
+  });
+  onFocus && onFocus(e.target.value);
+}
+
+function onBlurHandler(e) {
+  var onBlur = this.props.onBlur;
+
+  var autofill = true;
+  if (this.state.value === '') autofill = false;
+  this.setState({
+    autofill: autofill,
+    focus: false,
+    decorator: this.decorator({ focus: false })
+  });
+  onBlur && onBlur(e.target.value);
+}
+
+function onClickHandler(e) {
+  var onClick = this.props.onClick;
+
+  this.input.current.focus();
+  onClick && onClick(e.target.value);
+}
+
+function onChangeHandler(e) {
+  var onChange = this.props.onChange;
+
+  onChange && onChange(e.target.value);
 }
 
 /***/ }),
@@ -403,54 +419,26 @@ function componentDidUpdate() {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.onMouseOverHandler = onMouseOverHandler;
-exports.onMouseLeaveHandler = onMouseLeaveHandler;
-exports.onFocusHandler = onFocusHandler;
-exports.onBlurHandler = onBlurHandler;
-exports.onClickHandler = onClickHandler;
-exports.onChangeHandler = onChangeHandler;
-function onMouseOverHandler(e) {
-  this.setState({ mouseOver: true });
-  this.props.manager('onMouseOver', e.target.value);
-}
 
-function onMouseLeaveHandler(e) {
-  this.setState({ mouseOver: false });
-  this.props.manager('onMouseLeave', e.target.value);
-}
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-function onFocusHandler(e) {
-  var autofill = true;
-  if (this.state.value === '') {
-    autofill = false;
-  }
-  this.setState({
-    autofill: autofill,
-    focus: true
-  });
-  this.props.manager('onFocus', e.target.value);
-}
+exports.decorator = decorator;
+function decorator(options) {
+  var values = _extends({}, function (_ref) {
+    var autofill = _ref.autofill,
+        focus = _ref.focus,
+        mouseOver = _ref.mouseOver;
+    return { autofill: autofill, focus: focus, mouseOver: mouseOver };
+  }(this.state), options);
+  var autofill = values.autofill,
+      focus = values.focus,
+      mouseOver = values.mouseOver;
 
-function onBlurHandler(e) {
-  var autofill = true;
-  if (this.state.value === '') {
-    autofill = false;
-  }
-  this.setState({
-    autofill: autofill,
-    focus: false
-  });
-  this.props.manager('onBlur', e.target.value);
-}
-
-function onClickHandler(e) {
-  this.input.current.focus();
-  this.props.manager('onClick', e.target.value);
-}
-
-function onChangeHandler(e) {
-  this.forceUpdate();
-  this.props.manager('onChange', e.target.value);
+  var className = '';
+  if (autofill) className += ' ' + this.autofillClass;
+  if (focus) className += ' ' + this.focusClass;
+  if (mouseOver) className += ' ' + this.hoverClass;
+  return className;
 }
 
 /***/ }),
@@ -463,54 +451,25 @@ function onChangeHandler(e) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.decorator = decorator;
-function decorator() {
-  var className = '';
-  if (this.input.current.value) {
-    className += ' ' + this.valueClass;
+exports.onKeyDownHandler = onKeyDownHandler;
+exports.onChangeHandler = onChangeHandler;
+function onKeyDownHandler(e) {
+  var onKeyDown = this.props.onKeyDown;
+
+  onKeyDown && onKeyDown(e.target.value);
+}
+
+function onChangeHandler(e) {
+  var onChange = this.props.onChange;
+
+  if (this.match && !e.target.value.match(this.match)) {
+    this.input.current.value = this.input.current.value.slice(0, -1);
   }
-  if (this.state.autofill) {
-    className += ' ' + this.autofillClass;
-  }
-  if (this.state.focus) {
-    className += ' ' + this.focusClass;
-  }
-  if (this.state.mouseOver) {
-    className += ' ' + this.hoverClass;
-  }
-  if (this.state.error) {
-    className += ' ' + this.errorClass;
-  }
-  this.setState({
-    decorator: className
-  });
+  onChange && onChange(e.target.value);
 }
 
 /***/ }),
 /* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.onKeyDownHandler = onKeyDownHandler;
-exports.onChangeHandler = onChangeHandler;
-function onKeyDownHandler(e) {
-  this.props.manager('onKeyDown', e.target.value, e);
-}
-
-function onChangeHandler(e) {
-  if (this.match && !e.target.value.match(this.match)) {
-    this.input.current.value = this.input.current.value.slice(0, -1);
-  }
-  this.props.manager('onChange', e.target.value);
-}
-
-/***/ }),
-/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -532,15 +491,13 @@ var _input = __webpack_require__(1);
 
 var _input2 = _interopRequireDefault(_input);
 
-var _handlers = __webpack_require__(9);
+var _handlers = __webpack_require__(8);
 
 var handlers = _interopRequireWildcard(_handlers);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -558,12 +515,8 @@ var ManagedTextarea = function (_ManagedInput) {
 
     _this.containerClass = _this.classNames.container || 'managed-input textarea';
     _this.counterClass = _this.classNames.counter || 'counter';
-    _this.stateKeysToDerive = [].concat(_toConsumableArray(_this.stateKeysToDerive), ['counterLimit']);
-    _this.stateKeysToUpdate = [].concat(_toConsumableArray(_this.stateKeysToUpdate), ['counterLimit', 'counter']);
     _this.onChangeHandler = handlers.onChangeHandler.bind(_this);
     _this.state = _extends({}, _this.state, {
-      stateKeysToDerive: _this.stateKeysToDerive,
-      counterLimit: _this.props.manager('counterLimit'),
       counter: 0
     });
     return _this;
@@ -572,41 +525,54 @@ var ManagedTextarea = function (_ManagedInput) {
   _createClass(ManagedTextarea, [{
     key: 'render',
     value: function render() {
+      var _props = this.props,
+          display = _props.display,
+          value = _props.value,
+          disabled = _props.disabled,
+          label = _props.label,
+          counterLimit = _props.counterLimit,
+          children = _props.children,
+          error = _props.error;
+      var _state = this.state,
+          decorator = _state.decorator,
+          counter = _state.counter;
+
+
       return _react2.default.createElement(
         'div',
         {
-          style: { display: this.state.display },
-          className: this.containerClass + this.state.decorator,
+          style: { display: display },
+          className: this.containerClass + decorator,
           onMouseOver: this.onMouseOverHandler,
           onMouseLeave: this.onMouseLeaveHandler,
           onClick: this.onClickHandler },
         _react2.default.createElement(
           'div',
-          { className: this.labelClass + this.state.decorator },
-          this.state.label
+          { className: this.labelClass + decorator },
+          label
         ),
         _react2.default.createElement('textarea', {
           ref: this.input,
-          disabled: this.state.disabled,
+          disabled: disabled,
           id: this.id,
-          className: this.inputClass + this.state.decorator,
-          value: this.controlled ? this.state.value : undefined,
+          className: this.inputClass + decorator,
+          value: value,
           onFocus: this.onFocusHandler,
           onBlur: this.onBlurHandler,
           onChange: this.onChangeHandler }),
         _react2.default.createElement(
           'div',
           {
-            className: this.counterClass + this.state.decorator },
-          this.state.counter,
+            className: this.counterClass + decorator },
+          counter,
           ' / ',
-          this.state.counterLimit
+          counterLimit
         ),
-        this.props.manager('children'),
+        children,
         _react2.default.createElement(
           'div',
-          { className: this.errorContainerClass + this.state.decorator },
-          this.state.error
+          { className: this.errorContainerClass + decorator },
+          error
         )
       );
     }
@@ -618,7 +584,7 @@ var ManagedTextarea = function (_ManagedInput) {
 exports.default = ManagedTextarea;
 
 /***/ }),
-/* 9 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -629,18 +595,21 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.onChangeHandler = onChangeHandler;
 function onChangeHandler(e) {
+  var _props = this.props,
+      counterLimit = _props.counterLimit,
+      onChange = _props.onChange;
+
   var valueLength = e.target.value.length;
-  if (valueLength <= this.state.counterLimit) {
+  if (valueLength <= counterLimit) {
     this.setState({ counter: valueLength });
-    this.props.manager('onChange', e.target.value);
-    this.forceUpdate();
+    onChange(e.target.value);
   } else {
     this.input.current.value = this.input.current.value.slice(0, -1);
   }
 }
 
 /***/ }),
-/* 10 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -662,15 +631,13 @@ var _input = __webpack_require__(1);
 
 var _input2 = _interopRequireDefault(_input);
 
-var _handlers = __webpack_require__(11);
+var _handlers = __webpack_require__(10);
 
 var handlers = _interopRequireWildcard(_handlers);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -691,19 +658,15 @@ var ManagedSelect = function (_ManagedInput) {
     _this.optionsClass = _this.classNames.options || 'options';
     _this.optionClass = _this.classNames.option || 'option';
     _this.markClass = _this.classNames.mark || 'mark';
-    _this.stateKeysToDerive = [].concat(_toConsumableArray(_this.stateKeysToDerive), ['options']);
-    _this.stateKeysToUpdate = [].concat(_toConsumableArray(_this.stateKeysToUpdate), ['options', 'preSelected']);
     _this.onClickHandler = handlers.onClickHandler.bind(_this);
     _this.onKeyDownHandler = handlers.onKeyDownHandler.bind(_this);
     _this.onBlurHandler = handlers.onBlurHandler.bind(_this);
     _this.onSelectHandler = handlers.onSelectHandler.bind(_this);
     _this.onOptionMouseOver = handlers.onOptionMouseOver.bind(_this);
-    _this.onFocusCoverZIndex = _this.props.manager('onFocusCoverZIndex') || 2;
-    _this.disableOnFocusCover = _this.props.manager('disableOnFocusCover');
-    _this.disableSelectOptions = _this.props.manager('disableSelectOptions');
+    _this.onFocusCoverZIndex = _this.props.onFocusCoverZIndex || 2;
+    _this.disableOnFocusCover = _this.props.disableOnFocusCover;
+    _this.disableSelectOptions = _this.props.disableSelectOptions;
     _this.state = _extends({}, _this.state, {
-      stateKeysToDerive: _this.stateKeysToDerive,
-      options: _this.props.manager('options'),
       preSelected: 0
     });
     return _this;
@@ -714,11 +677,21 @@ var ManagedSelect = function (_ManagedInput) {
     value: function render() {
       var _this2 = this;
 
+      var _props = this.props,
+          display = _props.display,
+          value = _props.value,
+          options = _props.options,
+          error = _props.error,
+          children = _props.children,
+          label = _props.label;
+
+      var decorator = '' + this.state.decorator + (value !== '' ? ' value' : '') + (error ? ' error' : '');
+
       return _react2.default.createElement(
         'div',
         {
-          style: { display: this.state.display },
-          className: this.containerClass + this.state.decorator },
+          style: { display: display },
+          className: this.containerClass + decorator },
         _react2.default.createElement(
           'div',
           {
@@ -729,16 +702,16 @@ var ManagedSelect = function (_ManagedInput) {
             { onClick: this.onClickHandler },
             _react2.default.createElement(
               'div',
-              { className: this.labelClass + this.state.decorator },
-              this.state.label
+              { className: this.labelClass + decorator },
+              label
             ),
             _react2.default.createElement(
               'div',
-              { className: this.inputClass + this.state.decorator },
-              this.state.options.find(function (option) {
-                return option.value === _this2.state.value;
-              }).text,
-              _react2.default.createElement('div', { className: this.markClass + this.state.decorator })
+              { className: this.inputClass + decorator },
+              (options.find(function (option) {
+                return option.value === value;
+              }) || {}).text,
+              _react2.default.createElement('div', { className: this.markClass + decorator })
             )
           ),
           this.state.focus && this.isMobile && !this.disableOnFocusCover && _react2.default.createElement('div', {
@@ -751,8 +724,8 @@ var ManagedSelect = function (_ManagedInput) {
             {
               style: { zIndex: 999 },
               ref: this.options,
-              className: this.optionsClass + this.state.decorator },
-            this.state.options.map(function (option, index) {
+              className: this.optionsClass + decorator },
+            options.map(function (option, index) {
               return _react2.default.createElement(
                 'div',
                 {
@@ -763,7 +736,7 @@ var ManagedSelect = function (_ManagedInput) {
                   onClick: function onClick() {
                     return _this2.onSelectHandler(option);
                   },
-                  className: _this2.optionClass + _this2.state.decorator + ('' + (_this2.state.preSelected === index ? ' preselected' : '')) },
+                  className: _this2.optionClass + decorator + ('' + (_this2.state.preSelected === index ? ' preselected' : '')) },
                 option.text
               );
             })
@@ -773,29 +746,29 @@ var ManagedSelect = function (_ManagedInput) {
             {
               ref: this.input,
               id: this.id,
-              value: this.state.value,
+              value: value,
               readOnly: true,
               style: { position: 'absolute', left: -10000 },
               disabled: this.state.disabled,
               onFocus: this.onFocusHandler,
               onKeyDown: this.onKeyDownHandler,
               onBlur: this.onBlurHandler },
-            this.state.options.map(function (option, index) {
+            options.map(function (option, index) {
               return _react2.default.createElement(
                 'option',
                 {
                   key: 'key-original-' + option.value + '-' + index,
                   value: option.value },
-                JSON.stringify(option.text)
+                option.value
               );
             })
           )
         ),
-        this.props.manager('children'),
+        children,
         _react2.default.createElement(
           'div',
-          { className: this.errorContainerClass + this.state.decorator },
-          this.state.error
+          { className: this.errorContainerClass + decorator },
+          error
         )
       );
     }
@@ -807,7 +780,7 @@ var ManagedSelect = function (_ManagedInput) {
 exports.default = ManagedSelect;
 
 /***/ }),
-/* 11 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -822,6 +795,10 @@ exports.onOptionMouseOver = onOptionMouseOver;
 exports.onBlurHandler = onBlurHandler;
 exports.onSelectHandler = onSelectHandler;
 function onKeyDownHandler(e) {
+  var _props = this.props,
+      onSelect = _props.onSelect,
+      onKeyDown = _props.onKeyDown;
+
   var keyCode = e.keyCode;
   if (keyCode === 38 || keyCode === 40) {
     e.preventDefault();
@@ -830,34 +807,39 @@ function onKeyDownHandler(e) {
     this.setState({ preSelected: preSelected });
   }
   if (keyCode === 13) {
-    var option = this.state.options[this.state.preSelected];
+    var option = this.props.options[this.state.preSelected];
     this.setState({
       focus: false,
       mouseOver: false
     });
-    this.props.manager('onSelect', option);
+    onSelect(option);
   }
   if (keyCode === 9) {
     this.onBlurHandler(e, true);
   }
-  this.props.manager('onKeyDown', undefined, e.keyCode);
+  onKeyDown && onKeyDown(e.keyCode);
 }
 
 function onClickHandler(e) {
+  var _props2 = this.props,
+      onFocus = _props2.onFocus,
+      onClick = _props2.onClick;
+
   if (this.isMobile()) {
     var autofill = true;
-    if (this.state.value === '') {
+    if (this.props.value === '') {
       autofill = false;
     }
     this.setState({
       autofill: autofill,
-      focus: true
+      focus: true,
+      decorator: this.decorator({ focus: true })
     });
-    this.props.manager('onFocus', e.target.value);
+    onFocus && onFocus(e.target.value);
   } else {
     this.input.current.focus();
   }
-  this.props.manager('onClick', e.target.value);
+  onClick && onClick(e.target.value);
 }
 
 function onOptionMouseOver(index) {
@@ -865,31 +847,38 @@ function onOptionMouseOver(index) {
 }
 
 function onBlurHandler(e, tabDown, isMobile) {
+  var onBlur = this.props.onBlur;
+
   if (this.state.mouseOver === false || tabDown === true || isMobile) {
     var value = void 0;
     if (e && e.target) value = e.target.value;
-    this.props.manager('onBlur', value);
-    this.setState({ focus: false, mouseOver: false });
+    onBlur && onBlur(value);
+    this.setState({
+      focus: false,
+      mouseOver: false,
+      decorator: this.decorator({ focus: false, mouseOver: false })
+    });
   }
 }
 
 function onSelectHandler(option) {
+  var onSelect = this.props.onSelect;
+
   var autofill = true;
-  if (option.value === '') {
-    autofill = false;
-  }
+  if (option.value === '') autofill = false;
   this.setState({
     autofill: autofill,
     focus: false,
-    mouseOver: false
+    mouseOver: false,
+    decorator: this.decorator({ focus: false, mouseOver: false, value: option.value })
   });
-  this.props.manager('onSelect', option);
+  onSelect(option);
 }
 
 function computePreSelected(keyCode) {
   var preSelected = this.state.preSelected;
   if (keyCode == 40) {
-    if (preSelected < this.state.options.length - 1) {
+    if (preSelected < this.props.options.length - 1) {
       return preSelected + 1;
     } else {
       return 0;
@@ -898,7 +887,7 @@ function computePreSelected(keyCode) {
     if (preSelected > 0) {
       return preSelected - 1;
     } else {
-      return this.state.options.length - 1;
+      return this.props.options.length - 1;
     }
   }
 }
@@ -913,7 +902,7 @@ function computeScroll(preSelectedIndex, keyCode) {
   switch (preSelectedIndex) {
     case 0:
       return 0;
-    case this.state.options.length - 1:
+    case this.props.options.length - 1:
       return options.scrollHeight;
     default:
       if (keyCode === 38 && preSelectedOffset < optionsScroll) {
@@ -928,7 +917,7 @@ function computeScroll(preSelectedIndex, keyCode) {
 }
 
 /***/ }),
-/* 12 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -937,8 +926,6 @@ function computeScroll(preSelectedIndex, keyCode) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -950,17 +937,15 @@ var _input = __webpack_require__(1);
 
 var _input2 = _interopRequireDefault(_input);
 
-var _handlers = __webpack_require__(13);
+var _handlers = __webpack_require__(12);
 
 var handlers = _interopRequireWildcard(_handlers);
 
-var _decorator = __webpack_require__(14);
+var _decorator = __webpack_require__(13);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -977,14 +962,10 @@ var ManagedRadio = function (_ManagedInput) {
     var _this = _possibleConstructorReturn(this, (ManagedRadio.__proto__ || Object.getPrototypeOf(ManagedRadio)).call(this, props));
 
     _this.input = [];
-    _this.name = _this.props.manager('name');
-    _this.radios = _this.props.manager('radios');
     _this.containerClass = _this.classNames.container || 'managed-input radio';
     _this.radioContainerClass = _this.classNames.radioContainerClass || 'container';
     _this.checkedClass = _this.classNames.checked || 'checked';
     _this.tickClass = _this.classNames.tick || 'tick';
-    _this.stateKeysToDerive = [].concat(_toConsumableArray(_this.stateKeysToDerive), ['checked']);
-    _this.stateKeysToUpdate = [].concat(_toConsumableArray(_this.stateKeysToUpdate), ['checked']);
     _this.onMouseOverHandler = handlers.onMouseOverHandler.bind(_this);
     _this.onMouseLeaveHandler = handlers.onMouseLeaveHandler.bind(_this);
     _this.onFocusHandler = handlers.onFocusHandler.bind(_this);
@@ -992,10 +973,6 @@ var ManagedRadio = function (_ManagedInput) {
     _this.onKeyDownHandler = handlers.onKeyDownHandler.bind(_this);
     _this.onClickHandler = handlers.onClickHandler.bind(_this);
     _this.decorator = _decorator.decorator.bind(_this);
-    _this.state = _extends({}, _this.state, {
-      stateKeysToDerive: _this.stateKeysToDerive,
-      checked: _this.props.manager('checked')
-    });
     return _this;
   }
 
@@ -1004,14 +981,23 @@ var ManagedRadio = function (_ManagedInput) {
     value: function render() {
       var _this2 = this;
 
+      var _props = this.props,
+          display = _props.display,
+          name = _props.name,
+          radios = _props.radios,
+          checked = _props.checked,
+          children = _props.children;
+      var decorator = this.state.decorator;
+
+
       return _react2.default.createElement(
         'div',
-        { style: { display: this.state.display } },
-        this.radios.map(function (radio, index) {
+        { style: { display: display } },
+        radios.map(function (radio, index) {
           return _react2.default.createElement(
             'div',
             {
-              className: _this2.containerClass + _this2.state.decorator[index],
+              className: '' + _this2.containerClass + (radio.value === checked ? ' checked' : '') + (decorator[index] ? decorator[index] : ''),
               key: radio.key || 'radio-' + _this2.name + '-' + index,
               onClick: function onClick() {
                 return _this2.onClickHandler(radio.value, index);
@@ -1019,23 +1005,23 @@ var ManagedRadio = function (_ManagedInput) {
             _react2.default.createElement(
               'div',
               {
-                className: _this2.inputClass + _this2.state.decorator[index],
+                className: '' + _this2.inputClass + (radio.value === checked ? ' checked' : '') + (decorator[index] ? decorator[index] : ''),
                 onMouseOver: function onMouseOver(e) {
                   return _this2.onMouseOverHandler(e, index);
                 },
                 onMouseLeave: function onMouseLeave(e) {
                   return _this2.onMouseLeaveHandler(e, index);
                 } },
-              radio.value === _this2.state.checked && _react2.default.createElement('div', { className: _this2.tickClass + _this2.state.decorator[index] })
+              radio.value === checked && _react2.default.createElement('div', { className: '' + _this2.tickClass + (decorator[index] ? decorator[index] : '') })
             ),
             _react2.default.createElement('input', {
-              name: _this2.name,
+              name: name,
               ref: _this2.input[index] = _react2.default.createRef(),
               id: radio.id,
               type: 'radio',
               style: { position: 'absolute', left: -10000 },
               value: radio.value,
-              checked: radio.value === _this2.state.checked,
+              checked: radio.value === checked,
               onFocus: function onFocus(e) {
                 return _this2.onFocusHandler(e, index);
               },
@@ -1049,7 +1035,7 @@ var ManagedRadio = function (_ManagedInput) {
             _react2.default.createElement(
               'label',
               {
-                className: _this2.labelClass + _this2.state.decorator[index],
+                className: '' + _this2.labelClass + (radio.value === checked ? ' checked' : '') + (decorator[index] ? decorator[index] : ''),
                 onMouseOver: function onMouseOver(e) {
                   return _this2.onMouseOverHandler(e, index);
                 },
@@ -1062,7 +1048,7 @@ var ManagedRadio = function (_ManagedInput) {
           );
         }),
         _react2.default.createElement('div', { style: { clear: 'both' } }),
-        this.props.manager('children')
+        children
       );
     }
   }]);
@@ -1073,7 +1059,7 @@ var ManagedRadio = function (_ManagedInput) {
 exports.default = ManagedRadio;
 
 /***/ }),
-/* 13 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1089,47 +1075,104 @@ exports.onBlurHandler = onBlurHandler;
 exports.onKeyDownHandler = onKeyDownHandler;
 exports.onClickHandler = onClickHandler;
 function onMouseOverHandler(e, index) {
+  var onMouseOver = this.props.onMouseOver;
+  var decorator = this.decorator;
+
   var mouseOver = [].concat(this.state.mouseOver);
   mouseOver[index] = true;
-  this.setState({ mouseOver: mouseOver });
-  this.props.manager('onMouseOver', e.target.value);
+  this.setState({
+    mouseOver: mouseOver,
+    decorator: decorator({ mouseOver: mouseOver })
+  });
+  onMouseOver && onMouseOver(e.target.value);
 }
 
 function onMouseLeaveHandler(e, index) {
+  var onMouseLeave = this.props.onMouseLeave;
+  var decorator = this.decorator;
+
   var mouseOver = [].concat(this.state.mouseOver);
   mouseOver[index] = false;
-  this.setState({ mouseOver: mouseOver });
-  this.props.manager('onMouseLeave', e.target.value);
+  this.setState({
+    mouseOver: mouseOver,
+    decorator: decorator({ mouseOver: mouseOver })
+  });
+  onMouseLeave && onMouseLeave(e.target.value);
 }
 
 function onFocusHandler(e, index) {
+  var onFocus = this.props.onFocus;
+  var decorator = this.decorator;
+
   var focus = [].concat(this.state.focus);
   focus[index] = true;
-  this.setState({ focus: focus });
-  this.props.manager('onFocus', e.target.value);
+  this.setState({
+    focus: focus,
+    decorator: decorator({ focus: focus })
+  });
+  onFocus && onFocus(e.target.value);
 }
 
 function onBlurHandler(e, index) {
+  var onBlur = this.props.onBlur;
+  var decorator = this.decorator;
+
   var focus = [].concat(this.state.focus);
   focus[index] = false;
-  this.setState({ focus: focus });
-  this.props.manager('onBlur', e.target.value);
+  this.setState({
+    focus: focus,
+    decorator: decorator({ focus: focus })
+  });
+  onBlur && onBlur(e.target.value);
 }
 
 function onKeyDownHandler(e) {
-  if ([37, 38, 39, 40].includes(e.keyCode)) {
-    e.preventDefault();
-  }
-  if (e.keyCode === 9) {
-    this.onBlurHandler(e, true);
-  }
+  if ([37, 38, 39, 40].includes(e.keyCode)) e.preventDefault();else if (e.keyCode === 9) this.onBlurHandler(e, true);
 }
 
 function onClickHandler(value, index) {
+  var onClick = this.props.onClick;
+
   var input = this.input && this.input[index] && this.input[index].current;
   if (!input) return;
   input.focus();
-  this.props.manager('onClick', value);
+  onClick(value);
+}
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+exports.decorator = decorator;
+function decorator(options) {
+  var _this = this;
+
+  var decorator = {};
+  var values = _extends({}, function (_ref) {
+    var focus = _ref.focus,
+        mouseOver = _ref.mouseOver;
+    return { focus: focus, mouseOver: mouseOver };
+  }(this.state), options);
+  var focus = values.focus,
+      mouseOver = values.mouseOver;
+  var radios = this.props.radios;
+
+  radios.map(function (_, index) {
+    var className = '';
+    if (focus[index]) className += ' ' + _this.focusClass;
+    if (mouseOver[index]) className += ' ' + _this.hoverClass;
+    decorator[index] = className;
+  });
+  return decorator;
 }
 
 /***/ }),
@@ -1142,42 +1185,6 @@ function onClickHandler(value, index) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.decorator = decorator;
-function decorator() {
-  var _this = this;
-
-  var decorator = [];
-  this.radios.map(function (radio, index) {
-    var className = '';
-    if (_this.input && _this.input[index] && _this.input[index].current.checked) {
-      className += ' ' + _this.checkedClass;
-    }
-    if (_this.state.focus[index]) {
-      className += ' ' + _this.focusClass;
-    }
-    if (_this.state.mouseOver[index]) {
-      className += ' ' + _this.hoverClass;
-    }
-    if (_this.state.error[index]) {
-      className += ' ' + _this.errorClass;
-    }
-    decorator[index] = className;
-  });
-  this.setState({ decorator: decorator });
-}
-
-/***/ }),
-/* 15 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -1189,17 +1196,13 @@ var _input = __webpack_require__(1);
 
 var _input2 = _interopRequireDefault(_input);
 
-var _handlers = __webpack_require__(16);
+var _handlers = __webpack_require__(15);
 
 var handlers = _interopRequireWildcard(_handlers);
-
-var _decorator = __webpack_require__(17);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -1219,40 +1222,40 @@ var ManagedCheckbox = function (_ManagedInput) {
     _this.checkboxContainerClass = _this.classNames.checkboxContainerClass || 'container';
     _this.tickClass = _this.classNames.tick || 'tick';
     _this.checkedClass = _this.classNames.checked || 'checked';
-    _this.stateKeysToDerive = [].concat(_toConsumableArray(_this.stateKeysToDerive), ['checked']);
-    _this.stateKeysToUpdate = [].concat(_toConsumableArray(_this.stateKeysToUpdate), ['checked']);
     _this.onClickHandler = handlers.onClickHandler.bind(_this);
-    _this.decorator = _decorator.decorator.bind(_this);
-    _this.state = _extends({}, _this.state, {
-      stateKeysToDerive: _this.stateKeysToDerive,
-      checked: _this.props.manager('checked')
-    });
     return _this;
   }
 
   _createClass(ManagedCheckbox, [{
     key: 'render',
     value: function render() {
+      var _props = this.props,
+          display = _props.display,
+          checked = _props.checked,
+          label = _props.label,
+          children = _props.children;
+
+      var decorator = '' + this.state.decorator + (checked ? ' value' : '');
       return _react2.default.createElement(
         'div',
         {
-          style: { display: this.state.display },
-          className: this.containerClass + this.state.decorator },
+          style: { display: display },
+          className: this.containerClass + decorator },
         _react2.default.createElement(
           'div',
           {
-            className: this.inputClass + this.state.decorator,
+            className: this.inputClass + decorator,
             onMouseOver: this.onMouseOverHandler,
             onMouseLeave: this.onMouseLeaveHandler,
             onClick: this.onClickHandler },
-          this.state.checked && _react2.default.createElement('div', { className: this.tickClass + this.state.decorator })
+          checked && _react2.default.createElement('div', { className: this.tickClass + decorator })
         ),
         _react2.default.createElement('input', {
           ref: this.input,
           type: 'checkbox',
           id: this.id,
           style: { position: 'absolute', left: -10000 },
-          checked: this.state.checked,
+          checked: checked,
           onFocus: this.onFocusHandler,
           onBlur: this.onBlurHandler,
           onChange: this.onClickHandler }),
@@ -1262,11 +1265,11 @@ var ManagedCheckbox = function (_ManagedInput) {
             onMouseOver: this.onMouseOverHandler,
             onMouseLeave: this.onMouseLeaveHandler,
             onClick: this.onClickHandler,
-            className: this.labelClass + this.state.decorator },
-          this.state.label
+            className: this.labelClass + decorator },
+          label
         ),
         _react2.default.createElement('div', { style: { clear: 'both' } }),
-        this.props.manager('children')
+        children
       );
     }
   }]);
@@ -1277,7 +1280,7 @@ var ManagedCheckbox = function (_ManagedInput) {
 exports.default = ManagedCheckbox;
 
 /***/ }),
-/* 16 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1288,42 +1291,16 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.onClickHandler = onClickHandler;
 function onClickHandler() {
+  var _props = this.props,
+      onClick = _props.onClick,
+      checked = _props.checked;
+
   this.input.current.focus();
-  this.props.manager('onClick', !this.state.checked);
+  onClick(!checked);
 }
 
 /***/ }),
-/* 17 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.decorator = decorator;
-function decorator() {
-  var className = '';
-  if (this.input.current.checked) {
-    className += ' ' + this.checkedClass;
-  }
-  if (this.state.focus) {
-    className += ' ' + this.focusClass;
-  }
-  if (this.state.mouseOver) {
-    className += ' ' + this.hoverClass;
-  }
-  if (this.state.error) {
-    className += ' ' + this.errorClass;
-  }
-  this.setState({
-    decorator: className
-  });
-}
-
-/***/ }),
-/* 18 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1345,17 +1322,17 @@ var _input = __webpack_require__(1);
 
 var _input2 = _interopRequireDefault(_input);
 
-var _handlers = __webpack_require__(19);
+var _handlers = __webpack_require__(17);
 
 var handlers = _interopRequireWildcard(_handlers);
 
-var _decorator = __webpack_require__(20);
+var _decorator = __webpack_require__(18);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -1376,8 +1353,6 @@ var ManagedMultipleCheckbox = function (_ManagedInput) {
     _this.checkboxContainerClass = _this.classNames.checkboxContainerClass || 'container';
     _this.tickClass = _this.classNames.tick || 'tick';
     _this.checkedClass = _this.classNames.checked || 'checked';
-    _this.stateKeysToDerive = [].concat(_toConsumableArray(_this.stateKeysToDerive), ['checkboxes']);
-    _this.stateKeysToUpdate = [].concat(_toConsumableArray(_this.stateKeysToUpdate), ['checkboxes']);
     _this.onMouseOverHandler = handlers.onMouseOverHandler.bind(_this);
     _this.onMouseLeaveHandler = handlers.onMouseLeaveHandler.bind(_this);
     _this.onFocusHandler = handlers.onFocusHandler.bind(_this);
@@ -1386,8 +1361,6 @@ var ManagedMultipleCheckbox = function (_ManagedInput) {
     _this.onKeyDownHandler = handlers.onKeyDownHandler.bind(_this);
     _this.decorator = _decorator.decorator.bind(_this);
     _this.state = _extends({}, _this.state, {
-      stateKeysToDerive: _this.stateKeysToDerive,
-      checkboxes: _this.props.manager('checkboxes'),
       mouseOver: {},
       focus: {},
       decorator: {}
@@ -1400,20 +1373,26 @@ var ManagedMultipleCheckbox = function (_ManagedInput) {
     value: function render() {
       var _this2 = this;
 
+      var _props = this.props,
+          display = _props.display,
+          checkboxes = _props.checkboxes,
+          children = _props.children;
+      var decorator = this.state.decorator;
+
       return _react2.default.createElement(
         'div',
         {
-          style: { display: this.state.display } },
-        this.state.checkboxes.map(function (checkbox) {
+          style: { display: display } },
+        checkboxes.map(function (checkbox) {
           return _react2.default.createElement(
             'div',
             {
-              className: _this2.containerClass + _this2.state.decorator[checkbox.ref],
+              className: '' + _this2.containerClass + (checkbox.checked ? ' checked' : '') + (decorator[checkbox.ref] ? decorator[checkbox.ref] : ''),
               key: 'multiple-checkbox-' + checkbox.ref },
             _react2.default.createElement(
               'div',
               {
-                className: _this2.inputClass + _this2.state.decorator[checkbox.ref],
+                className: '' + _this2.inputClass + (checkbox.checked ? ' checked' : '') + (decorator[checkbox.ref] ? decorator[checkbox.ref] : ''),
                 onMouseOver: function onMouseOver(e) {
                   return _this2.onMouseOverHandler(e, checkbox.ref);
                 },
@@ -1423,7 +1402,9 @@ var ManagedMultipleCheckbox = function (_ManagedInput) {
                 onClick: function onClick() {
                   return _this2.onClickHandler(checkbox.ref);
                 } },
-              checkbox.checked && _react2.default.createElement('div', { className: _this2.tickClass + _this2.state.decorator[checkbox.ref] })
+              checkbox.checked && _react2.default.createElement('div', _defineProperty({
+                className: _this2.tickClass + _this2.state.decorator[checkbox.ref]
+              }, 'className', _this2.tickClass + ' ' + (decorator[checkbox.ref] ? decorator[checkbox.ref] : '') + ' checked'))
             ),
             _react2.default.createElement('input', {
               onFocus: function onFocus(e) {
@@ -1439,7 +1420,9 @@ var ManagedMultipleCheckbox = function (_ManagedInput) {
               onKeyDown: function onKeyDown(e) {
                 return _this2.onKeyDownHandler(e, checkbox.ref);
               },
-              onChange: function onChange() {} }),
+              onChange: function onChange() {
+                return null;
+              } }),
             _react2.default.createElement(
               'div',
               {
@@ -1452,14 +1435,14 @@ var ManagedMultipleCheckbox = function (_ManagedInput) {
                 onClick: function onClick() {
                   return _this2.onClickHandler(checkbox.ref);
                 },
-                className: _this2.labelClass + _this2.state.decorator[checkbox.ref] },
+                className: '' + _this2.labelClass + (checkbox.checked ? ' checked' : '') + (decorator[checkbox.ref] ? decorator[checkbox.ref] : '') },
               checkbox.label
             ),
             _react2.default.createElement('div', { style: { clear: 'both' } })
           );
         }),
         _react2.default.createElement('div', { style: { clear: 'both' } }),
-        this.props.manager('children')
+        children
       );
     }
   }]);
@@ -1470,7 +1453,7 @@ var ManagedMultipleCheckbox = function (_ManagedInput) {
 exports.default = ManagedMultipleCheckbox;
 
 /***/ }),
-/* 19 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1489,48 +1472,72 @@ exports.onBlurHandler = onBlurHandler;
 exports.onClickHandler = onClickHandler;
 exports.onKeyDownHandler = onKeyDownHandler;
 function onMouseOverHandler(e, ref) {
+  var onMouseOver = this.props.onMouseOver;
+  var decorator = this.decorator;
+
   var mouseOver = _extends({}, this.state.mouseOver);
   mouseOver[ref] = true;
-  this.setState({ mouseOver: mouseOver });
-  this.props.manager('onMouseOver', e.target.value, ref);
+  this.setState({
+    mouseOver: mouseOver,
+    decorator: decorator({ mouseOver: mouseOver })
+  });
+  onMouseOver && onMouseOver(e.target.value, ref);
 }
 
 function onMouseLeaveHandler(e, ref) {
+  var onMouseLeave = this.props.onMouseLeave;
+  var decorator = this.decorator;
+
   var mouseOver = _extends({}, this.state.mouseOver);
   mouseOver[ref] = false;
-  this.setState({ mouseOver: mouseOver });
-  this.props.manager('onMouseLeave', e.target.value, ref);
+  this.setState({
+    mouseOver: mouseOver,
+    decorator: decorator({ mouseOver: mouseOver })
+  });
+  onMouseLeave && onMouseLeave(e.target.value, ref);
 }
 
 function onFocusHandler(e, ref) {
+  var onFocus = this.props.onFocus;
+  var decorator = this.decorator;
+
   var focus = _extends({}, this.state.focus);
   focus[ref] = true;
-  this.setState({ focus: focus });
-  this.props.manager('onFocus', e.target.value, ref);
+  this.setState({
+    focus: focus,
+    decorator: decorator({ focus: focus })
+  });
+  onFocus && onFocus(e.target.value, ref);
 }
 
 function onBlurHandler(e, ref) {
+  var onBlur = this.props.onBlur;
+  var decorator = this.decorator;
+
   var focus = _extends({}, this.state.focus);
   focus[ref] = false;
-  this.setState({ focus: focus });
-  this.props.manager('onBlur', e.target.value, ref);
+  this.setState({
+    focus: focus,
+    decorator: decorator({ focus: focus })
+  });
+  onBlur && onBlur(e.target.value, ref);
 }
 
 function onClickHandler(ref) {
+  var onClick = this.props.onClick;
+
   var input = this.input[ref].current;
   input.focus();
   var checked = !input.checked;
-  this.props.manager('onClick', checked, ref);
+  onClick && onClick(checked, ref);
 }
 
 function onKeyDownHandler(e, ref) {
-  if (e.keyCode === 32) {
-    this.onClickHandler(ref);
-  }
+  if (e.keyCode === 32) this.onClickHandler(ref);
 }
 
 /***/ }),
-/* 20 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1539,30 +1546,34 @@ function onKeyDownHandler(e, ref) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 exports.decorator = decorator;
-function decorator() {
+function decorator(options) {
   var _this = this;
 
   var decorator = {};
-  var className = void 0;
-  this.state.checkboxes.map(function (checkbox) {
-    className = '';
-    if (_this.input && _this.input[checkbox.ref] && _this.input[checkbox.ref].current.checked) {
-      className += ' ' + _this.checkedClass;
-    }
-    if (_this.state.focus[checkbox.ref]) {
-      className += ' ' + _this.focusClass;
-    }
-    if (_this.state.mouseOver[checkbox.ref]) {
-      className += ' ' + _this.hoverClass;
-    }
+  var values = _extends({}, function (_ref) {
+    var focus = _ref.focus,
+        mouseOver = _ref.mouseOver;
+    return { focus: focus, mouseOver: mouseOver };
+  }(this.state), options);
+  var focus = values.focus,
+      mouseOver = values.mouseOver;
+  var checkboxes = this.props.checkboxes;
+
+  checkboxes.map(function (checkbox) {
+    var className = '';
+    if (focus[checkbox.ref]) className += ' ' + _this.focusClass;
+    if (mouseOver[checkbox.ref]) className += ' ' + _this.hoverClass;
     decorator[checkbox.ref] = className;
   });
-  this.setState({ decorator: decorator });
+  return decorator;
 }
 
 /***/ }),
-/* 21 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1582,8 +1593,6 @@ var _input = __webpack_require__(1);
 
 var _input2 = _interopRequireDefault(_input);
 
-var _decorator = __webpack_require__(22);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1601,33 +1610,40 @@ var ManagedButton = function (_ManagedInput) {
     var _this = _possibleConstructorReturn(this, (ManagedButton.__proto__ || Object.getPrototypeOf(ManagedButton)).call(this, props));
 
     _this.containerClass = _this.classNames.container || 'managed-input button';
-    _this.decorator = _decorator.decorator.bind(_this);
     return _this;
   }
 
   _createClass(ManagedButton, [{
     key: 'render',
     value: function render() {
+      var _props = this.props,
+          display = _props.display,
+          disabled = _props.disabled,
+          label = _props.label,
+          children = _props.children;
+      var decorator = this.state.decorator;
+
+
       return _react2.default.createElement(
         'div',
         {
-          style: { display: this.state.display },
-          className: this.containerClass + this.state.decorator },
+          style: { display: display },
+          className: this.containerClass + decorator },
         _react2.default.createElement(
           'button',
           {
             ref: this.input,
             id: this.id,
-            className: this.inputClass + this.state.decorator,
-            disabled: this.state.disabled,
+            className: this.inputClass + decorator,
+            disabled: disabled,
             onMouseOver: this.onMouseOverHandler,
             onMouseLeave: this.onMouseLeaveHandler,
             onFocus: this.onFocusHandler,
             onBlur: this.onBlurHandler,
             onClick: this.onClickHandler },
-          this.state.label
+          label
         ),
-        this.props.manager('children')
+        children
       );
     }
   }]);
@@ -1638,31 +1654,7 @@ var ManagedButton = function (_ManagedInput) {
 exports.default = ManagedButton;
 
 /***/ }),
-/* 22 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.decorator = decorator;
-function decorator() {
-  var className = '';
-  if (this.state.focus) {
-    className += ' ' + this.focusClass;
-  }
-  if (this.state.mouseOver) {
-    className += ' ' + this.hoverClass;
-  }
-  this.setState({
-    decorator: className
-  });
-}
-
-/***/ }),
-/* 23 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1684,19 +1676,17 @@ var _input = __webpack_require__(1);
 
 var _input2 = _interopRequireDefault(_input);
 
-var _lifecycle = __webpack_require__(24);
+var _lifecycle = __webpack_require__(21);
 
-var _decorator = __webpack_require__(25);
+var _decorator = __webpack_require__(22);
 
-var _handlers = __webpack_require__(26);
+var _handlers = __webpack_require__(23);
 
 var handlers = _interopRequireWildcard(_handlers);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -1718,22 +1708,16 @@ var ManagedPagination = function (_ManagedInput) {
     _this.decorator = _decorator.decorator.bind(_this);
     _this.componentDidMount = _lifecycle.componentDidMount;
     _this.componentDidUpdate = _lifecycle.componentDidUpdate;
-    _this.stateKeysToDerive = [].concat(_toConsumableArray(_this.stateKeysToDerive), ['resultsPerPage', 'resultAmount', 'current']);
-    _this.stateKeysToUpdate = [].concat(_toConsumableArray(_this.stateKeysToUpdate), ['resultsPerPage', 'resultAmount', 'buttons', 'current']);
     _this.onMouseOverHandler = handlers.onMouseOverHandler.bind(_this);
     _this.onMouseLeaveHandler = handlers.onMouseLeaveHandler.bind(_this);
     _this.onFocusHandler = handlers.onFocusHandler.bind(_this);
     _this.onBlurHandler = handlers.onBlurHandler.bind(_this);
     _this.onClickHandler = handlers.onClickHandler.bind(_this);
     _this.state = _extends({}, _this.state, {
-      stateKeysToDerive: _this.stateKeysToDerive,
-      resultsPerPage: _this.props.manager('resultsPerPage'),
-      resultAmount: _this.props.manager('resultAmount'),
       buttons: [],
-      current: _this.props.manager('current'),
       mouseOver: {},
       focus: {},
-      decorator: {}
+      decorator: []
     });
     _this.jsxProvider = _this.jsxProvider.bind(_this);
     _this.showButton = _this.showButton.bind(_this);
@@ -1744,25 +1728,19 @@ var ManagedPagination = function (_ManagedInput) {
   _createClass(ManagedPagination, [{
     key: 'jsxProvider',
     value: function jsxProvider(button) {
-      if (button === 0) {
-        return '<';
-      } else if (button === this.state.buttons.length - 1) {
-        return '>';
-      } else {
-        return button;
-      }
+      if (button === 0) return '<';else if (button === this.state.buttons.length - 1) return '>';else return button;
     }
   }, {
     key: 'showButton',
     value: function showButton(button) {
-      if (this.state.buttons.length == 2 || this.state.buttons.length == 3) return false;
+      if (this.state.buttons.length < 4) return false;
       return true;
     }
   }, {
     key: 'edgeHandler',
     value: function edgeHandler(button) {
-      if (button === 0 && this.state.current === 1) return 'hidden';
-      if (button === this.state.buttons.length - 1 && this.state.current === this.state.buttons.length - 2) return 'hidden';
+      if (button === 0 && this.props.current === 1) return 'hidden';
+      if (button === this.state.buttons.length - 1 && this.props.current === this.state.buttons.length - 2) return 'hidden';
       return 'visible';
     }
   }, {
@@ -1770,18 +1748,27 @@ var ManagedPagination = function (_ManagedInput) {
     value: function render() {
       var _this2 = this;
 
+      var _props = this.props,
+          display = _props.display,
+          current = _props.current,
+          children = _props.children;
+      var _state = this.state,
+          buttons = _state.buttons,
+          decorator = _state.decorator;
+
+
       return _react2.default.createElement(
         'div',
         {
-          style: { display: this.state.display },
+          style: { display: display },
           className: this.containerClass },
-        this.state.buttons.map(function (button) {
+        buttons.map(function (button, index) {
           return _this2.showButton(button) && _react2.default.createElement(
             'button',
             {
               style: { visibility: _this2.edgeHandler(button) },
               key: 'paginationButtoNo' + button,
-              className: _this2.inputClass + _this2.state.decorator[button],
+              className: '' + _this2.inputClass + (current === index ? ' current' : '') + (decorator[button] ? decorator[button] : ''),
               onMouseOver: function onMouseOver() {
                 return _this2.onMouseOverHandler(button);
               },
@@ -1800,7 +1787,7 @@ var ManagedPagination = function (_ManagedInput) {
             _this2.jsxProvider(button)
           );
         }),
-        this.props.manager('children')
+        children
       );
     }
   }]);
@@ -1811,7 +1798,7 @@ var ManagedPagination = function (_ManagedInput) {
 exports.default = ManagedPagination;
 
 /***/ }),
-/* 24 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1824,19 +1811,17 @@ exports.componentDidMount = componentDidMount;
 exports.componentDidUpdate = componentDidUpdate;
 function componentDidMount() {
   computeButtons.call(this);
-  this.decorator();
 }
 
-function componentDidUpdate(prevProps, prevState) {
-  if (prevState.resultsPerPage !== this.state.resultsPerPage || prevState.resultAmount !== this.state.resultAmount) {
+function componentDidUpdate(prevProps) {
+  if (prevProps.resultsPerPage !== this.props.resultsPerPage || prevProps.resultAmount !== this.props.resultAmount) {
     computeButtons.call(this);
   }
-  this.decorator();
 }
 
 function computeButtons() {
   this.setState({
-    buttons: createButtonsArray(Math.ceil(this.state.resultAmount / this.state.resultsPerPage))
+    buttons: createButtonsArray(Math.ceil(this.props.resultAmount / this.props.resultsPerPage))
   });
 }
 
@@ -1849,7 +1834,7 @@ function createButtonsArray(limit) {
 }
 
 /***/ }),
-/* 25 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1858,30 +1843,34 @@ function createButtonsArray(limit) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 exports.decorator = decorator;
-function decorator() {
+function decorator(options) {
   var _this = this;
 
-  var decorator = {};
-  var className = void 0;
-  [0].concat(this.state.buttons).map(function (button) {
-    className = '';
-    if (_this.state.focus[button]) {
-      className += ' ' + _this.focusClass;
-    }
-    if (_this.state.mouseOver[button]) {
-      className += ' ' + _this.hoverClass;
-    }
-    if (_this.state.current === button) {
-      className += ' ' + _this.currentClass;
-    }
+  var decorator = [];
+  var values = _extends({}, function (_ref) {
+    var focus = _ref.focus,
+        mouseOver = _ref.mouseOver;
+    return { focus: focus, mouseOver: mouseOver };
+  }(this.state), options);
+  var focus = values.focus,
+      mouseOver = values.mouseOver;
+  var buttons = this.state.buttons;
+
+  [0].concat(buttons).map(function (button) {
+    var className = '';
+    if (focus[button]) className += ' ' + _this.focusClass;
+    if (mouseOver[button]) className += ' ' + _this.hoverClass;
     decorator[button] = className;
   });
-  this.setState({ decorator: decorator });
+  return decorator;
 }
 
 /***/ }),
-/* 26 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1899,131 +1888,59 @@ exports.onFocusHandler = onFocusHandler;
 exports.onBlurHandler = onBlurHandler;
 exports.onClickHandler = onClickHandler;
 function onMouseOverHandler(button) {
+  var onMouseOver = this.props.onMouseOver;
+
   var mouseOver = _extends({}, this.state.mouseOver);
   mouseOver[button] = true;
-  this.setState({ mouseOver: mouseOver });
-  this.props.manager('onMouseOver', button);
+  this.setState({
+    mouseOver: mouseOver,
+    decorator: this.decorator({ mouseOver: mouseOver })
+  });
+  onMouseOver && onMouseOver(button);
 }
 
 function onMouseLeaveHandler(button) {
+  var onMouseLeave = this.props.onMouseLeave;
+
   var mouseOver = _extends({}, this.state.mouseOver);
   mouseOver[button] = false;
-  this.setState({ mouseOver: mouseOver });
-  this.props.manager('onMouseOver', button);
+  this.setState({
+    mouseOver: mouseOver,
+    decorator: this.decorator({ mouseOver: mouseOver })
+  });
+  onMouseLeave && onMouseLeave(button);
 }
 
 function onFocusHandler(button) {
+  var onFocus = this.props.onFocus;
+
   var focus = _extends({}, this.state.focus);
   focus[button] = true;
-  this.setState({ focus: focus });
-  this.props.manager('onFocus', button);
+  this.setState({
+    focus: focus,
+    decorator: this.decorator({ focus: focus })
+  });
+  onFocus && onFocus(button);
 }
 
 function onBlurHandler(button) {
+  var onBlur = this.props.onBlur;
+
   var focus = _extends({}, this.state.focus);
   focus[button] = false;
-  this.setState({ focus: focus });
-  this.props.manager('onFocus', button);
+  this.setState({
+    focus: focus,
+    decorator: this.decorator({ focus: focus })
+  });
+  onBlur && onBlur(button);
 }
 
 function onClickHandler(button) {
-  if (button === 0 || button === this.state.buttons.length - 1) {
-    var current = void 0;
-    if (button === 0) {
-      current = this.state.current - 1;
-    } else {
-      current = this.state.current + 1;
-    }
-    this.props.manager('onClick', current);
-    return;
-  }
-  this.props.manager('onClick', button);
-}
+  var onClick = this.props.onClick;
 
-/***/ }),
-/* 27 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = managerAgent;
-function managerAgent(aspect, aspects) {
-  switch (aspect) {
-    case 'value':
-      return aspects.value === undefined ? '' : aspects.value;
-    case 'match':
-      return aspects.match;
-    case 'checked':
-      return aspects.checked || false;
-    case 'onMouseOver':
-      return aspects.onMouseOver && aspects.onMouseOver();
-    case 'onMouseLeave':
-      return aspects.onMouseLeave && aspects.onMouseLeave();
-    case 'onFocus':
-      return aspects.onFocus && aspects.onFocus();
-    case 'onBlur':
-      return aspects.onBlur && aspects.onBlur();
-    case 'onClick':
-      return aspects.onClick && aspects.onClick();
-    case 'onKeyDown':
-      return aspects.onKeyDown && aspects.onKeyDown();
-    case 'onChange':
-      return aspects.onChange && aspects.onChange();
-    case 'onSelect':
-      return aspects.onSelect && aspects.onSelect();
-    case 'children':
-      return aspects.children;
-    case 'error':
-      return aspects.error || '';
-    case 'options':
-      return aspects.options;
-    case 'checkboxes':
-      return aspects.checkboxes;
-    case 'radios':
-      return aspects.radios;
-    case 'label':
-      return aspects.label || '';
-    case 'id':
-      return aspects.id;
-    case 'type':
-      return aspects.type || 'text';
-    case 'controlled':
-      return aspects.controlled === undefined ? true : false;
-    case 'display':
-      return aspects.display || 'block';
-    case 'disabled':
-      return aspects.disabled || false;
-    case 'classNames':
-      return aspects.classNames || {};
-    case 'autoComplete':
-      return aspects.autoComplete || '';
-    case 'counterLimit':
-      return aspects.counterLimit;
-    case 'name':
-      return aspects.name;
-    case 'setValue':
-      return aspects.setValue && aspects.setValue();
-    case 'validate':
-      return aspects.validate && aspects.validate();
-    case 'current':
-      return aspects.current;
-    case 'resultsPerPage':
-      return aspects.resultsPerPage;
-    case 'resultAmount':
-      return aspects.resultAmount;
-    case 'disableOnFocusCover':
-      return aspects.disableOnFocusCover;
-    case 'disableSelectOptions':
-      return aspects.disableSelectOptions;
-    case 'onFocusCoverZIndex':
-      return aspects.onFocusCoverZIndex;
-    default:
-      break;
-  }
+  var current = void 0;
+  if (button === 0) current = this.props.current - 1;else if (button === this.state.buttons.length - 1) current = this.props.current + 1;else current = button;
+  onClick(current);
 }
 
 /***/ })

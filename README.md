@@ -1,31 +1,29 @@
 # Managed Inputs
 `Divide and conquer` - military maxim.
 
-Managed Inputs is a React add-on library which aims (among other things) to implement the rule of `separation of concerns` with regards to a JSX 'DOM'. It extracts all logic regarding a given input from the JSX to a separate `manager` function which then can be put in a separate file. For example, for a Managed Text the only thing left in the JSX is:
+Managed Inputs is a React add-on library which includes built-in `out of the box` functionalities, such as labelling, CSS classing, validating, error handling and value shape imposing. For example, when an error is transmitted to a Managed Input ALL its elements get CSS class `error`.
+
+Managed Inputs aim to implement the rule of `separation of concerns` with regards to a JSX 'DOM'. It advocates the pattern of extraction of all the logic regarding a given input from the JSX to a separate `manager` function. For example, for a Managed Text the only thing left in the JSX should be:
 ```
-<ManagedText manager={fooBarManager} />
+<ManagedText {...fooBarManager()} />
 ```
-All the logic regarding the input is transferred to a manager function which may take the following form:
+All the logic regarding the input should be transferred to a manager function which may take the following form:
 ```
-function fooBarManager(aspect, value) {
-  return managerAgent(aspect, {
+function fooBarManager() {
+  return {
     value: this.state.fooBar,
     label: 'fooBar',
-    onChange: () => this.setState({ fooBar: value })
-  })
+    onChange: (value) => this.setState({ fooBar: value })
+  }
 }
 ```
 
-Furthermore Managed Inputs come with built-in functionality like labelling, CSS classing, counting and error handling out of the box. For example, when an error is transmitted to a Managed Input all its elements get CSS class `error`.
-
-Managed Inputs include Text, Textarea, Select, Radio, Checkbox, Multiple Checkbox and Button.
+Managed Inputs include Text, Textarea, Select, Radio, Checkbox, Multiple Checkbox, Button and Pagination.
 
 ## Managers
-Managers are functions which manage all aspects of a given Managed Input. Each Managed Input has one and only one manager.
+Managers are functions which should manage all aspects of a given Managed Input.
 
-A manager communicates with its input through a `managerAgent` function which accepts two parameters: `aspect` and `aspects`. The `aspects` parameter is an object which keys correspond to relevant aspects of the input.
-
-The `aspects` parameter of all Managed Inputs accepts the following:
+All Managed Inputs accept the following parameters:
 * `display`: string (default: `block`)
 * `classNames`: object
 * `onMouseOver`: function
@@ -35,44 +33,44 @@ The `aspects` parameter of all Managed Inputs accepts the following:
 * `onClick`: function
 * `validate`: function
 
-The `aspects` parameter of all Managed Inputs but Button accepts also:
+The Text, Select and Textarea accept also:
 * `error`: string or JSX
 
-The `aspects` parameter of all Managed Inputs but Radio and Multiple Checkbox accepts also:
+All Managed Inputs but Radio and Multiple Checkbox accept also:
 * `id`: string
 * `disabled`: boolean (default: `false`)
 * `label`: string or JSX
 
-The `aspects` parameter of Managed Inputs but Button and Select accepts also:
+All Managed Inputs but Button and Select accept also:
 * `onChange`: function
 
-The `aspects` parameter of the Managed Text and Managed Textarea accepts also:
+Managed Text accepts also:
 * `controlled`: boolean (default: `true`)
-* `setValue`: function
-
-The `aspects` parameter of all Managed Inputs but Button, Checkbox and Multiple Checkbox accepts also:
-* `value`: string
-
-The `aspects` parameter of the Managed Text accepts also the following:
 * `type`: string (default: `text`)
 * `autoComplete`: string
 
-The `aspects` parameter of the Managed Textarea accepts also the following:
+All Managed Inputs but Button, Checkbox and Multiple Checkbox accept also:
+* `value`: string
+
+Managed Textarea accepts also:
 * `counterLimit`: integer
 
-The `aspects` parameter of the Managed Select accepts also the following:
-* `options`: array of which each element is like the following object `{ value: string, text: string }`
+Managed Select accepts also:
+* `options`: array of which each element is like the following object:
+  `{ value: string, text: string }`
 * `onSelect`: function
 
-The `aspects` parameter of Managed Checkbox and Radio accepts also the following:
+Managed Checkbox and Radio accept also:
 * `checked` - boolean (default `false`)
 
-The `aspects` parameter of Managed Multiple Checkbox accepts also the following:
-* `checkboxes`: array of which each element is like the following object `{ ref: string, checked: boolean, label: string }`
+Managed Multiple Checkbox accept also:
+* `checkboxes`: array of which each element is like the following object:
+  `{ ref: string, checked: boolean, label: string }`
 
-The `aspects` parameter of Managed Radio accepts also the following:
+Managed Radio accept also:
 * `name`: string
-* `radios`: array of which each element is like the following object `{ value: string, label: string }`
+* `radios`: array of which each element is like the following object:
+  `{ value: string, label: string }`
 
 ## Styles
 All Managed Inputs have default CSS classes.
@@ -114,4 +112,3 @@ Unique CSS classes are:
 * Textarea: `counter`
 * Select: `options`, `option`, `preselected`, `mark`
 * Checkbox, Multiple Checkbox and Radio: `tick`
-

@@ -1,18 +1,16 @@
 export function componentDidMount() {
   computeButtons.call(this)
-  this.decorator()
 }
 
-export function componentDidUpdate(prevProps, prevState) {  
-  if (prevState.resultsPerPage !== this.state.resultsPerPage || prevState.resultAmount !== this.state.resultAmount) {
+export function componentDidUpdate(prevProps) {  
+  if (prevProps.resultsPerPage !== this.props.resultsPerPage || prevProps.resultAmount !== this.props.resultAmount) {
     computeButtons.call(this)
   }
-  this.decorator()
 }
 
 function computeButtons() {
   this.setState({
-    buttons: createButtonsArray(Math.ceil(this.state.resultAmount / this.state.resultsPerPage))
+    buttons: createButtonsArray(Math.ceil(this.props.resultAmount / this.props.resultsPerPage))
   })
 }
 

@@ -1,3 +1,7 @@
+## 0.4.0 (October 6, 2019)
+### DEL Manager Agent
+* Deleted Manager Agent which allowed for direct props and increaseed performance
+
 ## 0.3.3 (August 11, 2019)
 ### ADD ManagedInputs children, CHG ManagedSelect onFocus API, FIX ManagedSelect onBlur
 * Added children to all ManagedInputs.
