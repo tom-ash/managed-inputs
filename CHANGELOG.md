@@ -1,3 +1,7 @@
+## 0.4.1 (October 19, 2019)
+### FIX Managed Text
+* Fixed Managed Text initial value
+
 ## 0.4.0 (October 6, 2019)
 ### DEL Manager Agent
 * Deleted Manager Agent which allowed for direct props and increaseed performance

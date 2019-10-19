@@ -6,7 +6,6 @@ export default class ManagedInput extends React.Component {
   constructor(props) {
     super(props)
     this.input = React.createRef()
-    this.controlled = this.props.controlled
     this.id = this.props.id
     this.classNames = this.props.classNames || {}
     this.inputClass = this.classNames.input || 'input'

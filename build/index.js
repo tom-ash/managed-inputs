@@ -108,11 +108,11 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _handlers = __webpack_require__(4);
+var _handlers = __webpack_require__(7);
 
 var handlers = _interopRequireWildcard(_handlers);
 
-var _decorator = __webpack_require__(5);
+var _decorator = __webpack_require__(8);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -133,7 +133,6 @@ var ManagedInput = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (ManagedInput.__proto__ || Object.getPrototypeOf(ManagedInput)).call(this, props));
 
     _this.input = _react2.default.createRef();
-    _this.controlled = _this.props.controlled;
     _this.id = _this.props.id;
     _this.classNames = _this.props.classNames || {};
     _this.inputClass = _this.classNames.input || 'input';
@@ -189,31 +188,31 @@ var _text = __webpack_require__(3);
 
 var _text2 = _interopRequireDefault(_text);
 
-var _textarea = __webpack_require__(7);
+var _textarea = __webpack_require__(10);
 
 var _textarea2 = _interopRequireDefault(_textarea);
 
-var _select = __webpack_require__(9);
+var _select = __webpack_require__(12);
 
 var _select2 = _interopRequireDefault(_select);
 
-var _radio = __webpack_require__(11);
+var _radio = __webpack_require__(14);
 
 var _radio2 = _interopRequireDefault(_radio);
 
-var _checkbox = __webpack_require__(14);
+var _checkbox = __webpack_require__(17);
 
 var _checkbox2 = _interopRequireDefault(_checkbox);
 
-var _multipleCheckbox = __webpack_require__(16);
+var _multipleCheckbox = __webpack_require__(19);
 
 var _multipleCheckbox2 = _interopRequireDefault(_multipleCheckbox);
 
-var _button = __webpack_require__(19);
+var _button = __webpack_require__(22);
 
 var _button2 = _interopRequireDefault(_button);
 
-var _pagination = __webpack_require__(20);
+var _pagination = __webpack_require__(23);
 
 var _pagination2 = _interopRequireDefault(_pagination);
 
@@ -245,11 +244,15 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _propTypes = __webpack_require__(4);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
 var _input = __webpack_require__(1);
 
 var _input2 = _interopRequireDefault(_input);
 
-var _handlers = __webpack_require__(6);
+var _handlers = __webpack_require__(9);
 
 var handlers = _interopRequireWildcard(_handlers);
 
@@ -272,6 +275,7 @@ var ManagedText = function (_ManagedInput) {
     var _this = _possibleConstructorReturn(this, (ManagedText.__proto__ || Object.getPrototypeOf(ManagedText)).call(this, props));
 
     _this.input = _react2.default.createRef();
+    _this.controlled = _this.props.controlled;
     _this.type = _this.props.type;
     _this.autoComplete = _this.props.autoComplete;
     _this.match = _this.props.match;
@@ -285,6 +289,7 @@ var ManagedText = function (_ManagedInput) {
     key: 'render',
     value: function render() {
       var _props = this.props,
+          controlled = _props.controlled,
           display = _props.display,
           disabled = _props.disabled,
           value = _props.value,
@@ -292,7 +297,8 @@ var ManagedText = function (_ManagedInput) {
           children = _props.children,
           error = _props.error;
 
-      var decorator = '' + this.state.decorator + (error ? ' error' : '') + (this.input.current && this.input.current.value ? ' value' : '');
+
+      var decorator = '' + this.state.decorator + (error ? ' error' : '') + (this.input.current && (this.input.current.value || value) ? ' value' : '');
 
       return _react2.default.createElement(
         'div',
@@ -301,7 +307,8 @@ var ManagedText = function (_ManagedInput) {
           className: this.containerClass + decorator,
           onMouseOver: this.onMouseOverHandler,
           onMouseLeave: this.onMouseLeaveHandler,
-          onClick: this.onClickHandler },
+          onClick: this.onClickHandler
+        },
         _react2.default.createElement(
           'div',
           { className: this.labelClass + decorator },
@@ -314,11 +321,12 @@ var ManagedText = function (_ManagedInput) {
           id: this.id,
           className: '' + this.inputClass + decorator,
           autoComplete: this.autoComplete,
-          value: this.controlled ? value : undefined,
+          value: controlled ? value : undefined,
           onFocus: this.onFocusHandler,
           onKeyDown: this.onKeyDownHandler,
           onBlur: this.onBlurHandler,
-          onChange: this.onChangeHandler }),
+          onChange: this.onChangeHandler
+        }),
         children,
         _react2.default.createElement(
           'div',
@@ -334,8 +342,125 @@ var ManagedText = function (_ManagedInput) {
 
 exports.default = ManagedText;
 
+
+ManagedText.propTypes = {
+  controlled: _propTypes2.default.boolean
+};
+
+ManagedText.defaultProps = {
+  controlled: true
+};
+
 /***/ }),
 /* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+if (false) { var throwOnDirectAccess, ReactIs; } else {
+  // By explicitly using `prop-types` you are opting into new production behavior.
+  // http://fb.me/prop-types-in-prod
+  module.exports = __webpack_require__(5)();
+}
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+
+
+var ReactPropTypesSecret = __webpack_require__(6);
+
+function emptyFunction() {}
+function emptyFunctionWithReset() {}
+emptyFunctionWithReset.resetWarningCache = emptyFunction;
+
+module.exports = function() {
+  function shim(props, propName, componentName, location, propFullName, secret) {
+    if (secret === ReactPropTypesSecret) {
+      // It is still safe when called from React.
+      return;
+    }
+    var err = new Error(
+      'Calling PropTypes validators directly is not supported by the `prop-types` package. ' +
+      'Use PropTypes.checkPropTypes() to call them. ' +
+      'Read more at http://fb.me/use-check-prop-types'
+    );
+    err.name = 'Invariant Violation';
+    throw err;
+  };
+  shim.isRequired = shim;
+  function getShim() {
+    return shim;
+  };
+  // Important!
+  // Keep this list in sync with production version in `./factoryWithTypeCheckers.js`.
+  var ReactPropTypes = {
+    array: shim,
+    bool: shim,
+    func: shim,
+    number: shim,
+    object: shim,
+    string: shim,
+    symbol: shim,
+
+    any: shim,
+    arrayOf: getShim,
+    element: shim,
+    elementType: shim,
+    instanceOf: getShim,
+    node: shim,
+    objectOf: getShim,
+    oneOf: getShim,
+    oneOfType: getShim,
+    shape: getShim,
+    exact: getShim,
+
+    checkPropTypes: emptyFunctionWithReset,
+    resetWarningCache: emptyFunction
+  };
+
+  ReactPropTypes.PropTypes = ReactPropTypes;
+
+  return ReactPropTypes;
+};
+
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+
+
+var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
+
+module.exports = ReactPropTypesSecret;
+
+
+/***/ }),
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -410,7 +535,7 @@ function onChangeHandler(e) {
 }
 
 /***/ }),
-/* 5 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -442,7 +567,7 @@ function decorator(options) {
 }
 
 /***/ }),
-/* 6 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -469,7 +594,7 @@ function onChangeHandler(e) {
 }
 
 /***/ }),
-/* 7 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -491,7 +616,7 @@ var _input = __webpack_require__(1);
 
 var _input2 = _interopRequireDefault(_input);
 
-var _handlers = __webpack_require__(8);
+var _handlers = __webpack_require__(11);
 
 var handlers = _interopRequireWildcard(_handlers);
 
@@ -584,7 +709,7 @@ var ManagedTextarea = function (_ManagedInput) {
 exports.default = ManagedTextarea;
 
 /***/ }),
-/* 8 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -609,7 +734,7 @@ function onChangeHandler(e) {
 }
 
 /***/ }),
-/* 9 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -631,7 +756,7 @@ var _input = __webpack_require__(1);
 
 var _input2 = _interopRequireDefault(_input);
 
-var _handlers = __webpack_require__(10);
+var _handlers = __webpack_require__(13);
 
 var handlers = _interopRequireWildcard(_handlers);
 
@@ -780,7 +905,7 @@ var ManagedSelect = function (_ManagedInput) {
 exports.default = ManagedSelect;
 
 /***/ }),
-/* 10 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -917,7 +1042,7 @@ function computeScroll(preSelectedIndex, keyCode) {
 }
 
 /***/ }),
-/* 11 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -937,11 +1062,11 @@ var _input = __webpack_require__(1);
 
 var _input2 = _interopRequireDefault(_input);
 
-var _handlers = __webpack_require__(12);
+var _handlers = __webpack_require__(15);
 
 var handlers = _interopRequireWildcard(_handlers);
 
-var _decorator = __webpack_require__(13);
+var _decorator = __webpack_require__(16);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -1059,7 +1184,7 @@ var ManagedRadio = function (_ManagedInput) {
 exports.default = ManagedRadio;
 
 /***/ }),
-/* 12 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1140,7 +1265,7 @@ function onClickHandler(value, index) {
 }
 
 /***/ }),
-/* 13 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1176,7 +1301,7 @@ function decorator(options) {
 }
 
 /***/ }),
-/* 14 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1196,7 +1321,7 @@ var _input = __webpack_require__(1);
 
 var _input2 = _interopRequireDefault(_input);
 
-var _handlers = __webpack_require__(15);
+var _handlers = __webpack_require__(18);
 
 var handlers = _interopRequireWildcard(_handlers);
 
@@ -1280,7 +1405,7 @@ var ManagedCheckbox = function (_ManagedInput) {
 exports.default = ManagedCheckbox;
 
 /***/ }),
-/* 15 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1300,7 +1425,7 @@ function onClickHandler() {
 }
 
 /***/ }),
-/* 16 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1322,11 +1447,11 @@ var _input = __webpack_require__(1);
 
 var _input2 = _interopRequireDefault(_input);
 
-var _handlers = __webpack_require__(17);
+var _handlers = __webpack_require__(20);
 
 var handlers = _interopRequireWildcard(_handlers);
 
-var _decorator = __webpack_require__(18);
+var _decorator = __webpack_require__(21);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -1453,7 +1578,7 @@ var ManagedMultipleCheckbox = function (_ManagedInput) {
 exports.default = ManagedMultipleCheckbox;
 
 /***/ }),
-/* 17 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1537,7 +1662,7 @@ function onKeyDownHandler(e, ref) {
 }
 
 /***/ }),
-/* 18 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1573,7 +1698,7 @@ function decorator(options) {
 }
 
 /***/ }),
-/* 19 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1654,7 +1779,7 @@ var ManagedButton = function (_ManagedInput) {
 exports.default = ManagedButton;
 
 /***/ }),
-/* 20 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1676,11 +1801,11 @@ var _input = __webpack_require__(1);
 
 var _input2 = _interopRequireDefault(_input);
 
-var _lifecycle = __webpack_require__(21);
+var _lifecycle = __webpack_require__(24);
 
-var _decorator = __webpack_require__(22);
+var _decorator = __webpack_require__(25);
 
-var _handlers = __webpack_require__(23);
+var _handlers = __webpack_require__(26);
 
 var handlers = _interopRequireWildcard(_handlers);
 
@@ -1798,7 +1923,7 @@ var ManagedPagination = function (_ManagedInput) {
 exports.default = ManagedPagination;
 
 /***/ }),
-/* 21 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1834,7 +1959,7 @@ function createButtonsArray(limit) {
 }
 
 /***/ }),
-/* 22 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1870,7 +1995,7 @@ function decorator(options) {
 }
 
 /***/ }),
-/* 23 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
