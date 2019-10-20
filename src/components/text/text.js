@@ -62,7 +62,7 @@ export default class ManagedText extends ManagedInput {
 }
 
 ManagedText.propTypes = {
-  controlled: PropTypes.boolean
+  controlled: PropTypes.bool
 }
 
 ManagedText.defaultProps = {

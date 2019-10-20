@@ -23,6 +23,12 @@ export function onKeyDownHandler(e) {
 
 export function onClickHandler(e) {
   const { onFocus, onClick } = this.props
+  if (this.state.focus) {
+    return this.setState({
+      focus: false,
+      decorator: this.decorator({ focus: false })
+    })
+  }
   if (this.isMobile()) {
     let autofill = true
     if (this.props.value === '') { autofill = false }
@@ -42,9 +48,10 @@ export function onOptionMouseOver(index) {
   this.setState({ preSelected: index })
 }
 
-export function onBlurHandler(e, tabDown, isMobile) {
+export function onBlurHandler(e, tabDown, fromOnCover) {
   const { onBlur } = this.props
-  if (this.state.mouseOver === false || tabDown === true || isMobile) {
+
+  if (tabDown || fromOnCover) {
     let value
     if (e && e.target) value = e.target.value
     onBlur && onBlur(value)
@@ -56,12 +63,18 @@ export function onBlurHandler(e, tabDown, isMobile) {
   }
 }
 
+export function onFocusCoverClickHandler() {
+  const { onCoverClick } = this.props
+  onCoverClick && onCoverClick(value)
+  this.onBlurHandler(undefined, undefined, true)
+}
+
 export function onSelectHandler(option) {
   const { onSelect } = this.props
   let autofill = true
   if (option.value === '') autofill = false
   this.setState({
-    autofill: autofill,
+    autofill,
     focus: false,
     mouseOver: false,
     decorator: this.decorator({ focus: false, mouseOver: false, value: option.value })

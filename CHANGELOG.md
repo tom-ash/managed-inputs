@@ -1,3 +1,7 @@
+## 0.4.2 (October 20, 2019)
+### FIX Managed Select OnFocus Cover
+* Fixed Managed Select OnFocus Cover
+
 ## 0.4.1 (October 19, 2019)
 ### FIX Managed Text
 * Fixed Managed Text initial value

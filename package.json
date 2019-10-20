@@ -1,6 +1,6 @@
 {
   "name": "managed-inputs",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "single function managed inputs for React",
   "main": "build/index.js",
   "scripts": {
@@ -23,7 +23,8 @@
   },
   "homepage": "https://github.com/tom-ash/managed-inputs#readme",
   "dependencies": {
-    "react": "^16.4.0"
+    "react": "^16.4.0",
+    "react-dom": "^16.4.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
