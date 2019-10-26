@@ -23,19 +23,14 @@ export function onKeyDownHandler(e) {
 
 export function onClickHandler(e) {
   const { onFocus, onClick } = this.props
-  if (this.state.focus) {
-    return this.setState({
-      focus: false,
-      decorator: this.decorator({ focus: false })
-    })
-  }
   if (this.isMobile()) {
     let autofill = true
     if (this.props.value === '') { autofill = false }
     this.setState({
       autofill: autofill,
       focus: true,
-      decorator: this.decorator({ focus: true })
+      decorator: this.decorator({ focus: true }),
+      ...optionsDimensionsProvider.call(this)
     })
     onFocus && onFocus(e.target.value)
   } else {
@@ -43,6 +38,21 @@ export function onClickHandler(e) {
   }
   onClick && onClick(e.target.value)
 }
+
+export function onFocusHandler(e) {
+  const { onFocus } = this.props
+  let autofill = true
+  if (this.state.value === '') autofill = false
+  const focus = true
+  this.setState({
+    autofill,
+    focus,
+    decorator: this.decorator({ focus }),
+    ...optionsDimensionsProvider.call(this)
+  })
+  onFocus && onFocus(e.target.value)
+}
+
 
 export function onOptionMouseOver(index) {
   this.setState({ preSelected: index })
@@ -54,12 +64,19 @@ export function onBlurHandler(e, tabDown, fromOnCover) {
   if (tabDown || fromOnCover) {
     let value
     if (e && e.target) value = e.target.value
-    onBlur && onBlur(value)
+    const focus = false
+    const mouseOver = false
+
     this.setState({
-      focus: false,
-      mouseOver: false,
-      decorator: this.decorator({ focus: false, mouseOver: false })
+      focus,
+      mouseOver,
+      decorator: this.decorator({
+        focus,
+        mouseOver
+      })
     })
+
+    onBlur && onBlur(value)
   }
 }
 
@@ -69,7 +86,7 @@ export function onFocusCoverClickHandler() {
   this.onBlurHandler(undefined, undefined, true)
 }
 
-export function onSelectHandler(option) {
+export function onSelectHandler(e, option) {
   const { onSelect } = this.props
   let autofill = true
   if (option.value === '') autofill = false
@@ -83,9 +100,11 @@ export function onSelectHandler(option) {
 }
 
 function computePreSelected(keyCode) {
-  let preSelected = this.state.preSelected
+  const { preSelected } = this.state
+  const { options } = this.props
+
   if (keyCode == 40) {
-    if (preSelected < this.props.options.length - 1) {
+    if (preSelected < options.length - 1) {
       return preSelected + 1
     } else {
       return 0
@@ -94,7 +113,7 @@ function computePreSelected(keyCode) {
     if (preSelected > 0) {
       return preSelected - 1
     } else {
-      return this.props.options.length - 1
+      return options.length - 1
     }
   }
 }
@@ -106,6 +125,7 @@ function computeScroll(preSelectedIndex, keyCode) {
   const preSelected = options.children[preSelectedIndex]
   const preSelectedHeight = preSelected.offsetHeight
   const preSelectedOffset = preSelected.offsetTop
+  
   switch (preSelectedIndex) {
     case 0:
       return 0
@@ -120,5 +140,20 @@ function computeScroll(preSelectedIndex, keyCode) {
         return preSelectedOffset - optionsHeight + preSelectedHeight - diff
       }
       return this.options.current.scrollTop
+  }
+}
+
+function optionsDimensionsProvider() {
+  const { optionsDimensions } = this.props
+  const { current: visibleInput } = this.visibleInput
+  const { offsetWidth, offsetHeight } = visibleInput
+  const { top: rectTop, left: rectLeft } = visibleInput.getBoundingClientRect()
+  const { top: propTop, left: propLeft, width: propWidth } = optionsDimensions || {}
+  const { scrollTop } = document.documentElement
+
+  return {
+    top: rectTop + scrollTop + offsetHeight + (propTop || 0),
+    left: rectLeft + (propLeft || 0),
+    width: offsetWidth + (propWidth || 0)
   }
 }

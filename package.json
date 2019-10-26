@@ -1,6 +1,6 @@
 {
   "name": "managed-inputs",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "single function managed inputs for React",
   "main": "build/index.js",
   "scripts": {

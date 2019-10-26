@@ -1,3 +1,7 @@
+## 0.4.3 (November 9, 2019)
+### CHG Managed Select options display
+* Changed Managed Select options display: it is now appended at the end of the document's body within an onBlur cover.
+
 ## 0.4.2 (October 20, 2019)
 ### FIX Managed Select OnFocus Cover
 * Fixed Managed Select OnFocus Cover

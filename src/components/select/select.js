@@ -7,6 +7,8 @@ import { componentDidUpdate } from './lifecycle/lifecycle'
 export default class ManagedSelect extends ManagedInput {
   constructor(props) {
     super(props)
+    this.input = React.createRef()
+    this.visibleInput = React.createRef()
     this.options = React.createRef()
     this.containerClass = this.classNames.container || 'managed-input select'
     this.optionsClass = this.classNames.options || 'options'
@@ -14,23 +16,43 @@ export default class ManagedSelect extends ManagedInput {
     this.markClass = this.classNames.mark || 'mark'
     this.componentDidUpdate = componentDidUpdate
     this.onClickHandler = handlers.onClickHandler.bind(this)
+    this.onFocusHandler = handlers.onFocusHandler.bind(this)
     this.onKeyDownHandler = handlers.onKeyDownHandler.bind(this)
     this.onBlurHandler = handlers.onBlurHandler.bind(this)
     this.onFocusCoverClickHandler = handlers.onFocusCoverClickHandler.bind(this)
     this.onSelectHandler = handlers.onSelectHandler.bind(this)
     this.onOptionMouseOver = handlers.onOptionMouseOver.bind(this)
-    this.onFocusCoverZIndex = this.props.onFocusCoverZIndex || 2
-    this.disableOnFocusCover = this.props.disableOnFocusCover
     this.disableSelectOptions = this.props.disableSelectOptions
     this.state = {
       ...this.state,
-      preSelected: 0
+      preSelected: 0,
+      top: 0,
+      left: 0,
+      width: 0,
+      focus: false
     }
   }
 
   render() {
-    const { display, value, options, error, children, label } = this.props
+    const {
+      display,
+      value,
+      label,
+      options,
+      substituteOptions,
+      substituteOptionsContainerClass,
+      error,
+      children,
+      onFocusCoverZIndex
+    } = this.props
     const decorator = `${this.state.decorator}${value !== '' ? ' value' : ''}${error ? ' error' : ''}`
+    const {
+      focus,
+      top,
+      left,
+      width,
+      preSelected
+    } = this.state
 
     return (
       <div
@@ -45,46 +67,54 @@ export default class ManagedSelect extends ManagedInput {
             <div className={this.labelClass + decorator}>
               {label}
             </div>
-            <div className={this.inputClass + decorator}>
+            <div
+              ref={this.visibleInput}
+              className={this.inputClass + decorator}
+            >
               {(options.find(option => (option.value === value)) || {}).text}
               <div className={this.markClass + decorator} />
             </div>
           </div>
-          {
-          (this.state.focus && !this.disableOnFocusCover) &&
+          {focus &&
           <FocusCover>
             <div
               onClick={this.onFocusCoverClickHandler}
               style={{
-                position: 'fixed',
+                position: 'absolute',
                 top: 0,
                 right: 0,
-                bottom: 0,
                 left: 0,
-                zIndex: this.onFocusCoverZIndex
-              }}
-            />
-          </FocusCover>
-          }
-          {
-          this.state.focus && !this.disableSelectOptions &&
-          <div
-            style={{ zIndex: 999 }}
-            ref={this.options}
-            className={this.optionsClass + decorator}
-          >
-            {
-            options.map((option, index) => (
-            <div
-              key={`key-proxy-${option.value}-${index}`}
-              onMouseOver={() => this.onOptionMouseOver(index)}
-              onClick={() => this.onSelectHandler(option)}
-              className={this.optionClass + decorator + `${this.state.preSelected === index ? ' preselected' : ''}`}
+                height: document.body.offsetHeight,
+                zIndex: onFocusCoverZIndex || 2 }}
             >
-              {option.text}
-            </div>))
-            }
-          </div>
+              {substituteOptions &&
+              <div
+                className={substituteOptionsContainerClass}
+                style={{ position: 'absolute', top, left, width }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                {substituteOptions}
+              </div>
+              }
+              {focus && !this.disableSelectOptions &&
+              <div
+                ref={this.options}
+                className={this.optionsClass + decorator}
+                style={{ position: 'absolute', top, left, width }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                {options.map((option, index) => (
+                <div
+                  key={`key-proxy-${option.value}-${index}`}
+                  onMouseOver={() => this.onOptionMouseOver(index)}
+                  onClick={(e) => this.onSelectHandler(e, option)}
+                  className={this.optionClass + decorator + `${preSelected === index ? ' preselected' : ''}`}
+                >
+                  {option.text}
+                </div>))}
+              </div>}
+            </div>
+          </FocusCover>
           }
           <select
             ref={this.input}
@@ -92,7 +122,6 @@ export default class ManagedSelect extends ManagedInput {
             value={value}
             readOnly={true}
             style={{ position: 'absolute', left: -10000 }}
-            disabled={this.state.disabled}
             onFocus={this.onFocusHandler}
             onKeyDown={this.onKeyDownHandler}
             onBlur={this.onBlurHandler}

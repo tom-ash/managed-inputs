@@ -1,16 +1,25 @@
-export function componentDidUpdate(prevProps, prevState) {
+export function componentDidUpdate(prevProps) {
   const { value: prevValue } = prevProps
-  const { disableBlurOnValue, value } = this.props
+  const { value, disableBlurOnValue, onBlur } = this.props
   const { focus } = this.state
 
   if (prevValue !== value && !disableBlurOnValue && focus) {
     let autofill = true
     if (value === '') autofill = false
+    const focus = false
+    const mouseOver = false
+
     this.setState({
       autofill,
-      focus: false,
-      mouseOver: false,
-      decorator: this.decorator({ focus: false, mouseOver: false, value })
+      focus,
+      mouseOver,
+      decorator: this.decorator({
+        value,
+        focus,
+        mouseOver
+      })
     })
+    
+    onBlur && onBlur(value)
   }
 }

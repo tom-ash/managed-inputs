@@ -783,6 +783,8 @@ var ManagedSelect = function (_ManagedInput) {
 
     var _this = _possibleConstructorReturn(this, (ManagedSelect.__proto__ || Object.getPrototypeOf(ManagedSelect)).call(this, props));
 
+    _this.input = _react2.default.createRef();
+    _this.visibleInput = _react2.default.createRef();
     _this.options = _react2.default.createRef();
     _this.containerClass = _this.classNames.container || 'managed-input select';
     _this.optionsClass = _this.classNames.options || 'options';
@@ -790,16 +792,19 @@ var ManagedSelect = function (_ManagedInput) {
     _this.markClass = _this.classNames.mark || 'mark';
     _this.componentDidUpdate = _lifecycle.componentDidUpdate;
     _this.onClickHandler = handlers.onClickHandler.bind(_this);
+    _this.onFocusHandler = handlers.onFocusHandler.bind(_this);
     _this.onKeyDownHandler = handlers.onKeyDownHandler.bind(_this);
     _this.onBlurHandler = handlers.onBlurHandler.bind(_this);
     _this.onFocusCoverClickHandler = handlers.onFocusCoverClickHandler.bind(_this);
     _this.onSelectHandler = handlers.onSelectHandler.bind(_this);
     _this.onOptionMouseOver = handlers.onOptionMouseOver.bind(_this);
-    _this.onFocusCoverZIndex = _this.props.onFocusCoverZIndex || 2;
-    _this.disableOnFocusCover = _this.props.disableOnFocusCover;
     _this.disableSelectOptions = _this.props.disableSelectOptions;
     _this.state = _extends({}, _this.state, {
-      preSelected: 0
+      preSelected: 0,
+      top: 0,
+      left: 0,
+      width: 0,
+      focus: false
     });
     return _this;
   }
@@ -812,12 +817,22 @@ var ManagedSelect = function (_ManagedInput) {
       var _props = this.props,
           display = _props.display,
           value = _props.value,
+          label = _props.label,
           options = _props.options,
+          substituteOptions = _props.substituteOptions,
+          substituteOptionsContainerClass = _props.substituteOptionsContainerClass,
           error = _props.error,
           children = _props.children,
-          label = _props.label;
+          onFocusCoverZIndex = _props.onFocusCoverZIndex;
 
       var decorator = '' + this.state.decorator + (value !== '' ? ' value' : '') + (error ? ' error' : '');
+      var _state = this.state,
+          focus = _state.focus,
+          top = _state.top,
+          left = _state.left,
+          width = _state.width,
+          preSelected = _state.preSelected;
+
 
       return _react2.default.createElement(
         'div',
@@ -841,51 +856,70 @@ var ManagedSelect = function (_ManagedInput) {
             ),
             _react2.default.createElement(
               'div',
-              { className: this.inputClass + decorator },
+              {
+                ref: this.visibleInput,
+                className: this.inputClass + decorator
+              },
               (options.find(function (option) {
                 return option.value === value;
               }) || {}).text,
               _react2.default.createElement('div', { className: this.markClass + decorator })
             )
           ),
-          this.state.focus && !this.disableOnFocusCover && _react2.default.createElement(
+          focus && _react2.default.createElement(
             _focusCover2.default,
             null,
-            _react2.default.createElement('div', {
-              onClick: this.onFocusCoverClickHandler,
-              style: {
-                position: 'fixed',
-                top: 0,
-                right: 0,
-                bottom: 0,
-                left: 0,
-                zIndex: this.onFocusCoverZIndex
-              }
-            })
-          ),
-          this.state.focus && !this.disableSelectOptions && _react2.default.createElement(
-            'div',
-            {
-              style: { zIndex: 999 },
-              ref: this.options,
-              className: this.optionsClass + decorator
-            },
-            options.map(function (option, index) {
-              return _react2.default.createElement(
+            _react2.default.createElement(
+              'div',
+              {
+                onClick: this.onFocusCoverClickHandler,
+                style: {
+                  position: 'absolute',
+                  top: 0,
+                  right: 0,
+                  left: 0,
+                  height: document.body.offsetHeight,
+                  zIndex: onFocusCoverZIndex || 2 }
+              },
+              substituteOptions && _react2.default.createElement(
                 'div',
                 {
-                  key: 'key-proxy-' + option.value + '-' + index,
-                  onMouseOver: function onMouseOver() {
-                    return _this2.onOptionMouseOver(index);
-                  },
-                  onClick: function onClick() {
-                    return _this2.onSelectHandler(option);
-                  },
-                  className: _this2.optionClass + decorator + ('' + (_this2.state.preSelected === index ? ' preselected' : ''))
+                  className: substituteOptionsContainerClass,
+                  style: { position: 'absolute', top: top, left: left, width: width },
+                  onClick: function onClick(e) {
+                    return e.stopPropagation();
+                  }
                 },
-                option.text
-              );
-            })
+                substituteOptions
+              ),
+              focus && !this.disableSelectOptions && _react2.default.createElement(
+                'div',
+                {
+                  ref: this.options,
+                  className: this.optionsClass + decorator,
+                  style: { position: 'absolute', top: top, left: left, width: width },
+                  onClick: function onClick(e) {
+                    return e.stopPropagation();
+                  }
+                },
+                options.map(function (option, index) {
+                  return _react2.default.createElement(
+                    'div',
+                    {
+                      key: 'key-proxy-' + option.value + '-' + index,
+                      onMouseOver: function onMouseOver() {
+                        return _this2.onOptionMouseOver(index);
+                      },
+                      onClick: function onClick(e) {
+                        return _this2.onSelectHandler(e, option);
+                      },
+                      className: _this2.optionClass + decorator + ('' + (preSelected === index ? ' preselected' : ''))
+                    },
+                    option.text
+                  );
+                })
+              )
+            )
           ),
           _react2.default.createElement(
             'select',
@@ -895,7 +929,6 @@ var ManagedSelect = function (_ManagedInput) {
               value: value,
               readOnly: true,
               style: { position: 'absolute', left: -10000 },
-              disabled: this.state.disabled,
               onFocus: this.onFocusHandler,
               onKeyDown: this.onKeyDownHandler,
               onBlur: this.onBlurHandler
@@ -1433,8 +1466,12 @@ exports.unstable_pauseExecution=function(){};exports.unstable_getFirstCallbackNo
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 exports.onKeyDownHandler = onKeyDownHandler;
 exports.onClickHandler = onClickHandler;
+exports.onFocusHandler = onFocusHandler;
 exports.onOptionMouseOver = onOptionMouseOver;
 exports.onBlurHandler = onBlurHandler;
 exports.onFocusCoverClickHandler = onFocusCoverClickHandler;
@@ -1470,27 +1507,35 @@ function onClickHandler(e) {
       onFocus = _props2.onFocus,
       onClick = _props2.onClick;
 
-  if (this.state.focus) {
-    return this.setState({
-      focus: false,
-      decorator: this.decorator({ focus: false })
-    });
-  }
   if (this.isMobile()) {
     var autofill = true;
     if (this.props.value === '') {
       autofill = false;
     }
-    this.setState({
+    this.setState(_extends({
       autofill: autofill,
       focus: true,
       decorator: this.decorator({ focus: true })
-    });
+    }, optionsDimensionsProvider.call(this)));
     onFocus && onFocus(e.target.value);
   } else {
     this.input.current.focus();
   }
   onClick && onClick(e.target.value);
+}
+
+function onFocusHandler(e) {
+  var onFocus = this.props.onFocus;
+
+  var autofill = true;
+  if (this.state.value === '') autofill = false;
+  var focus = true;
+  this.setState(_extends({
+    autofill: autofill,
+    focus: focus,
+    decorator: this.decorator({ focus: focus })
+  }, optionsDimensionsProvider.call(this)));
+  onFocus && onFocus(e.target.value);
 }
 
 function onOptionMouseOver(index) {
@@ -1504,12 +1549,19 @@ function onBlurHandler(e, tabDown, fromOnCover) {
   if (tabDown || fromOnCover) {
     var _value = void 0;
     if (e && e.target) _value = e.target.value;
-    onBlur && onBlur(_value);
+    var focus = false;
+    var mouseOver = false;
+
     this.setState({
-      focus: false,
-      mouseOver: false,
-      decorator: this.decorator({ focus: false, mouseOver: false })
+      focus: focus,
+      mouseOver: mouseOver,
+      decorator: this.decorator({
+        focus: focus,
+        mouseOver: mouseOver
+      })
     });
+
+    onBlur && onBlur(_value);
   }
 }
 
@@ -1520,7 +1572,7 @@ function onFocusCoverClickHandler() {
   this.onBlurHandler(undefined, undefined, true);
 }
 
-function onSelectHandler(option) {
+function onSelectHandler(e, option) {
   var onSelect = this.props.onSelect;
 
   var autofill = true;
@@ -1536,8 +1588,11 @@ function onSelectHandler(option) {
 
 function computePreSelected(keyCode) {
   var preSelected = this.state.preSelected;
+  var options = this.props.options;
+
+
   if (keyCode == 40) {
-    if (preSelected < this.props.options.length - 1) {
+    if (preSelected < options.length - 1) {
       return preSelected + 1;
     } else {
       return 0;
@@ -1546,7 +1601,7 @@ function computePreSelected(keyCode) {
     if (preSelected > 0) {
       return preSelected - 1;
     } else {
-      return this.props.options.length - 1;
+      return options.length - 1;
     }
   }
 }
@@ -1558,6 +1613,7 @@ function computeScroll(preSelectedIndex, keyCode) {
   var preSelected = options.children[preSelectedIndex];
   var preSelectedHeight = preSelected.offsetHeight;
   var preSelectedOffset = preSelected.offsetTop;
+
   switch (preSelectedIndex) {
     case 0:
       return 0;
@@ -1575,6 +1631,31 @@ function computeScroll(preSelectedIndex, keyCode) {
   }
 }
 
+function optionsDimensionsProvider() {
+  var optionsDimensions = this.props.optionsDimensions;
+  var visibleInput = this.visibleInput.current;
+  var offsetWidth = visibleInput.offsetWidth,
+      offsetHeight = visibleInput.offsetHeight;
+
+  var _visibleInput$getBoun = visibleInput.getBoundingClientRect(),
+      rectTop = _visibleInput$getBoun.top,
+      rectLeft = _visibleInput$getBoun.left;
+
+  var _ref = optionsDimensions || {},
+      propTop = _ref.top,
+      propLeft = _ref.left,
+      propWidth = _ref.width;
+
+  var scrollTop = document.documentElement.scrollTop;
+
+
+  return {
+    top: rectTop + scrollTop + offsetHeight + (propTop || 0),
+    left: rectLeft + (propLeft || 0),
+    width: offsetWidth + (propWidth || 0)
+  };
+}
+
 /***/ }),
 /* 20 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -1586,23 +1667,33 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.componentDidUpdate = componentDidUpdate;
-function componentDidUpdate(prevProps, prevState) {
+function componentDidUpdate(prevProps) {
   var prevValue = prevProps.value;
   var _props = this.props,
+      value = _props.value,
       disableBlurOnValue = _props.disableBlurOnValue,
-      value = _props.value;
+      onBlur = _props.onBlur;
   var focus = this.state.focus;
 
 
   if (prevValue !== value && !disableBlurOnValue && focus) {
     var autofill = true;
     if (value === '') autofill = false;
+    var _focus = false;
+    var mouseOver = false;
+
     this.setState({
       autofill: autofill,
-      focus: false,
-      mouseOver: false,
-      decorator: this.decorator({ focus: false, mouseOver: false, value: value })
+      focus: _focus,
+      mouseOver: mouseOver,
+      decorator: this.decorator({
+        value: value,
+        focus: _focus,
+        mouseOver: mouseOver
+      })
     });
+
+    onBlur && onBlur(value);
   }
 }
 
