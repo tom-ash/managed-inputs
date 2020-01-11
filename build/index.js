@@ -182,7 +182,7 @@ exports.default = ManagedInput;
 Object.defineProperty(exports, "__esModule", {
          value: true
 });
-exports.ManagedPagination = exports.ManagedMultipleCheckbox = exports.ManagedCheckbox = exports.ManagedButton = exports.ManagedRadio = exports.ManagedTextarea = exports.ManagedSelect = exports.ManagedText = undefined;
+exports.ManagedLink = exports.ManagedPagination = exports.ManagedMultipleCheckbox = exports.ManagedCheckbox = exports.ManagedButton = exports.ManagedRadio = exports.ManagedTextarea = exports.ManagedSelect = exports.ManagedText = undefined;
 
 var _text = __webpack_require__(3);
 
@@ -216,6 +216,10 @@ var _pagination = __webpack_require__(30);
 
 var _pagination2 = _interopRequireDefault(_pagination);
 
+var _link = __webpack_require__(34);
+
+var _link2 = _interopRequireDefault(_link);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.ManagedText = _text2.default;
@@ -226,6 +230,7 @@ exports.ManagedButton = _button2.default;
 exports.ManagedCheckbox = _checkbox2.default;
 exports.ManagedMultipleCheckbox = _multipleCheckbox2.default;
 exports.ManagedPagination = _pagination2.default;
+exports.ManagedLink = _link2.default;
 
 /***/ }),
 /* 3 */
@@ -521,6 +526,7 @@ function onBlurHandler(e) {
 }
 
 function onClickHandler(e) {
+  if (e) e.preventDefault();
   var onClick = this.props.onClick;
 
   this.input.current.focus();
@@ -2723,6 +2729,99 @@ function onClickHandler(button) {
   if (button === 0) current = this.props.current - 1;else if (button === this.state.buttons.length - 1) current = this.props.current + 1;else current = button;
   onClick(current);
 }
+
+/***/ }),
+/* 34 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _input = __webpack_require__(1);
+
+var _input2 = _interopRequireDefault(_input);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var ManagedLink = function (_ManagedInput) {
+  _inherits(ManagedLink, _ManagedInput);
+
+  function ManagedLink(props) {
+    _classCallCheck(this, ManagedLink);
+
+    var _this = _possibleConstructorReturn(this, (ManagedLink.__proto__ || Object.getPrototypeOf(ManagedLink)).call(this, props));
+
+    _this.containerClass = _this.classNames.container || 'managed-input link';
+    return _this;
+  }
+
+  _createClass(ManagedLink, [{
+    key: 'render',
+    value: function render() {
+      var _props = this.props,
+          display = _props.display,
+          disabled = _props.disabled,
+          href = _props.href,
+          hrefLang = _props.hrefLang,
+          target = _props.target,
+          title = _props.title,
+          download = _props.download,
+          label = _props.label,
+          children = _props.children;
+      var decorator = this.state.decorator;
+
+
+      return _react2.default.createElement(
+        'div',
+        {
+          style: { display: display },
+          className: this.containerClass + decorator
+        },
+        _react2.default.createElement(
+          'a',
+          {
+            ref: this.input,
+            id: this.id,
+            className: this.inputClass + decorator,
+            disabled: disabled,
+            href: href,
+            hrefLang: hrefLang,
+            target: target,
+            title: title,
+            download: download,
+            onMouseOver: this.onMouseOverHandler,
+            onMouseLeave: this.onMouseLeaveHandler,
+            onFocus: this.onFocusHandler,
+            onBlur: this.onBlurHandler,
+            onClick: this.onClickHandler
+          },
+          label
+        ),
+        children
+      );
+    }
+  }]);
+
+  return ManagedLink;
+}(_input2.default);
+
+exports.default = ManagedLink;
 
 /***/ })
 /******/ ]);

@@ -6,6 +6,7 @@ import ManagedCheckbox from './components/checkbox/checkbox'
 import ManagedMultipleCheckbox from './components/multiple-checkbox/multiple-checkbox'
 import ManagedButton from './components/button/button'
 import ManagedPagination from './components/pagination/pagination'
+import ManagedLink from './components/link/link'
 
 export { ManagedText,
          ManagedSelect,
@@ -14,4 +15,5 @@ export { ManagedText,
          ManagedButton,
          ManagedCheckbox,
          ManagedMultipleCheckbox,
-         ManagedPagination }
+         ManagedPagination,
+         ManagedLink }

@@ -1,3 +1,7 @@
+## 0.5.0 (January 11, 2020)
+### ADD Managed Link
+* Added Managed Link
+
 ## 0.4.3 (November 9, 2019)
 ### CHG Managed Select options display
 * Changed Managed Select options display: it is now appended at the end of the document's body within an onBlur cover.

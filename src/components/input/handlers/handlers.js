@@ -41,6 +41,7 @@ export function onBlurHandler(e) {
 }
 
 export function onClickHandler(e) {
+  if (e) e.preventDefault()
   const { onClick } = this.props
   this.input.current.focus()
   onClick && onClick(e.target.value)
