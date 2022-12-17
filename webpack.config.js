@@ -13,25 +13,17 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.js$/,
-        include: path.resolve(__dirname, 'src'),
-        exclude: /(node_modules|build)/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ['env']
-          }
-        }
-      },
-      {
-        test:/css$/,
+        test: /(\.jsx?)$/,
         use: [
-          'css-loader'
-        ]
-      }
+          {
+            loader: 'babel-loader',
+            options: {
+              presets: ['@babel/preset-env', '@babel/preset-react'],
+            },
+          },
+        ],
+        exclude: /node_modules/,
+      },
     ]
   },
-  externals: {
-    'react': 'commonjs react' 
-  }
 }
