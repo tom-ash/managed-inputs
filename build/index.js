@@ -926,7 +926,8 @@ var ManagedText = /*#__PURE__*/function (_ManagedInput) {
         value = _this$props.value,
         label = _this$props.label,
         children = _this$props.children,
-        error = _this$props.error;
+        error = _this$props.error,
+        placeholder = _this$props.placeholder;
       var decorator = "".concat(this.state.decorator).concat(error ? ' error' : '').concat(this.input.current && (this.input.current.value || value) ? ' value' : '');
       return /*#__PURE__*/react.createElement("div", {
         style: {
@@ -949,7 +950,8 @@ var ManagedText = /*#__PURE__*/function (_ManagedInput) {
         onFocus: this.onFocusHandler,
         onKeyDown: this.onKeyDownHandler,
         onBlur: this.onBlurHandler,
-        onChange: this.onChangeHandler
+        onChange: this.onChangeHandler,
+        placeholder: placeholder
       }), children, /*#__PURE__*/react.createElement("div", {
         className: this.errorContainerClass + decorator
       }, error));

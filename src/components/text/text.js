@@ -23,7 +23,8 @@ export default class ManagedText extends ManagedInput {
       value,
       label,
       children,
-      error
+      error,
+      placeholder,
     } = this.props
 
     const decorator = `${this.state.decorator}${error ? ' error' : ''}${this.input.current && (this.input.current.value || value) ? ' value' : ''}`
@@ -51,6 +52,7 @@ export default class ManagedText extends ManagedInput {
           onKeyDown={this.onKeyDownHandler}
           onBlur={this.onBlurHandler}
           onChange={this.onChangeHandler}
+          placeholder={placeholder}
         />
         {children}
         <div className={this.errorContainerClass + decorator}>

@@ -1,3 +1,6 @@
+## 0.5.1 (December 17, 2022)
+* Added placeholder to ManagedText
+
 ## 0.5.0 (January 11, 2020)
 ### ADD Managed Link
 * Added Managed Link
