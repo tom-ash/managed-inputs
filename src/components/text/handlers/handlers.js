@@ -1,6 +1,15 @@
 export function onKeyDownHandler(e) {
-  const { onKeyDown } = this.props
-  onKeyDown && onKeyDown(e.target.value)
+  const { onEnter, onTab, onKeyDown } = this.props
+
+  if (e.key === 'Enter' && onEnter) {
+    return onEnter(e)
+  }
+
+  if (e.key === 'Tab' && onTab) {
+    return onTab(e)
+  }
+
+  onKeyDown && onKeyDown(e.target.value, e)
 }
 
 export function onChangeHandler(e) {

@@ -1,3 +1,6 @@
+## 0.5.2 (December 18, 2022)
+* Added onEnter and onTab to ManagedText
+
 ## 0.5.1 (December 17, 2022)
 * Added placeholder to ManagedText
 * Updated dependencies

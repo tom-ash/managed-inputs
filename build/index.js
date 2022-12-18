@@ -872,8 +872,17 @@ var ManagedInput = /*#__PURE__*/function (_React$Component) {
 
 ;// CONCATENATED MODULE: ./src/components/text/handlers/handlers.js
 function onKeyDownHandler(e) {
-  var onKeyDown = this.props.onKeyDown;
-  onKeyDown && onKeyDown(e.target.value);
+  var _this$props = this.props,
+    onEnter = _this$props.onEnter,
+    onTab = _this$props.onTab,
+    onKeyDown = _this$props.onKeyDown;
+  if (e.key === 'Enter' && onEnter) {
+    return onEnter(e);
+  }
+  if (e.key === 'Tab' && onTab) {
+    return onTab(e);
+  }
+  onKeyDown && onKeyDown(e.target.value, e);
 }
 function handlers_onChangeHandler(e) {
   var onChange = this.props.onChange;
